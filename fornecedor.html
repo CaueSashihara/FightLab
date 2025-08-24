@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal do Fornecedor | Fight Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0a0a;
+      --primary-color: #b3152f;
+      --secondary-color: #111111;
+      --text-color: #f0f0f0;
+      --muted-color: #888888;
+      --card-bg: #0f0f0f;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      z-index: 1000;
+    }
+    header .logo img { height: 50px; }
+    header nav a {
+      margin-left: 20px;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    header nav a:hover { color: var(--primary-color); }
+    main {
+      padding-top: 100px;
+      padding-bottom: 60px;
+      width: 90%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .info-section {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 30px;
+      margin-bottom: 30px;
+    }
+    .info-section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    .info-section p {
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
+    .cta {
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cta a {
+      display: inline-block;
+      padding: 12px 24px;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      transition: background-color 0.3s ease;
+    }
+    .cta a:hover { background-color: #931223; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="assets/logo.png" alt="Fight Lab"></a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Portal do Fornecedor</h1>
+    <div class="info-section">
+      <h2>Seja nosso parceiro</h2>
+      <p>O Fight Lab está em constante busca por fornecedores de tecidos, fios, patches e acessórios de alta qualidade. Se você possui produtos que se alinham à nossa proposta de inovação e excelência em artes marciais, essa é a oportunidade de fazer parte do nosso ecossistema.</p>
+      <p>Ao se tornar parceiro, você terá acesso a uma base de clientes em crescimento, com demanda constante por materiais premium. Além disso, oferecemos visibilidade na nossa plataforma e facilidade de comunicação com costureiras e academias.</p>
+    </div>
+    <div class="info-section">
+      <h2>Benefícios</h2>
+      <p><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> Acesso direto a costureiras e praticantes</p>
+      <p><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> Divulgação do seu catálogo de produtos</p>
+      <p><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> Possibilidade de exclusividade em determinadas linhas</p>
+      <p><i class="fa-solid fa-check-circle" style="color: var(--primary-color);"></i> Suporte dedicado para integração</p>
+    </div>
+    <div class="cta">
+      <a href="https://wa.me/5511979690880?text=Olá,+sou+fornecedor+e+gostaria+de+falar+com+a+Fight+Lab" target="_blank">Fale Conosco</a>
+    </div>
+  </main>
+</body>
+</html>

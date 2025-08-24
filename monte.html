@@ -266,10 +266,8 @@
       <img id="kimonoImage" src="assets/kimono_white.png" alt="Kimono FightLab" style="width:100%; height:auto; display:block;">
       <!-- Overlay for selected color -->
       <div id="colorOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#ffffff; opacity:0.0; pointer-events:none;"></div>
-      <!-- Preview of uploaded patch for the peito (circular badge positioned alongside the lapela) -->
+      <!-- Preview of uploaded patch for o peito (circular badge positioned alongside the lapela) -->
       <img id="patchPreview" alt="Patch Peito" style="position:absolute; top:30%; left:55%; width:15%; height:auto; display:none; pointer-events:none; border-radius:50%; object-fit:cover; mix-blend-mode:multiply; opacity:0.9;">
-      <!-- Preview of uploaded patch for the costas (centralised badge on the back) -->
-      <img id="patchBackPreview" alt="Patch Costas" style="position:absolute; top:60%; left:35%; width:25%; height:auto; display:none; pointer-events:none; border-radius:15%; object-fit:cover; mix-blend-mode:multiply; opacity:0.9;">
     </div>
     <div class="controls">
       <h2>Personalize</h2>
@@ -277,10 +275,6 @@
         <label for="patchUpload">Patch (imagem)</label>
         <input type="file" id="patchUpload" accept="image/*">
       </div>
-        <div class="form-group">
-          <label for="patchBackUpload">Patch das Costas (imagem)</label>
-          <input type="file" id="patchBackUpload" accept="image/*">
-        </div>
       <button id="finalizeBtn">Enviar Pedido</button>
     </div>
   </section>
@@ -325,8 +319,6 @@
     const colorOverlay = document.getElementById('colorOverlay');
     const patchUpload = document.getElementById('patchUpload');
     const patchPreview = document.getElementById('patchPreview');
-    const patchBackUpload = document.getElementById('patchBackUpload');
-    const patchBackPreview = document.getElementById('patchBackPreview');
     const finalizeBtn = document.getElementById('finalizeBtn');
     // elements for final confirmation modal
     const confirmModal = document.getElementById('confirmModal');
@@ -469,18 +461,6 @@
       }
     });
 
-    // handle uploading patch for costas
-    patchBackUpload.addEventListener('change', function() {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          patchBackPreview.src = e.target.result;
-          patchBackPreview.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-      }
-    });
     finalizeBtn.addEventListener('click', function() {
       // gather data to build summary
       const height = document.getElementById('heightInput').value;

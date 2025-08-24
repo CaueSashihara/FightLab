@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Meu Perfil • Costureira | Fight Lab</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0a0a;
+      --primary-color: #b3152f;
+      --secondary-color: #111111;
+      --text-color: #f0f0f0;
+      --muted-color: #888888;
+      --card-bg: #0f0f0f;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      z-index: 1000;
+    }
+    header .logo img { height: 50px; }
+    header nav a {
+      margin-left: 20px;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    header nav a:hover { color: var(--primary-color); }
+    main {
+      padding-top: 100px;
+      padding-bottom: 60px;
+      width: 90%;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    .profile-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .rating {
+      font-size: 1.6rem;
+      color: var(--primary-color);
+    }
+    .metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .metric-item {
+      flex: 1 1 200px;
+      background-color: var(--secondary-color);
+      border-radius: 6px;
+      padding: 15px;
+      text-align: center;
+    }
+    .metric-item h3 {
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+      color: var(--text-color);
+    }
+    .metric-item p {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--primary-color);
+    }
+    .tips, .badges {
+      margin-top: 20px;
+    }
+    .tips ul {
+      list-style: disc;
+      margin-left: 20px;
+      color: var(--muted-color);
+    }
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    .badge {
+      background-color: var(--secondary-color);
+      border-radius: 50px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+    }
+    .badge i { color: var(--primary-color); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="assets/logo.png" alt="Fight Lab"></a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Meu Perfil</h1>
+    <div class="profile-card">
+      <div class="rating">
+        <span class="fa-solid fa-star"></span>
+        <span class="fa-solid fa-star"></span>
+        <span class="fa-solid fa-star"></span>
+        <span class="fa-solid fa-star"></span>
+        <span class="fa-solid fa-star-half-stroke"></span>
+        <span style="margin-left:8px; font-size:1.1rem; color: var(--muted-color);">4,8/5.0</span>
+      </div>
+      <div class="metrics">
+        <div class="metric-item">
+          <h3>Patches confeccionados</h3>
+          <p>127</p>
+        </div>
+        <div class="metric-item">
+          <h3>Tempo médio de entrega</h3>
+          <p>2,9 dias</p>
+        </div>
+        <div class="metric-item">
+          <h3>Avaliações recebidas</h3>
+          <p>98</p>
+        </div>
+      </div>
+      <div class="tips">
+        <h3>Dicas de Melhoria</h3>
+        <ul>
+          <li>Use linhas reforçadas para maior durabilidade.</li>
+          <li>Mantenha o acabamento interno limpo e sem fios soltos.</li>
+          <li>Envie fotos de progresso para o cliente acompanhar o trabalho.</li>
+        </ul>
+      </div>
+      <div class="badges">
+        <div class="badge"><i class="fa-solid fa-medal"></i> Super Costureira</div>
+        <div class="badge"><i class="fa-solid fa-truck-fast"></i> Entrega Rápida</div>
+        <div class="badge"><i class="fa-solid fa-heart"></i> Cliente Favorito</div>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

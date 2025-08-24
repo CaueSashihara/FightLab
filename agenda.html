@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agenda para Donos de Academia | Fight Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0a0a;
+      --primary-color: #b3152f;
+      --secondary-color: #111111;
+      --text-color: #f0f0f0;
+      --muted-color: #888888;
+      --card-bg: #0f0f0f;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+    }
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background-color: rgba(10,10,10,0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      z-index: 1000;
+    }
+    header .logo img { height: 50px; }
+    header nav a {
+      margin-left: 20px;
+      color: var(--text-color);
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    header nav a:hover { color: var(--primary-color); }
+    main {
+      padding-top: 100px;
+      padding-bottom: 60px;
+      width: 90%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+    form {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    label {
+      font-size: 0.9rem;
+      color: var(--muted-color);
+    }
+    input, textarea {
+      padding: 10px;
+      border-radius: 4px;
+      background-color: var(--secondary-color);
+      border: 1px solid #444444;
+      color: #ffffff;
+      font-size: 0.9rem;
+    }
+    input:focus, textarea:focus { outline: none; border-color: var(--primary-color); }
+    button {
+      padding: 12px 24px;
+      border-radius: 4px;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      font-weight: 600;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: #931223; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <a href="index.html"><img src="assets/logo.png" alt="Fight Lab"></a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
+  <main>
+    <h1>Proposta de Agenda</h1>
+    <form id="agendaForm">
+      <div>
+        <label for="subjectInput">Assunto</label>
+        <input type="text" id="subjectInput" required>
+      </div>
+      <div>
+        <label for="dateInput">Data</label>
+        <input type="date" id="dateInput" required>
+      </div>
+      <div>
+        <label for="timeInput">Hora</label>
+        <input type="time" id="timeInput" required>
+      </div>
+      <div>
+        <label for="cellInput">Celular</label>
+        <input type="tel" id="cellInput" required>
+      </div>
+      <div>
+        <label for="emailInput">Email</label>
+        <input type="email" id="emailInput" required>
+      </div>
+      <div>
+        <label for="cnpjInput">CNPJ</label>
+        <input type="text" id="cnpjInput" required>
+      </div>
+      <button type="button" id="agendaSubmitBtn">Enviar Proposta</button>
+    </form>
+  </main>
+  <script>
+    document.getElementById('agendaSubmitBtn').addEventListener('click', function() {
+      // gather information
+      const subject = document.getElementById('subjectInput').value.trim();
+      const date = document.getElementById('dateInput').value;
+      const time = document.getElementById('timeInput').value;
+      const cell = document.getElementById('cellInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const cnpj = document.getElementById('cnpjInput').value.trim();
+      if (!subject || !date || !time || !cell || !email || !cnpj) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+      // build message
+      let body = '';
+      body += 'Assunto: ' + subject + '\n';
+      body += 'Data: ' + date + '\n';
+      body += 'Hora: ' + time + '\n';
+      body += 'Celular: ' + cell + '\n';
+      body += 'Email: ' + email + '\n';
+      body += 'CNPJ: ' + cnpj + '\n';
+      body += '\nSolicito uma reunião para discutir kimono e customizações para minha academia.';
+      const recipients = 'cauesashihara@gmail.com,' + email;
+      const subjectLine = 'Proposta de agenda - Dono de academia';
+      const mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subjectLine) + '&body=' + encodeURIComponent(body);
+      window.open(mailtoLink, '_blank');
+      // open WhatsApp link to Fight Lab
+      const waLink = 'https://wa.me/5511979690880?text=' + encodeURIComponent(body);
+      window.open(waLink, '_blank');
+      alert('Proposta enviada! Aguarde o retorno.');
+    });
+  </script>
+</body>
+</html>
