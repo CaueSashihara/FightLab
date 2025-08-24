@@ -217,15 +217,22 @@
     <div class="modal-content">
       <h3>Informe suas medidas</h3>
       <div class="input-group">
+        <label for="genderSelect">Sexo</label>
+        <select id="genderSelect">
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+        </select>
+      </div>
+      <div class="input-group">
         <label for="heightInput">Altura (cm)</label>
-        <input type="number" id="heightInput" min="50" max="250" required>
+        <input type="number" id="heightInput" min="100" max="250" value="150" required>
       </div>
       <div class="input-group">
         <label for="weightInput">Peso (kg)</label>
-        <input type="number" id="weightInput" min="30" max="200" required>
+        <input type="number" id="weightInput" min="30" max="200" value="50" required>
       </div>
       <div class="input-group">
-        <label for="barraSelect">Deseja fazer barra?</label>
+        <label for="barraSelect">Deseja fazer ajustes de comprimento e barra?</label>
         <select id="barraSelect">
           <option value="nao">Não</option>
           <option value="sim">Sim</option>
@@ -241,6 +248,7 @@
           <input type="number" id="legInput" min="30" max="250">
         </div>
         <p style="font-size:0.8rem;color:#777777;">Use uma fita métrica para medir conforme indicado.</p>
+        <img src="assets/measurement_guide.webp" alt="Guia de medidas" style="max-width:100%; margin-top:10px; border-radius:4px;">
       </div>
       <button id="measureContinueBtn">Continuar</button>
     </div>
@@ -268,6 +276,34 @@
       <button id="finalizeBtn">Enviar Pedido</button>
     </div>
   </section>
+
+  <!-- Confirmation modal -->
+  <div id="confirmModal" class="modal">
+    <div class="modal-content">
+      <h3>Confirmação do Pedido</h3>
+      <p id="summaryText" style="text-align:left; font-size:0.9rem; margin-bottom:15px;"></p>
+      <div class="input-group">
+        <label for="nameInput">Nome</label>
+        <input type="text" id="nameInput" required>
+      </div>
+      <div class="input-group">
+        <label for="emailInput">Email</label>
+        <input type="email" id="emailInput" required>
+      </div>
+      <div class="input-group">
+        <label for="phoneInput">Telefone (WhatsApp)</label>
+        <input type="tel" id="phoneInput" required>
+      </div>
+      <div class="input-group">
+        <label for="contactPref">Preferência de contato</label>
+        <select id="contactPref">
+          <option value="email">Email</option>
+          <option value="whatsapp">WhatsApp</option>
+        </select>
+      </div>
+      <button id="submitOrderBtn">Confirmar Pedido</button>
+    </div>
+  </div>
   <script>
   document.addEventListener('DOMContentLoaded', function() {
     const betaModal = document.getElementById('betaModal');
@@ -282,6 +318,29 @@
     const patchUpload = document.getElementById('patchUpload');
     const patchPreview = document.getElementById('patchPreview');
     const finalizeBtn = document.getElementById('finalizeBtn');
+    // elements for final confirmation modal
+    const confirmModal = document.getElementById('confirmModal');
+    const summaryText = document.getElementById('summaryText');
+    const submitOrderBtn = document.getElementById('submitOrderBtn');
+    const nameInput = document.getElementById('nameInput');
+    const emailInput = document.getElementById('emailInput');
+    const phoneInput = document.getElementById('phoneInput');
+    const contactPref = document.getElementById('contactPref');
+    const genderSelect = document.getElementById('genderSelect');
+    // function to determine kimono size based on height and weight
+    function determineKimonoSize(height, weight) {
+      height = parseFloat(height);
+      weight = parseFloat(weight);
+      if (height < 165 && weight < 60) return 'A0';
+      if ((height >= 165 && height < 170) || (weight >= 60 && weight < 70)) return 'A1';
+      if ((height >= 170 && height < 180) || (weight >= 70 && weight < 80)) return 'A2';
+      if ((height >= 180 && height < 185) || (weight >= 80 && weight < 90)) return 'A3';
+      if ((height >= 185 && height < 195) || (weight >= 90 && weight < 100)) return 'A4';
+      if ((height >= 195 && height < 205) || (weight >= 100 && weight < 110)) return 'A5';
+      return 'A6';
+    }
+    // store recommended size
+    let kimonoSize = '';
     // show measurement fields when barra is selected
     barraSelect.addEventListener('change', function() {
       barraFields.style.display = this.value === 'sim' ? 'block' : 'none';
@@ -297,6 +356,8 @@
         alert('Por favor, informe sua altura e peso.');
         return;
       }
+      // determine suggested kimono size
+      kimonoSize = determineKimonoSize(height, weight);
       measureModal.style.display = 'none';
       customizeSection.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -323,23 +384,80 @@
       }
     });
     finalizeBtn.addEventListener('click', function() {
+      // gather data to build summary
       const height = document.getElementById('heightInput').value;
       const weight = document.getElementById('weightInput').value;
       const barraOpt = barraSelect.value;
       const arm = document.getElementById('armInput').value;
       const leg = document.getElementById('legInput').value;
       const color = colorPicker.value;
-      let message = 'Pedido de kimono FightLab:%0A';
-      message += 'Altura: ' + height + ' cm%0A';
-      message += 'Peso: ' + weight + ' kg%0A';
-      message += 'Barra: ' + (barraOpt === 'sim' ? 'Sim' : 'Não') + '%0A';
+      const gender = genderSelect.value;
+      // build summary text to show in confirmation modal
+      let summary = '';
+      summary += 'Sexo: ' + (gender === 'masculino' ? 'Masculino' : 'Feminino') + '\n';
+      summary += 'Altura: ' + height + ' cm\n';
+      summary += 'Peso: ' + weight + ' kg\n';
+      summary += 'Tamanho sugerido: ' + kimonoSize + '\n';
+      summary += 'Ajustes de comprimento/barra: ' + (barraOpt === 'sim' ? 'Sim' : 'Não') + '\n';
       if (barraOpt === 'sim') {
-        message += 'Envergadura: ' + arm + ' cm%0A';
-        message += 'Perna: ' + leg + ' cm%0A';
+        summary += 'Envergadura: ' + arm + ' cm\n';
+        summary += 'Perna: ' + leg + ' cm\n';
       }
-      message += 'Cor do kimono: ' + color;
-      const url = 'https://wa.me/5511979690880?text=' + encodeURIComponent(message);
-      window.open(url, '_blank');
+      summary += 'Cor selecionada: ' + color + '\n';
+      summary += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.';
+      summaryText.textContent = summary;
+      confirmModal.style.display = 'flex';
+    });
+
+    // handle user submission from confirmation modal
+    submitOrderBtn.addEventListener('click', function() {
+      const name = nameInput.value.trim();
+      const email = emailInput.value.trim();
+      const phone = phoneInput.value.trim();
+      const pref = contactPref.value;
+      if (!name || !email || !phone) {
+        alert('Por favor, preencha todos os campos de contato.');
+        return;
+      }
+      const heightVal = document.getElementById('heightInput').value;
+      const weightVal = document.getElementById('weightInput').value;
+      const barraOptVal = barraSelect.value;
+      const armVal = document.getElementById('armInput').value;
+      const legVal = document.getElementById('legInput').value;
+      const colorVal = colorPicker.value;
+      const genderVal = genderSelect.value;
+      let emailBody = '';
+      emailBody += 'Nome: ' + name + '\n';
+      emailBody += 'Email: ' + email + '\n';
+      emailBody += 'Telefone: ' + phone + '\n';
+      emailBody += 'Sexo: ' + (genderVal === 'masculino' ? 'Masculino' : 'Feminino') + '\n';
+      emailBody += 'Altura: ' + heightVal + ' cm\n';
+      emailBody += 'Peso: ' + weightVal + ' kg\n';
+      emailBody += 'Tamanho sugerido: ' + kimonoSize + '\n';
+      emailBody += 'Ajustes de comprimento/barra: ' + (barraOptVal === 'sim' ? 'Sim' : 'Não') + '\n';
+      if (barraOptVal === 'sim') {
+        emailBody += 'Envergadura: ' + armVal + ' cm\n';
+        emailBody += 'Perna: ' + legVal + ' cm\n';
+      }
+      emailBody += 'Cor selecionada: ' + colorVal + '\n';
+      emailBody += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.';
+      // mailto link to send to FightLab and user
+      const recipients = 'cauesashihara@gmail.com,' + email;
+      const subject = 'Pedido de kimono - FightLab Beta';
+      const mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(emailBody);
+      window.open(mailtoLink, '_blank');
+      // open WhatsApp messages if selected
+      if (pref === 'whatsapp') {
+        const userPhoneDigits = phone.replace(/\D/g, '');
+        if (userPhoneDigits.length > 0) {
+          const userWaLink = 'https://wa.me/55' + userPhoneDigits + '?text=' + encodeURIComponent(emailBody);
+          window.open(userWaLink, '_blank');
+        }
+        const ownerWaLink = 'https://wa.me/5511979690880?text=' + encodeURIComponent(emailBody);
+        window.open(ownerWaLink, '_blank');
+      }
+      confirmModal.style.display = 'none';
+      alert('Pedido enviado! Obrigado por entrar em contato.');
     });
   });
   </script>
