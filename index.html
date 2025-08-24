@@ -395,12 +395,86 @@
       max-width: 80%;
       border-radius: 8px;
     }
+
+    /* Estilo para modais de promoção/indicação */
+    .popup-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 3000;
+    }
+    .popup-modal .modal-box {
+      background-color: #111111;
+      padding: 30px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      position: relative;
+    }
+    .popup-modal .modal-box h3 {
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+      color: #ffffff;
+    }
+    .popup-modal .modal-box p {
+      font-size: 0.95rem;
+      color: #cccccc;
+      margin-bottom: 20px;
+    }
+    .popup-modal .modal-box a {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 4px;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      font-weight: 600;
+      margin-top: 10px;
+    }
+    .popup-modal .modal-box .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 1.2rem;
+      background: none;
+      border: none;
+      color: #ffffff;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <!-- Modal que exibe o vídeo de introdução ao carregar o site -->
   <div id="videoModal">
     <video id="introVideo" src="assets/intro.mp4" autoplay playsinline muted></video>
+     <!-- Botão para fechar o vídeo -->
+     <button id="videoCloseBtn" class="close-btn" style="position:absolute; top:10px; right:20px; font-size:1.5rem; background:none; border:none; color:#ffffff; cursor:pointer;">&times;</button>
+  </div>
+
+  <!-- Modal para indicação e recompensa -->
+  <div id="referModal" class="popup-modal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal('referModal')">&times;</button>
+      <h3>Indique e Ganhe</h3>
+      <p>Conhece uma costureira, academia ou fornecedor? Indique e ganhe pontos!</p>
+      <a href="costureira.html">Indicar agora</a>
+    </div>
+  </div>
+
+  <!-- Modal para cupom de desconto -->
+  <div id="discountModal" class="popup-modal">
+    <div class="modal-box">
+      <button class="close-btn" onclick="closeModal('discountModal')">&times;</button>
+      <h3>Desconto Especial</h3>
+      <p>Complete seu cadastro e garanta 5% de desconto na sua primeira compra.</p>
+      <a href="costureira.html">Completar cadastro</a>
+    </div>
   </div>
   <!-- Header -->
   <header>
@@ -496,6 +570,7 @@
             <h3>Costureiras parceiras</h3>
             <p>Conecte-se a clientes apaixonados por artes marciais e expanda sua rede como artesã especializada.</p>
             <a href="costureira.html">Meu perfil</a>
+            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
           </div>
         </div>
         <div class="persona-card">
@@ -504,6 +579,7 @@
             <h3>Donos de Academias</h3>
             <p>Equipe seu time com kimonos personalizados e crie um ambiente de treino ainda mais profissional.</p>
             <a href="agenda.html">Agendar reunião</a>
+            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
           </div>
         </div>
         <div class="persona-card">
@@ -512,6 +588,7 @@
             <h3>Fornecedores</h3>
             <p>Forneça tecidos e acessórios de qualidade para um mercado em constante crescimento.</p>
             <a href="fornecedor.html">Saiba mais</a>
+            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
           </div>
         </div>
       </div>
@@ -564,7 +641,8 @@
           <a href="https://wa.me/5511979690880" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
           <a href="#"><i class="fa-brands fa-instagram"></i></a>
           <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+          <!-- Ícone do vídeo: clique para reabrir a introdução -->
+          <a href="javascript:void(0)" onclick="openVideoModal()"><i class="fa-brands fa-youtube"></i></a>
         </div>
       </div>
     </div>
@@ -578,14 +656,53 @@
     document.addEventListener('DOMContentLoaded', function() {
       var videoModal = document.getElementById('videoModal');
       var introVideo = document.getElementById('introVideo');
-      // Mostrar modal e iniciar reprodução
-      if (videoModal && introVideo) {
+      var videoCloseBtn = document.getElementById('videoCloseBtn');
+      var referModal = document.getElementById('referModal');
+      var discountModal = document.getElementById('discountModal');
+
+      // Função para abrir o modal do vídeo
+      window.openVideoModal = function() {
         videoModal.style.display = 'flex';
-        // Quando o vídeo terminar, esconder modal
-        introVideo.addEventListener('ended', function() {
-          videoModal.style.display = 'none';
+        if (introVideo) {
+          introVideo.currentTime = 0;
+          introVideo.play();
+        }
+      };
+      // Função para fechar qualquer modal
+      window.closeModal = function(id) {
+        var el = document.getElementById(id);
+        if (el) el.style.display = 'none';
+        if (id === 'referModal') {
+          // após fechar o modal de indicação, mostrar modal de desconto
+          discountModal.style.display = 'flex';
+        }
+        if (id === 'videoModal' && introVideo) {
+          introVideo.pause();
+        }
+      };
+      window.openReferModal = function() {
+        referModal.style.display = 'flex';
+      };
+
+      // Mostrar o vídeo modal imediatamente ao carregar
+      videoModal.style.display = 'flex';
+      introVideo.play();
+      // Fechar ao terminar
+      introVideo.addEventListener('ended', function() {
+        videoModal.style.display = 'none';
+      });
+      if (videoCloseBtn) {
+        videoCloseBtn.addEventListener('click', function() {
+          closeModal('videoModal');
         });
       }
+
+      // Após 5 segundos, exibir modal de indicação
+      setTimeout(function() {
+        if (referModal) {
+          referModal.style.display = 'flex';
+        }
+      }, 5000);
     });
   </script>
 </body>
