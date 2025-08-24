@@ -71,6 +71,9 @@
       max-width: 500px;
       width: 90%;
       text-align: center;
+      /* Allow modal content to scroll if it gets taller than the viewport */
+      max-height: 80vh;
+      overflow-y: auto;
     }
     .modal-content h3 {
       margin-bottom: 20px;
@@ -225,11 +228,13 @@
       </div>
       <div class="input-group">
         <label for="heightInput">Altura (cm)</label>
-        <input type="number" id="heightInput" min="100" max="250" value="150" required>
+        <!-- Do not prefill height; placeholder guides the user until gender is escolhido -->
+        <input type="number" id="heightInput" min="100" max="250" placeholder="Sua altura" required>
       </div>
       <div class="input-group">
         <label for="weightInput">Peso (kg)</label>
-        <input type="number" id="weightInput" min="30" max="200" value="50" required>
+        <!-- Do not prefill weight; placeholder guides the user until gender is escolhido -->
+        <input type="number" id="weightInput" min="30" max="200" placeholder="Seu peso" required>
       </div>
       <div class="input-group">
         <label for="barraSelect">Deseja fazer ajustes de comprimento e barra?</label>
@@ -240,7 +245,7 @@
       </div>
       <div id="barraFields" style="display:none;">
         <div class="input-group">
-          <label for="armInput">Envergadura (cm)</label>
+          <label for="armInput">Envergadura (cm) – medida de punho a punho com os braços esticados</label>
           <input type="number" id="armInput" min="30" max="250">
         </div>
         <div class="input-group">
@@ -261,15 +266,11 @@
       <img id="kimonoImage" src="assets/kimono_white.png" alt="Kimono FightLab" style="width:100%; height:auto; display:block;">
       <!-- Overlay for selected color -->
       <div id="colorOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#ffffff; opacity:0.0; pointer-events:none;"></div>
-      <!-- Preview of uploaded patch -->
-      <img id="patchPreview" alt="Patch" style="position:absolute; top:30%; left:40%; width:20%; height:auto; display:none; pointer-events:none;">
+      <!-- Preview of uploaded patch (circular badge positioned on the left chest) -->
+      <img id="patchPreview" alt="Patch" style="position:absolute; top:28%; left:20%; width:18%; height:auto; display:none; pointer-events:none; border-radius:50%; object-fit:cover;">
     </div>
     <div class="controls">
       <h2>Personalize</h2>
-      <div class="form-group">
-        <label for="colorPicker">Cor do Kimono</label>
-        <input type="color" id="colorPicker" value="#ffffff">
-      </div>
       <div class="form-group">
         <label for="patchUpload">Patch (imagem)</label>
         <input type="file" id="patchUpload" accept="image/*">
@@ -314,7 +315,7 @@
     const measureContinueBtn = document.getElementById('measureContinueBtn');
     const barraSelect = document.getElementById('barraSelect');
     const barraFields = document.getElementById('barraFields');
-    const colorPicker = document.getElementById('colorPicker');
+    // Kimono colour customization disabled: only white kimono supported
     const colorOverlay = document.getElementById('colorOverlay');
     const patchUpload = document.getElementById('patchUpload');
     const patchPreview = document.getElementById('patchPreview');
@@ -448,16 +449,6 @@
       customizeSection.style.display = 'flex';
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
-    colorPicker.addEventListener('input', function() {
-      // Apply selected colour as an overlay on the kimono image
-      const selected = this.value;
-      if (selected.toLowerCase() === '#ffffff' || selected.toLowerCase() === '#fff' ) {
-        colorOverlay.style.opacity = '0.0';
-      } else {
-        colorOverlay.style.backgroundColor = selected;
-        colorOverlay.style.opacity = '0.4';
-      }
-    });
     patchUpload.addEventListener('change', function() {
       const file = this.files[0];
       if (file) {
@@ -476,7 +467,7 @@
       const barraOpt = barraSelect.value;
       const arm = document.getElementById('armInput').value;
       const leg = document.getElementById('legInput').value;
-      const color = colorPicker.value;
+      // Colour is fixed to white; no selection required
       const gender = genderSelect.value;
       // build summary text to show in confirmation modal
       let summary = '';
@@ -489,9 +480,9 @@
         summary += 'Envergadura: ' + arm + ' cm\n';
         summary += 'Perna: ' + leg + ' cm\n';
       }
-      summary += 'Cor selecionada: ' + color + '\n';
       summary += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.';
-      summaryText.textContent = summary;
+      // Display line breaks in summary by converting to HTML with <br>
+      summaryText.innerHTML = summary.replace(/\n/g, '<br>');
       confirmModal.style.display = 'flex';
     });
 
@@ -510,7 +501,6 @@
       const barraOptVal = barraSelect.value;
       const armVal = document.getElementById('armInput').value;
       const legVal = document.getElementById('legInput').value;
-      const colorVal = colorPicker.value;
       const genderVal = genderSelect.value;
       let emailBody = '';
       emailBody += 'Nome: ' + name + '\n';
@@ -525,7 +515,6 @@
         emailBody += 'Envergadura: ' + armVal + ' cm\n';
         emailBody += 'Perna: ' + legVal + ' cm\n';
       }
-      emailBody += 'Cor selecionada: ' + colorVal + '\n';
       emailBody += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.';
       // mailto link to send to FightLab and user
       const recipients = 'cauesashihara@gmail.com,' + email;
