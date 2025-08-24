@@ -45,7 +45,11 @@
       border-bottom: 1px solid rgba(255,255,255,0.05);
       z-index: 1000;
     }
-    header .logo img { height: 50px; }
+    header .logo img {
+      height: 50px;
+      /* inverter cores do logotipo para branco sobre fundo escuro */
+      filter: invert(1);
+    }
     header nav { display: flex; gap: 20px; }
     header nav a { font-weight: 600; font-size: 0.9rem; color: var(--text-color); }
     header nav a:hover { color: var(--primary-color); }
@@ -289,7 +293,7 @@
             </select>
           </div>
           <p style="font-size:0.75rem; color:#888;">
-            O leasing funciona com pagamentos mensais no cartão de crédito. Ao final do ano, você pode devolver o seu kimono para avaliação e receber até 20% de crédito para um novo kimono ou iniciar um novo ciclo de leasing. Caso deseje continuar com o kimono, existe uma parcela residual que pode ser convertida em um novo kimono em vez de ser paga. Se devolver o kimono para a nossa logística reversa, a peça será avaliada e, conforme suas condições, poderá ser doada. O valor de avaliação pode abater até 20% do próximo kimono ou do novo leasing.
+            Com o leasing, você paga seu kimono em parcelas mensais durante um ano. No fim do ciclo, pode devolver a peça para avaliação e receber crédito de até 20&nbsp;% para um novo modelo ou um novo contrato de leasing, ou optar por ficar com ela pagando a parcela final.
           </p>
         </div>
       <button id="finalizeBtn">Enviar Pedido</button>

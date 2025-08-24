@@ -70,6 +70,8 @@
     }
     header .logo img {
       height: 50px;
+      /* inverter cores do logotipo para branco sobre fundo escuro */
+      filter: invert(1);
     }
     header nav {
       display: flex;
@@ -430,9 +432,7 @@
       <div>
         <img src="assets/about1.png" alt="Praticante de artes marciais com kimono Fight Lab">
       </div>
-      <div>
-        <img src="assets/about2.png" alt="Atleta em kimono preto Fight Lab">
-      </div>
+        <!-- Removido o segundo retrato de homens com kimonos pretos para simplificar a seção -->
     </div>
   </section>
 
@@ -450,7 +450,7 @@
         <div class="feature-card" id="leasing">
           <i class="fa-solid fa-handshake"></i>
           <h3>Leasing</h3>
-          <p>Quer experimentar novos estilos ou precisa de um kimono temporário? Nossa opção de leasing é perfeita para você.</p>
+          <p>Alugue seu kimono por ciclos de 12&nbsp;meses, com pagamentos mensais e a possibilidade de renovar com desconto ao devolver.</p>
           <!-- Todos os CTAs de montagem levam para a página de personalização -->
           <a href="monte.html">Saiba mais</a>
         </div>
