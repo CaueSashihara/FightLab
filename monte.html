@@ -222,6 +222,7 @@
       <div class="input-group">
         <label for="genderSelect">Sexo</label>
         <select id="genderSelect">
+          <option value="">Selecione</option>
           <option value="masculino">Masculino</option>
           <option value="feminino">Feminino</option>
         </select>
@@ -267,7 +268,7 @@
       <!-- Overlay for selected color -->
       <div id="colorOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#ffffff; opacity:0.0; pointer-events:none;"></div>
       <!-- Preview of uploaded patch for o peito (circular badge positioned alongside the lapela) -->
-      <img id="patchPreview" alt="Patch Peito" style="position:absolute; top:30%; left:55%; width:15%; height:auto; display:none; pointer-events:none; border-radius:50%; object-fit:cover; mix-blend-mode:multiply; opacity:0.9;">
+      <img id="patchPreview" alt="Patch Peito" style="position:absolute; top:28%; left:45%; width:15%; height:auto; display:none; pointer-events:none; border-radius:50%; object-fit:cover; mix-blend-mode:multiply; opacity:0.9;">
     </div>
     <div class="controls">
       <h2>Personalize</h2>
@@ -275,6 +276,22 @@
         <label for="patchUpload">Patch (imagem)</label>
         <input type="file" id="patchUpload" accept="image/*">
       </div>
+        <!-- Leasing option -->
+        <div class="form-group">
+          <label><input type="checkbox" id="leasingCheckbox"> Desejo leasing</label>
+        </div>
+        <div id="leasingFields" style="display:none;">
+          <div class="form-group">
+            <label for="leasingQty">Quantidade de kimonos em leasing</label>
+            <select id="leasingQty">
+              <option value="1">1 kimono</option>
+              <option value="2">2 kimonos</option>
+            </select>
+          </div>
+          <p style="font-size:0.75rem; color:#888;">
+            O leasing funciona com pagamentos mensais no cartão de crédito. Ao final do ano, você pode devolver o seu kimono para avaliação e receber até 20% de crédito para um novo kimono ou iniciar um novo ciclo de leasing. Caso deseje continuar com o kimono, existe uma parcela residual que pode ser convertida em um novo kimono em vez de ser paga. Se devolver o kimono para a nossa logística reversa, a peça será avaliada e, conforme suas condições, poderá ser doada. O valor de avaliação pode abater até 20% do próximo kimono ou do novo leasing.
+          </p>
+        </div>
       <button id="finalizeBtn">Enviar Pedido</button>
     </div>
   </section>
@@ -319,6 +336,10 @@
     const colorOverlay = document.getElementById('colorOverlay');
     const patchUpload = document.getElementById('patchUpload');
     const patchPreview = document.getElementById('patchPreview');
+    // leasing elements
+    const leasingCheckbox = document.getElementById('leasingCheckbox');
+    const leasingFields = document.getElementById('leasingFields');
+    const leasingQty = document.getElementById('leasingQty');
     const finalizeBtn = document.getElementById('finalizeBtn');
     // elements for final confirmation modal
     const confirmModal = document.getElementById('confirmModal');
@@ -417,13 +438,17 @@
     }
     // update height and weight defaults when gender changes
     genderSelect.addEventListener('change', function() {
-      // when gender changes, set default height and weight to typical values
+      // When gender changes, set default height and weight to typical values or clear them
       if (this.value === 'masculino') {
         heightInput.value = 170;
         weightInput.value = 80;
-      } else {
+      } else if (this.value === 'feminino') {
         heightInput.value = 160;
         weightInput.value = 60;
+      } else {
+        // no selection: clear the values
+        heightInput.value = '';
+        weightInput.value = '';
       }
     });
     // store recommended size
@@ -461,6 +486,11 @@
       }
     });
 
+    // Show or hide leasing fields when the checkbox is toggled
+    leasingCheckbox.addEventListener('change', function() {
+      leasingFields.style.display = this.checked ? 'block' : 'none';
+    });
+
     finalizeBtn.addEventListener('click', function() {
       // gather data to build summary
       const height = document.getElementById('heightInput').value;
@@ -481,6 +511,8 @@
         summary += 'Envergadura: ' + arm + ' cm\n';
         summary += 'Perna: ' + leg + ' cm\n';
       }
+      // leasing info
+      summary += 'Leasing: ' + (leasingCheckbox.checked ? ('Sim (' + leasingQty.value + ' kimono(s))') : 'Não') + '\n';
       summary += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.';
       // Display line breaks in summary by converting to HTML with <br>
       summaryText.innerHTML = summary.replace(/\n/g, '<br>');

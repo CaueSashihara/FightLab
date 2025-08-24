@@ -137,6 +137,22 @@
   </header>
   <main>
     <h1>Meu Perfil</h1>
+    <!-- Cadastro/atualização -->
+    <div class="profile-card" style="margin-bottom:30px;">
+      <h2 style="font-size:1.4rem; margin-bottom:15px; color: var(--primary-color);">Cadastrar ou Atualizar Perfil</h2>
+      <div style="display:flex; flex-direction:column; gap:15px;">
+        <div>
+          <label for="addressInput">Endereço</label>
+          <input type="text" id="addressInput" placeholder="Rua, nº, bairro, cidade">
+        </div>
+        <div>
+          <label for="availabilityInput">Disponibilidade (horas por dia)</label>
+          <input type="number" id="availabilityInput" min="1" max="12" placeholder="Ex: 4">
+        </div>
+        <button style="align-self:flex-start; padding:10px 20px; background-color: var(--primary-color); color:#fff; border:none; border-radius:4px; font-weight:600; cursor:pointer;">Cadastrar</button>
+      </div>
+    </div>
+    <!-- Perfil ativo -->
     <div class="profile-card">
       <div class="rating">
         <span class="fa-solid fa-star"></span>

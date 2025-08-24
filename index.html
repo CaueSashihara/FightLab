@@ -375,22 +375,38 @@
         font-size: 1rem;
       }
     }
+
+    /* Modal de vídeo para introdução */
+    #videoModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
+    #videoModal video {
+      max-width: 80%;
+      border-radius: 8px;
+    }
   </style>
 </head>
 <body>
+  <!-- Modal que exibe o vídeo de introdução ao carregar o site -->
+  <div id="videoModal">
+    <video id="introVideo" src="assets/intro.mp4" autoplay playsinline muted></video>
+  </div>
   <!-- Header -->
   <header>
     <div class="logo">
       <a href="#"><img src="assets/logo.png" alt="Fight Lab"></a>
     </div>
-    <nav>
-      <a href="monte.html">Monte seu kimono</a>
-      <a href="#leasing">Leasing</a>
-      <a href="#equipes">Minha equipe</a>
-      <a href="#costureira">Sou costureira</a>
-      <a href="#aquecendo">Aquecendo vidas</a>
-      <a href="https://wa.me/5511979690880" target="_blank">Fale conosco</a>
-    </nav>
+    <!-- Navegação superior removida conforme solicitado; escondemos o elemento para manter o layout -->
+    <nav style="display:none;"></nav>
   </header>
 
   <!-- Hero section -->
@@ -435,7 +451,8 @@
           <i class="fa-solid fa-handshake"></i>
           <h3>Leasing</h3>
           <p>Quer experimentar novos estilos ou precisa de um kimono temporário? Nossa opção de leasing é perfeita para você.</p>
-          <a href="#contact">Saiba mais</a>
+          <!-- Todos os CTAs de montagem levam para a página de personalização -->
+          <a href="monte.html">Saiba mais</a>
         </div>
         <div class="feature-card" id="equipes">
           <i class="fa-solid fa-users"></i>
@@ -469,7 +486,8 @@
           <div class="persona-content">
             <h3>Atletas e Estudantes</h3>
             <p>Encontre o kimono perfeito para treinar e competir, combinando estilo, conforto e tecnologia.</p>
-            <a href="#experience">Descubra</a>
+            <!-- Link para a página de montagem do kimono -->
+            <a href="monte.html">Descubra</a>
           </div>
         </div>
         <div class="persona-card">
@@ -506,7 +524,7 @@
       <h2>Experiência 3D Imersiva</h2>
       <p>Nossa ferramenta de modelagem 3D permite que você visualize cada detalhe do seu kimono antes da costura. Escolha medidas, cores e adornos em tempo real e veja o resultado ganhar vida diante dos seus olhos.</p>
       <div class="cta-buttons">
-        <a href="#features" class="btn btn-primary">Começar agora</a>
+        <a href="monte.html" class="btn btn-primary">Começar agora</a>
         <a href="https://wa.me/5511979690880?text=Ol%C3%A1,+gostaria+de+personalizar+meu+kimono+Fight+Lab!" target="_blank" class="btn btn-secondary">Fale com um especialista</a>
       </div>
     </div>
@@ -533,9 +551,9 @@
         <ul>
           <!-- Quick links updated: unify personalização/monte -->
           <li><a href="monte.html">Monte seu kimono</a></li>
-          <li><a href="#leasing">Leasing</a></li>
-          <li><a href="#equipes">Minha equipe</a></li>
-          <li><a href="#costureira">Sou costureira</a></li>
+          <li><a href="monte.html">Leasing</a></li>
+          <li><a href="agenda.html">Minha equipe</a></li>
+          <li><a href="costureira.html">Sou costureira</a></li>
           <li><a href="#aquecendo">Aquecendo vidas</a></li>
         </ul>
       </div>
@@ -554,5 +572,21 @@
       <p>&copy; 2025 Fight Lab. Todos os direitos reservados.</p>
     </div>
   </footer>
+
+  <!-- Script para controlar a exibição do vídeo de introdução -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var videoModal = document.getElementById('videoModal');
+      var introVideo = document.getElementById('introVideo');
+      // Mostrar modal e iniciar reprodução
+      if (videoModal && introVideo) {
+        videoModal.style.display = 'flex';
+        // Quando o vídeo terminar, esconder modal
+        introVideo.addEventListener('ended', function() {
+          videoModal.style.display = 'none';
+        });
+      }
+    });
+  </script>
 </body>
 </html>
