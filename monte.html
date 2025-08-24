@@ -247,14 +247,13 @@
   </div>
   <!-- Customize section -->
   <section id="customizeSection" class="customize-section">
-    <div id="canvas-container">
-      <svg viewBox="0 0 200 250" id="kimono-svg">
-        <rect id="torso" x="50" y="50" width="100" height="120" fill="#ffffff" stroke="#333333" stroke-width="2"></rect>
-        <rect id="leftSleeve" x="0" y="50" width="50" height="80" fill="#ffffff" stroke="#333333" stroke-width="2"></rect>
-        <rect id="rightSleeve" x="150" y="50" width="50" height="80" fill="#ffffff" stroke="#333333" stroke-width="2"></rect>
-        <rect x="50" y="150" width="100" height="10" fill="#000000"></rect>
-      </svg>
-      <img id="patch-image" alt="Patch">
+    <div id="preview-container" style="position:relative; width:360px; max-width:90vw;">
+      <!-- Base kimono image -->
+      <img id="kimonoImage" src="assets/kimono_white.png" alt="Kimono FightLab" style="width:100%; height:auto; display:block;">
+      <!-- Overlay for selected color -->
+      <div id="colorOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#ffffff; opacity:0.0; pointer-events:none;"></div>
+      <!-- Preview of uploaded patch -->
+      <img id="patchPreview" alt="Patch" style="position:absolute; top:30%; left:40%; width:20%; height:auto; display:none; pointer-events:none;">
     </div>
     <div class="controls">
       <h2>Personalize</h2>
@@ -279,11 +278,9 @@
     const barraSelect = document.getElementById('barraSelect');
     const barraFields = document.getElementById('barraFields');
     const colorPicker = document.getElementById('colorPicker');
-    const torso = document.getElementById('torso');
-    const leftSleeve = document.getElementById('leftSleeve');
-    const rightSleeve = document.getElementById('rightSleeve');
+    const colorOverlay = document.getElementById('colorOverlay');
     const patchUpload = document.getElementById('patchUpload');
-    const patchImage = document.getElementById('patch-image');
+    const patchPreview = document.getElementById('patchPreview');
     const finalizeBtn = document.getElementById('finalizeBtn');
     // show measurement fields when barra is selected
     barraSelect.addEventListener('change', function() {
@@ -305,17 +302,22 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
     colorPicker.addEventListener('input', function() {
-      torso.setAttribute('fill', this.value);
-      leftSleeve.setAttribute('fill', this.value);
-      rightSleeve.setAttribute('fill', this.value);
+      // Apply selected colour as an overlay on the kimono image
+      const selected = this.value;
+      if (selected.toLowerCase() === '#ffffff' || selected.toLowerCase() === '#fff' ) {
+        colorOverlay.style.opacity = '0.0';
+      } else {
+        colorOverlay.style.backgroundColor = selected;
+        colorOverlay.style.opacity = '0.4';
+      }
     });
     patchUpload.addEventListener('change', function() {
       const file = this.files[0];
       if (file) {
         const reader = new FileReader();
         reader.onload = function(e) {
-          patchImage.src = e.target.result;
-          patchImage.style.display = 'block';
+          patchPreview.src = e.target.result;
+          patchPreview.style.display = 'block';
         };
         reader.readAsDataURL(file);
       }

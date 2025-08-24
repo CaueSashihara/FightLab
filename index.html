@@ -188,8 +188,9 @@
     /* Features section */
     #features .features-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 30px;
+      /* Use smaller minimum width so five cards can sit on a single row on large screens */
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
     }
     #features .feature-card {
       background-color: var(--card-bg);
@@ -385,7 +386,6 @@
     <nav>
       <a href="monte.html">Monte seu kimono</a>
       <a href="#leasing">Leasing</a>
-      <a href="#personalizacao">Personalização</a>
       <a href="#equipes">Minha equipe</a>
       <a href="#costureira">Sou costureira</a>
       <a href="#aquecendo">Aquecendo vidas</a>
@@ -398,7 +398,7 @@
     <div class="hero-content">
       <h1>Descubra o futuro dos kimonos</h1>
       <p>Unimos força, técnica e estilo em uma plataforma inovadora. Monte seu kimono perfeito, alugue e personalize com tecnologia de ponta.</p>
-      <a href="#monte" class="btn btn-primary">Monte seu kimono</a>
+      <a href="monte.html" class="btn btn-primary">Monte seu kimono</a>
       <a href="https://wa.me/5511979690880" target="_blank" class="btn btn-secondary">Fale Conosco</a>
     </div>
   </section>
@@ -428,7 +428,7 @@
         <div class="feature-card" id="monte">
           <i class="fa-solid fa-cube"></i>
           <h3>Monte seu Kimono</h3>
-          <p>Crie seu kimono sob medida com seleção de medidas, tecidos e patches personalizados, em uma experiência 3D interativa.</p>
+          <p>Monte e personalize seu kimono sob medida com seleção de medidas, tecidos, cores e patches em uma experiência 3D interativa.</p>
           <a href="monte.html">Começar</a>
         </div>
         <div class="feature-card" id="leasing">
@@ -436,12 +436,6 @@
           <h3>Leasing</h3>
           <p>Quer experimentar novos estilos ou precisa de um kimono temporário? Nossa opção de leasing é perfeita para você.</p>
           <a href="#contact">Saiba mais</a>
-        </div>
-        <div class="feature-card" id="personalizacao">
-          <i class="fa-solid fa-pen-nib"></i>
-          <h3>Personalização</h3>
-          <p>Customize detalhes exclusivos: bordados, patches e cores para contar sua história no tatame.</p>
-          <a href="#experience">Personalizar</a>
         </div>
         <div class="feature-card" id="equipes">
           <i class="fa-solid fa-users"></i>
@@ -495,7 +489,7 @@
           </div>
         </div>
         <div class="persona-card">
-          <img src="assets/persona-supplier.jpg" alt="Fornecedores de materiais">
+        <img src="assets/persona-supplier.png" alt="Fornecedores de materiais">
           <div class="persona-content">
             <h3>Fornecedores</h3>
             <p>Forneça tecidos e acessórios de qualidade para um mercado em constante crescimento.</p>
@@ -537,9 +531,9 @@
       <div>
         <h3>Links Rápidos</h3>
         <ul>
-          <li><a href="#monte">Monte seu kimono</a></li>
+          <!-- Quick links updated: unify personalização/monte -->
+          <li><a href="monte.html">Monte seu kimono</a></li>
           <li><a href="#leasing">Leasing</a></li>
-          <li><a href="#personalizacao">Personalização</a></li>
           <li><a href="#equipes">Minha equipe</a></li>
           <li><a href="#costureira">Sou costureira</a></li>
           <li><a href="#aquecendo">Aquecendo vidas</a></li>
