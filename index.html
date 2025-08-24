@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fight Lab • Força, Técnica e Estilo</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Core variables for colours and spacing */
+    :root {
+      --bg-color: #0a0a0a;
+      --primary-color: #b3152f;     /* deep red accent reminiscent of strength */
+      --secondary-color: #111111;
+      --text-color: #f0f0f0;
+      --muted-color: #888888;
+      --card-bg: #0f0f0f;
+    }
+
+    /* Reset and basic styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a {
+      color: var(--primary-color);
+      text-decoration: none;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Header and navigation */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      z-index: 1000;
+    }
+    header .logo img {
+      height: 50px;
+    }
+    header nav {
+      display: flex;
+      gap: 20px;
+    }
+    header nav a {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-color);
+      transition: color 0.3s ease;
+    }
+    header nav a:hover {
+      color: var(--primary-color);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background-color: #931223;
+    }
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+    .btn-secondary:hover {
+      background-color: var(--primary-color);
+      color: #ffffff;
+    }
+
+    /* Hero section */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #ffffff;
+      background-image: url('assets/hero-bg.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    #hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.5));
+      z-index: 0;
+    }
+    #hero .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    #hero h1 {
+      font-size: 3rem;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+    #hero p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #cccccc;
+    }
+
+    /* Generic section styling */
+    section {
+      padding: 80px 0;
+    }
+    section h2 {
+      text-align: center;
+      font-size: 2.2rem;
+      margin-bottom: 40px;
+      color: #ffffff;
+      position: relative;
+    }
+    section h2::after {
+      content: '';
+      width: 60px;
+      height: 4px;
+      background: var(--primary-color);
+      display: block;
+      margin: 10px auto 0 auto;
+    }
+
+    /* About section */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      align-items: center;
+    }
+    #about .about-text {
+      font-size: 1rem;
+      color: #cccccc;
+    }
+
+    /* Features section */
+    #features .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+    }
+    #features .feature-card {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    #features .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+    }
+    #features .feature-card i {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+    }
+    #features .feature-card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+    #features .feature-card p {
+      font-size: 0.9rem;
+      color: #cccccc;
+      margin-bottom: 20px;
+    }
+    #features .feature-card a {
+      display: inline-block;
+      padding: 10px 16px;
+      font-size: 0.85rem;
+      border-radius: 4px;
+      background-color: var(--primary-color);
+      color: #ffffff;
+      text-transform: uppercase;
+    }
+
+    /* Persona section */
+    #persona .persona-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 30px;
+    }
+    #persona .persona-card {
+      background-color: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease;
+    }
+    #persona .persona-card:hover {
+      transform: translateY(-6px);
+    }
+    #persona .persona-card img {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      object-position: center;
+    }
+    #persona .persona-card .persona-content {
+      padding: 20px;
+    }
+    #persona .persona-card h3 {
+      margin-bottom: 10px;
+      font-size: 1.3rem;
+      color: #ffffff;
+    }
+    #persona .persona-card p {
+      font-size: 0.9rem;
+      color: #cccccc;
+      margin-bottom: 15px;
+    }
+    #persona .persona-card a {
+      font-size: 0.85rem;
+      color: var(--primary-color);
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    /* 3D Experience section */
+    #experience {
+      position: relative;
+      background-image: url('assets/experience-bg.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    #experience::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.6));
+    }
+    #experience .experience-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      color: #ffffff;
+      padding: 100px 20px;
+    }
+    #experience p {
+      font-size: 1rem;
+      color: #cccccc;
+      margin-bottom: 30px;
+    }
+    #experience .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    /* Aquecendo Vidas section */
+    #aquecendo {
+      background-color: var(--secondary-color);
+      text-align: center;
+      color: #ffffff;
+    }
+    #aquecendo p {
+      color: #cccccc;
+      margin-bottom: 20px;
+    }
+    #aquecendo a.btn-primary {
+      margin-top: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0d0d0d;
+      padding: 40px 0;
+      color: #888888;
+    }
+    footer .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+    }
+    footer h3 {
+      color: #ffffff;
+      margin-bottom: 15px;
+    }
+    footer ul {
+      list-style: none;
+    }
+    footer ul li {
+      margin-bottom: 10px;
+    }
+    footer ul li a {
+      color: #888888;
+      font-size: 0.9rem;
+      transition: color 0.3s ease;
+    }
+    footer ul li a:hover {
+      color: var(--primary-color);
+    }
+    footer .social-icons {
+      display: flex;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    footer .social-icons a {
+      color: #888888;
+      font-size: 1.2rem;
+      transition: color 0.3s ease;
+    }
+    footer .social-icons a:hover {
+      color: var(--primary-color);
+    }
+    @media (max-width: 768px) {
+      header {
+        padding: 0 20px;
+      }
+      #hero h1 {
+        font-size: 2.4rem;
+      }
+      #hero p {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <div class="logo">
+      <a href="#"><img src="assets/logo.png" alt="Fight Lab"></a>
+    </div>
+    <nav>
+      <a href="#monte">Monte seu kimono</a>
+      <a href="#leasing">Leasing</a>
+      <a href="#personalizacao">Personalização</a>
+      <a href="#equipes">Minha equipe</a>
+      <a href="#costureira">Sou costureira</a>
+      <a href="#aquecendo">Aquecendo vidas</a>
+      <a href="https://wa.me/5511979690880" target="_blank">Fale conosco</a>
+    </nav>
+  </header>
+
+  <!-- Hero section -->
+  <section id="hero">
+    <div class="hero-content">
+      <h1>Descubra o futuro dos kimonos</h1>
+      <p>Unimos força, técnica e estilo em uma plataforma inovadora de personalização. Monte seu kimono perfeito, alugue, personalize e faça parte de uma comunidade que respira artes marciais.</p>
+      <a href="#monte" class="btn btn-primary">Monte seu kimono</a>
+      <a href="https://wa.me/5511979690880" target="_blank" class="btn btn-secondary">Fale Conosco</a>
+    </div>
+  </section>
+
+  <!-- About section -->
+  <section id="about">
+    <h2>Sobre a Fight Lab</h2>
+    <div class="container about-grid">
+      <div class="about-text">
+        <p>A Fight Lab nasceu para revolucionar a forma como os praticantes de artes marciais se relacionam com seus kimonos. Acreditamos que cada golpe e cada treino carregam uma história única — por isso criamos uma plataforma que permite criar, personalizar e até mesmo alugar kimonos sob medida. Nosso ecossistema conecta costureiras parceiras, donos de academias e fornecedores de materiais para oferecer soluções completas, com tecnologia de ponta e design exclusivo.</p>
+        <p>Além de atender à comunidade de atletas, queremos fomentar um impacto social positivo com o programa <strong>Aquecendo Vidas</strong>, levando equipamentos e oportunidades para quem mais precisa. Junte-se a nós nessa jornada e descubra um novo jeito de vestir a arte que você ama.</p>
+      </div>
+      <div>
+        <img src="assets/about1.png" alt="Praticante de artes marciais com kimono Fight Lab">
+      </div>
+      <div>
+        <img src="assets/about2.png" alt="Atleta em kimono preto Fight Lab">
+      </div>
+    </div>
+  </section>
+
+  <!-- Features section -->
+  <section id="features">
+    <h2>Soluções completas</h2>
+    <div class="container">
+      <div class="features-grid">
+        <div class="feature-card" id="monte">
+          <i class="fa-solid fa-cube"></i>
+          <h3>Monte seu Kimono</h3>
+          <p>Crie seu kimono sob medida com seleção de medidas, tecidos e patches personalizados, em uma experiência 3D interativa.</p>
+          <a href="#experience">Começar</a>
+        </div>
+        <div class="feature-card" id="leasing">
+          <i class="fa-solid fa-handshake"></i>
+          <h3>Leasing</h3>
+          <p>Quer experimentar novos estilos ou precisa de um kimono temporário? Nossa opção de leasing é perfeita para você.</p>
+          <a href="#contact">Saiba mais</a>
+        </div>
+        <div class="feature-card" id="personalizacao">
+          <i class="fa-solid fa-pen-nib"></i>
+          <h3>Personalização</h3>
+          <p>Customize detalhes exclusivos: bordados, patches e cores para contar sua história no tatame.</p>
+          <a href="#experience">Personalizar</a>
+        </div>
+        <div class="feature-card" id="equipes">
+          <i class="fa-solid fa-users"></i>
+          <h3>Minha equipe</h3>
+          <p>Se você é dono de academia ou coach, crie kimonos padronizados para todo o time e fortifique a identidade da sua equipe.</p>
+          <a href="#contact">Falar com a gente</a>
+        </div>
+        <div class="feature-card" id="costureira">
+          <i class="fa-solid fa-scissors"></i>
+          <h3>Sou Costureira</h3>
+          <p>Conectamos artesãs talentosas ao nosso ecossistema. Cadastre-se como parceira e receba encomendas de kimonos personalizados.</p>
+          <a href="#contact">Quero participar</a>
+        </div>
+        <div class="feature-card" id="aquecendo-cta">
+          <i class="fa-solid fa-heart"></i>
+          <h3>Aquecendo Vidas</h3>
+          <p>Participe da nossa iniciativa solidária doando kimonos e ajudando a aquecer o treino de quem mais precisa.</p>
+          <a href="#aquecendo">Contribuir</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Persona section -->
+  <section id="persona">
+    <h2>Para todos os perfis</h2>
+    <div class="container">
+      <div class="persona-grid">
+        <div class="persona-card">
+          <img src="assets/persona-praticante.jpg" alt="Praticante de artes marciais">
+          <div class="persona-content">
+            <h3>Atletas e Estudantes</h3>
+            <p>Encontre o kimono perfeito para treinar e competir, combinando estilo, conforto e tecnologia.</p>
+            <a href="#experience">Descubra</a>
+          </div>
+        </div>
+        <div class="persona-card">
+          <img src="assets/persona-costureira.jpg" alt="Costureira parceira">
+          <div class="persona-content">
+            <h3>Costureiras parceiras</h3>
+            <p>Conecte-se a clientes apaixonados por artes marciais e expanda sua rede como artesã especializada.</p>
+            <a href="#contact">Cadastre-se</a>
+          </div>
+        </div>
+        <div class="persona-card">
+          <img src="assets/persona-team.jpg" alt="Dono de academia">
+          <div class="persona-content">
+            <h3>Donos de Academias</h3>
+            <p>Equipe seu time com kimonos personalizados e crie um ambiente de treino ainda mais profissional.</p>
+            <a href="#contact">Saiba mais</a>
+          </div>
+        </div>
+        <div class="persona-card">
+          <img src="assets/persona-supplier.jpg" alt="Fornecedores de materiais">
+          <div class="persona-content">
+            <h3>Fornecedores</h3>
+            <p>Forneça tecidos e acessórios de qualidade para um mercado em constante crescimento.</p>
+            <a href="#contact">Entrar em contato</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3D Experience section -->
+  <section id="experience">
+    <div class="experience-content">
+      <h2>Experiência 3D Imersiva</h2>
+      <p>Nossa ferramenta de modelagem 3D permite que você visualize cada detalhe do seu kimono antes da costura. Escolha medidas, cores e adornos em tempo real e veja o resultado ganhar vida diante dos seus olhos.</p>
+      <div class="cta-buttons">
+        <a href="#features" class="btn btn-primary">Começar agora</a>
+        <a href="https://wa.me/5511979690880?text=Ol%C3%A1,+gostaria+de+personalizar+meu+kimono+Fight+Lab!" target="_blank" class="btn btn-secondary">Fale com um especialista</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aquecendo vidas section -->
+  <section id="aquecendo">
+    <div class="aquecendo-content">
+      <h2>Aquecendo Vidas</h2>
+      <p>O Fight Lab acredita no poder das artes marciais não apenas para fortalecer o corpo, mas também para transformar comunidades. Com o programa <strong>Aquecendo Vidas</strong>, recolhemos e distribuímos kimonos para alunos de baixa renda, proporcionando oportunidades iguais para todos. Faça parte dessa corrente de calor humano.</p>
+      <a href="https://wa.me/5511979690880?text=Quero+contribuir+com+o+projeto+Aquecendo+Vidas!" class="btn btn-primary" target="_blank">Quero ajudar</a>
+    </div>
+  </section>
+
+  <!-- Footer section -->
+  <footer id="contact">
+    <div class="container footer-grid">
+      <div>
+        <h3>Fight Lab</h3>
+        <p>Força, técnica e estilo em cada detalhe. Conectamos pessoas, talentos e tecnologia em uma plataforma única para artes marciais.</p>
+      </div>
+      <div>
+        <h3>Links Rápidos</h3>
+        <ul>
+          <li><a href="#monte">Monte seu kimono</a></li>
+          <li><a href="#leasing">Leasing</a></li>
+          <li><a href="#personalizacao">Personalização</a></li>
+          <li><a href="#equipes">Minha equipe</a></li>
+          <li><a href="#costureira">Sou costureira</a></li>
+          <li><a href="#aquecendo">Aquecendo vidas</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Contato</h3>
+        <p>Whatsapp: +55&nbsp;11&nbsp;97969-0880</p>
+        <p>Email: contato@fightlab.com.br</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+          <a href="#"><i class="fa-brands fa-youtube"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="container" style="margin-top:30px; text-align:center; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px; font-size:0.85rem;">
+      <p>&copy; 2025 Fight Lab. Todos os direitos reservados.</p>
+    </div>
+  </footer>
+</body>
+</html>
