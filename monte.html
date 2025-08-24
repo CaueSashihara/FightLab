@@ -248,7 +248,8 @@
           <input type="number" id="legInput" min="30" max="250">
         </div>
         <p style="font-size:0.8rem;color:#777777;">Use uma fita métrica para medir conforme indicado.</p>
-        <img src="assets/measurement_guide.webp" alt="Guia de medidas" style="max-width:100%; margin-top:10px; border-radius:4px;">
+        <!-- Updated measurement guide: show only the reference table (cropped) -->
+        <img src="assets/measurement_table.png" alt="Guia de tamanhos" style="max-width:100%; margin-top:10px; border-radius:4px;">
       </div>
       <button id="measureContinueBtn">Continuar</button>
     </div>
@@ -327,18 +328,103 @@
     const phoneInput = document.getElementById('phoneInput');
     const contactPref = document.getElementById('contactPref');
     const genderSelect = document.getElementById('genderSelect');
+    const heightInput = document.getElementById('heightInput');
+    const weightInput = document.getElementById('weightInput');
     // function to determine kimono size based on height and weight
     function determineKimonoSize(height, weight) {
       height = parseFloat(height);
       weight = parseFloat(weight);
-      if (height < 165 && weight < 60) return 'A0';
-      if ((height >= 165 && height < 170) || (weight >= 60 && weight < 70)) return 'A1';
-      if ((height >= 170 && height < 180) || (weight >= 70 && weight < 80)) return 'A2';
-      if ((height >= 180 && height < 185) || (weight >= 80 && weight < 90)) return 'A3';
-      if ((height >= 185 && height < 195) || (weight >= 90 && weight < 100)) return 'A4';
-      if ((height >= 195 && height < 205) || (weight >= 100 && weight < 110)) return 'A5';
-      return 'A6';
+      /*
+       * Determine kimono size based on the weight/height matrix used no Fight Lab.
+       * This logic roughly follows the size chart provided (A0–A5). It uses
+       * discrete thresholds for weight (kg) and height (cm). For values that
+       * fall between defined ranges we select the next size up. Sizes with
+       * suffix "L" on the chart are mapped to their base size (e.g. A1L -> A1).
+       */
+      if (weight <= 60) {
+        if (height <= 170) return 'A0';
+        if (height <= 175) return 'A1';
+        if (height <= 185) return 'A1';
+        return 'A2';
+      }
+      if (weight <= 65) {
+        if (height <= 170) return 'A0';
+        if (height <= 175) return 'A1';
+        if (height <= 185) return 'A1';
+        return 'A2';
+      }
+      if (weight <= 70) {
+        if (height <= 165) return 'A0';
+        if (height <= 175) return 'A1';
+        if (height <= 185) return 'A2';
+        return 'A2';
+      }
+      if (weight <= 75) {
+        if (height <= 160) return 'A0';
+        if (height <= 170) return 'A1';
+        if (height <= 185) return 'A2';
+        if (height <= 190) return 'A2';
+        return 'A3';
+      }
+      if (weight <= 80) {
+        if (height <= 170) return 'A1';
+        if (height <= 175) return 'A1';
+        if (height <= 180) return 'A2';
+        if (height <= 185) return 'A2';
+        if (height <= 190) return 'A2';
+        return 'A3';
+      }
+      if (weight <= 85) {
+        if (height <= 165) return 'A2';
+        if (height <= 170) return 'A2';
+        if (height <= 175) return 'A3';
+        if (height <= 180) return 'A2';
+        if (height <= 185) return 'A3';
+        if (height <= 190) return 'A3';
+        return 'A3';
+      }
+      if (weight <= 90) {
+        if (height <= 165) return 'A2';
+        if (height <= 170) return 'A2';
+        if (height <= 175) return 'A3';
+        if (height <= 185) return 'A3';
+        if (height <= 190) return 'A3';
+        return 'A3';
+      }
+      if (weight <= 95) {
+        if (height <= 170) return 'A3';
+        if (height <= 185) return 'A3';
+        if (height <= 190) return 'A4';
+        return 'A3';
+      }
+      if (weight <= 100) {
+        if (height <= 175) return 'A3';
+        if (height <= 185) return 'A3';
+        if (height <= 190) return 'A3';
+        if (height <= 195) return 'A4';
+        return 'A4';
+      }
+      if (weight <= 105) {
+        if (height <= 190) return 'A5';
+        return 'A4';
+      }
+      if (weight <= 110) {
+        return 'A5';
+      }
+      // above 110 kg use size A5 as a default maximum
+      return 'A5';
     }
+    // update height and weight defaults when gender changes
+    genderSelect.addEventListener('change', function() {
+      // when gender changes, set default height and weight to typical values
+      if (this.value === 'masculino') {
+        heightInput.value = 170;
+        weightInput.value = 80;
+      } else {
+        heightInput.value = 160;
+        weightInput.value = 60;
+      }
+    });
     // store recommended size
     let kimonoSize = '';
     // show measurement fields when barra is selected
