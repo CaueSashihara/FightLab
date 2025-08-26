@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fight Lab • Força, Técnica e Estilo</title>
+  <title>Fight Lab</title>
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,83 +11,54 @@
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
-    /* Core variables for colours and spacing */
     :root {
       --bg-color: #0a0a0a;
-      --primary-color: #b3152f;     /* deep red accent reminiscent of strength */
-      --secondary-color: #111111;
+      --primary-color: #b3152f;
       --text-color: #f0f0f0;
-      --muted-color: #888888;
-      --card-bg: #0f0f0f;
-    }
-
-    /* Reset and basic styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
     }
     body {
+      margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background-color: var(--bg-color);
+      background: var(--bg-color);
       color: var(--text-color);
-      line-height: 1.6;
-      overflow-x: hidden;
+      line-height: 1.5;
     }
-    a {
-      color: var(--primary-color);
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: rgba(10,10,10,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 30px;
+      z-index: 3000;
+    }
+    header nav a {
+      margin-left: 20px;
+      color: var(--text-color);
+      font-weight: 600;
+      font-size: 0.9rem;
       text-decoration: none;
     }
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
+    header nav a:hover {
+      color: var(--primary-color);
+    }
+    section {
+      padding: 100px 0;
     }
     .container {
       width: 90%;
       max-width: 1200px;
       margin: 0 auto;
     }
-
-    /* Header and navigation */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      background-color: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      z-index: 1000;
+    h2 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 40px;
     }
-    header .logo img {
-      height: 50px;
-      /* inverter cores do logotipo para branco sobre fundo escuro */
-      filter: invert(1);
-    }
-    header nav {
-      display: flex;
-      gap: 20px;
-    }
-    header nav a {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text-color);
-      transition: color 0.3s ease;
-    }
-    header nav a:hover {
-      color: var(--primary-color);
-    }
-
-    /* Buttons */
     .btn {
       display: inline-block;
       padding: 12px 24px;
@@ -95,614 +66,396 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      transition: background-color 0.3s ease, color 0.3s ease;
+      transition: all 0.3s ease;
     }
     .btn-primary {
       background-color: var(--primary-color);
-      color: #ffffff;
+      color: #fff;
     }
     .btn-primary:hover {
       background-color: #931223;
     }
     .btn-secondary {
-      background-color: transparent;
+      background: transparent;
       color: var(--primary-color);
       border: 2px solid var(--primary-color);
     }
     .btn-secondary:hover {
       background-color: var(--primary-color);
-      color: #ffffff;
+      color: #fff;
     }
-
-    /* Hero section */
     #hero {
-      position: relative;
-      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       text-align: center;
-      color: #ffffff;
-      background-image: url('assets/hero-bg.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-    #hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(0deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.5));
-      z-index: 0;
-    }
-    #hero .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 20px;
+      min-height: 100vh;
+      background: linear-gradient(180deg, #111 0%, #0a0a0a 60%);
+      padding-top: 60px;
     }
     #hero h1 {
-      font-size: 3rem;
-      line-height: 1.2;
-      margin-bottom: 20px;
+      font-size: 2.6rem;
+      margin-bottom: 15px;
     }
     #hero p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
+      font-size: 1rem;
       color: #cccccc;
+      margin-bottom: 25px;
     }
-
-    /* Generic section styling */
-    section {
-      padding: 80px 0;
+    #hero .btn {
+      margin: 0 10px;
     }
-    section h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      margin-bottom: 40px;
-      color: #ffffff;
-      position: relative;
+    /* Chat widget styling */
+    #chatWidget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      max-width: 90%;
+      font-family: 'Montserrat', sans-serif;
+      z-index: 5000;
     }
-    section h2::after {
-      content: '';
+    #chatWidget #chatToggle {
+      background-color: #25D366;
+      color: #fff;
       width: 60px;
-      height: 4px;
-      background: var(--primary-color);
-      display: block;
-      margin: 10px auto 0 auto;
-    }
-
-    /* About section */
-    #about .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
       align-items: center;
-    }
-    #about .about-text {
-      font-size: 1rem;
-      color: #cccccc;
-    }
-
-    /* Features section */
-    #features .features-grid {
-      display: grid;
-      /* Use smaller minimum width so five cards can sit on a single row on large screens */
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-    }
-    #features .feature-card {
-      background-color: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 30px 20px;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    #features .feature-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-    }
-    #features .feature-card i {
-      font-size: 2rem;
-      margin-bottom: 15px;
-      color: var(--primary-color);
-    }
-    #features .feature-card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #ffffff;
-    }
-    #features .feature-card p {
-      font-size: 0.9rem;
-      color: #cccccc;
-      margin-bottom: 20px;
-    }
-    #features .feature-card a {
-      display: inline-block;
-      padding: 10px 16px;
-      font-size: 0.85rem;
-      border-radius: 4px;
-      background-color: var(--primary-color);
-      color: #ffffff;
-      text-transform: uppercase;
-    }
-
-    /* Persona section */
-    #persona .persona-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-    }
-    #persona .persona-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease;
-    }
-    #persona .persona-card:hover {
-      transform: translateY(-6px);
-    }
-    #persona .persona-card img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      object-position: center;
-    }
-    #persona .persona-card .persona-content {
-      padding: 20px;
-    }
-    #persona .persona-card h3 {
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-      color: #ffffff;
-    }
-    #persona .persona-card p {
-      font-size: 0.9rem;
-      color: #cccccc;
-      margin-bottom: 15px;
-    }
-    #persona .persona-card a {
-      font-size: 0.85rem;
-      color: var(--primary-color);
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    /* 3D Experience section */
-    #experience {
-      position: relative;
-      background-image: url('assets/experience-bg.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-    #experience::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(0deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.6));
-    }
-    #experience .experience-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      color: #ffffff;
-      padding: 100px 20px;
-    }
-    #experience p {
-      font-size: 1rem;
-      color: #cccccc;
-      margin-bottom: 30px;
-    }
-    #experience .cta-buttons {
-      display: flex;
-      flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
+      cursor: pointer;
+      font-size: 1.8rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
     }
-
-    /* Aquecendo Vidas section */
-    #aquecendo {
-      background-color: var(--secondary-color);
-      text-align: center;
-      color: #ffffff;
+    #chatWidget #chatBody {
+      display: none;
+      flex-direction: column;
+      background: #111;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 10px;
+      color: #fff;
     }
-    #aquecendo p {
-      color: #cccccc;
-      margin-bottom: 20px;
-    }
-    #aquecendo a.btn-primary {
-      margin-top: 20px;
-    }
-
-    /* Footer */
-    footer {
-      background-color: #0d0d0d;
-      padding: 40px 0;
-      color: #888888;
-    }
-    footer .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-    }
-    footer h3 {
-      color: #ffffff;
-      margin-bottom: 15px;
-    }
-    footer ul {
-      list-style: none;
-    }
-    footer ul li {
-      margin-bottom: 10px;
-    }
-    footer ul li a {
-      color: #888888;
-      font-size: 0.9rem;
-      transition: color 0.3s ease;
-    }
-    footer ul li a:hover {
-      color: var(--primary-color);
-    }
-    footer .social-icons {
+    #chatWidget.open #chatBody {
       display: flex;
-      gap: 15px;
-      margin-top: 15px;
     }
-    footer .social-icons a {
-      color: #888888;
-      font-size: 1.2rem;
-      transition: color 0.3s ease;
+    #chatWidget.open #chatToggle {
+      display: none;
     }
-    footer .social-icons a:hover {
-      color: var(--primary-color);
-    }
-    @media (max-width: 768px) {
-      header {
-        padding: 0 20px;
-      }
-      #hero h1 {
-        font-size: 2.4rem;
-      }
-      #hero p {
-        font-size: 1rem;
-      }
-    }
-
-    /* Modal de vídeo para introdução */
-    #videoModal {
+    /* Small modals for indicate and discount */
+    .small-modal {
       display: none;
       position: fixed;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background-color: rgba(0, 0, 0, 0.9);
+      background: rgba(0,0,0,0.85);
       justify-content: center;
       align-items: center;
-      z-index: 2000;
+      z-index: 6000;
     }
-    #videoModal video {
-      max-width: 80%;
-      border-radius: 8px;
-    }
-
-    /* Estilo para modais de promoção/indicação */
-    .popup-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.85);
-      justify-content: center;
-      align-items: center;
-      z-index: 3000;
-    }
-    .popup-modal .modal-box {
-      background-color: #111111;
+    .small-modal-content {
+      background: #111;
       padding: 30px;
       border-radius: 8px;
+      max-width: 400px;
       width: 90%;
-      max-width: 420px;
+      color: #fff;
       text-align: center;
       position: relative;
     }
-    .popup-modal .modal-box h3 {
-      margin-bottom: 15px;
+    .small-modal-content h3 {
+      margin-bottom: 10px;
       font-size: 1.4rem;
-      color: #ffffff;
+      color: #fff;
     }
-    .popup-modal .modal-box p {
-      font-size: 0.95rem;
-      color: #cccccc;
-      margin-bottom: 20px;
+    .small-modal-content p {
+      color: #ccc;
+      margin-bottom: 15px;
+      font-size: 0.9rem;
     }
-    .popup-modal .modal-box a {
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 4px;
-      background-color: var(--primary-color);
-      color: #ffffff;
-      font-weight: 600;
-      margin-top: 10px;
-    }
-    .popup-modal .modal-box .close-btn {
+    .small-modal-content .close-small {
       position: absolute;
       top: 10px;
       right: 10px;
-      font-size: 1.2rem;
       background: none;
       border: none;
-      color: #ffffff;
+      color: #fff;
+      font-size: 1.4rem;
       cursor: pointer;
+    }
+    /* iframe styling */
+    iframe {
+      background: #111;
     }
   </style>
 </head>
 <body>
-  <!-- Modal que exibe o vídeo de introdução ao carregar o site -->
-  <div id="videoModal">
-    <video id="introVideo" src="assets/intro.mp4" autoplay playsinline muted></video>
-     <!-- Botão para fechar o vídeo -->
-     <button id="videoCloseBtn" class="close-btn" style="position:absolute; top:10px; right:20px; font-size:1.5rem; background:none; border:none; color:#ffffff; cursor:pointer;">&times;</button>
-  </div>
-
-  <!-- Modal para indicação e recompensa -->
-  <div id="referModal" class="popup-modal">
-    <div class="modal-box">
-      <button class="close-btn" onclick="closeModal('referModal')">&times;</button>
-      <h3>Indique e Ganhe</h3>
-      <p>Conhece uma costureira, academia ou fornecedor? Indique e ganhe pontos!</p>
-      <a href="costureira.html">Indicar agora</a>
+  <!-- Video Modal -->
+  <div id="videoModal" style="display:none; position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:1000;">
+    <div id="videoBox" style="width:80%; max-width:600px; background:#111; padding:20px; border-radius:8px; text-align:center;">
+      <p style="color:#fff; margin-bottom:15px;">Fight Lab apresenta</p>
+      <video id="introVideo" src="" controls style="width:100%; height:auto;"></video>
+      <button id="closeVideo" style="margin-top:10px; padding:8px 16px; background:#b3152f; color:#fff; border:none; border-radius:4px; cursor:pointer;">Fechar</button>
     </div>
   </div>
 
-  <!-- Modal para cupom de desconto -->
-  <div id="discountModal" class="popup-modal">
-    <div class="modal-box">
-      <button class="close-btn" onclick="closeModal('discountModal')">&times;</button>
-      <h3>Desconto Especial</h3>
-      <p>Complete seu cadastro e garanta 5% de desconto na sua primeira compra.</p>
-      <a href="costureira.html">Completar cadastro</a>
-    </div>
-  </div>
-  <!-- Header -->
   <header>
     <div class="logo">
-      <a href="#"><img src="assets/logo.png" alt="Fight Lab"></a>
+      <a href="#" style="color:var(--primary-color); font-weight:800; font-size:1.6rem; text-decoration:none;">Fight Lab</a>
     </div>
-    <!-- Navegação superior removida conforme solicitado; escondemos o elemento para manter o layout -->
-    <nav style="display:none;"></nav>
+    <nav>
+      <a href="#customize">Monte seu Kimono</a>
+      <a href="#leasing">Leasing</a>
+      <a href="#costureira">Costureira</a>
+      <a href="#academia">Academias</a>
+      <a href="#fornecedor">Fornecedores</a>
+      <a href="#aquecendo">Aquecendo</a>
+    </nav>
   </header>
 
-  <!-- Hero section -->
   <section id="hero">
-    <div class="hero-content">
+    <div class="container" style="text-align:center;">
       <h1>Descubra o futuro dos kimonos</h1>
-      <p>Unimos força, técnica e estilo em uma plataforma inovadora. Monte seu kimono perfeito, alugue e personalize com tecnologia de ponta.</p>
-      <a href="monte.html" class="btn btn-primary">Monte seu kimono</a>
-      <a href="https://wa.me/5511979690880" target="_blank" class="btn btn-secondary">Fale Conosco</a>
+      <p>Monte, alugue e personalize seu kimono sob medida com tecnologia de ponta.</p>
+      <a href="#customize" class="btn btn-primary">Monte seu Kimono</a>
+      <a href="#leasing" class="btn btn-secondary">Simular leasing</a>
     </div>
   </section>
 
-  <!-- About section -->
-  <section id="about">
-    <h2>Sobre a Fight Lab</h2>
-    <div class="container about-grid">
-      <div class="about-text">
-        <p>Revolucionamos a forma como os praticantes de artes marciais se relacionam com seus kimonos. Acreditamos que cada golpe conta uma história — por isso criamos uma plataforma onde você pode criar, alugar e personalizar kimonos sob medida. Conectamos costureiras, academias e fornecedores em um ecossistema completo.</p>
-        <p>Também temos um compromisso social: o programa <strong>Aquecendo Vidas</strong> distribui kimonos em bom estado e recondiciona peças antigas em cobertores para pessoas em situação de rua e animais de ONGs. Junte-se a nós nessa jornada.</p>
-      </div>
-      <div>
-        <img src="assets/about1.png" alt="Praticante de artes marciais com kimono Fight Lab">
-      </div>
-        <!-- Removido o segundo retrato de homens com kimonos pretos para simplificar a seção -->
-    </div>
-  </section>
-
-  <!-- Features section -->
-  <section id="features">
-    <h2>Soluções completas</h2>
+  <section id="customize">
+    <h2>Monte seu Kimono</h2>
     <div class="container">
-      <div class="features-grid">
-        <div class="feature-card" id="monte">
-          <i class="fa-solid fa-cube"></i>
-          <h3>Monte seu Kimono</h3>
-          <p>Monte e personalize seu kimono sob medida com seleção de medidas, tecidos, cores e patches em uma experiência 3D interativa.</p>
-          <a href="monte.html">Começar</a>
-        </div>
-        <div class="feature-card" id="leasing">
-          <i class="fa-solid fa-handshake"></i>
-          <h3>Leasing</h3>
-          <p>Alugue seu kimono por ciclos de 12&nbsp;meses, com pagamentos mensais e a possibilidade de renovar com desconto ao devolver.</p>
-          <!-- Todos os CTAs de montagem levam para a página de personalização -->
-          <a href="monte.html">Saiba mais</a>
-        </div>
-        <div class="feature-card" id="equipes">
-          <i class="fa-solid fa-users"></i>
-          <h3>Minha equipe</h3>
-          <p>Se você é dono de academia ou coach, crie kimonos padronizados para todo o time e fortifique a identidade da sua equipe.</p>
-          <a href="agenda.html">Falar com a gente</a>
-        </div>
-        <div class="feature-card" id="costureira">
-          <i class="fa-solid fa-scissors"></i>
-          <h3>Sou Costureira</h3>
-          <p>Conectamos artesãs talentosas ao nosso ecossistema. Cadastre-se como parceira e receba encomendas de kimonos personalizados.</p>
-          <a href="costureira.html">Quero participar</a>
-        </div>
-        <div class="feature-card" id="aquecendo-cta">
-          <i class="fa-solid fa-heart"></i>
-          <h3>Aquecendo Vidas</h3>
-          <p>Participe da nossa iniciativa solidária doando kimonos e ajudando a aquecer o treino de quem mais precisa.</p>
-          <a href="#aquecendo">Contribuir</a>
+      <div class="customize-wrapper" style="display:flex; flex-direction:column; align-items:center;">
+        <iframe src="monte.html" title="Monte seu Kimono" style="width:100%; min-height:900px; border:none;"></iframe>
+        <div style="margin-top:20px; text-align:center;">
+          <img src="assets/ibjjf.png" alt="Regras IBJJF" style="max-width:300px; width:80%; display:block; margin:0 auto; border-radius:4px;">
+          <p style="font-size:0.8rem; color:#888; margin-top:10px;">Se for competidor, lembre-se das regras da IBJJF ao posicionar seu patch.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Persona section -->
-  <section id="persona">
-    <h2>Para todos os perfis</h2>
+  <section id="leasing">
+    <h2>Leasing</h2>
+    <div class="container" style="max-width:700px; margin:0 auto; text-align:center;">
+      <p style="color:#ccc; font-size:1rem; margin-bottom:15px;">
+        Pague seu kimono em parcelas mensais durante 12&nbsp;meses. Valor aproximado: <strong>R$&nbsp;1.200</strong> por kimono. No primeiro mês, você pode pagar apenas <strong>70&nbsp;%</strong> do valor; o saldo restante vira crédito para seu próximo kimono.
+      </p>
+      <p style="color:#888; font-size:0.9rem; margin-bottom:20px;">
+        Ao final do ciclo, você pode devolver o kimono e obter crédito para um modelo novo ou ficar com a peça pagando o saldo residual.
+      </p>
+      <a href="#customize" class="btn btn-primary">Escolher meu Kimono</a>
+    </div>
+  </section>
+
+  <section id="costureira">
+    <h2>Costureiras</h2>
     <div class="container">
-      <div class="persona-grid">
-        <div class="persona-card">
-          <img src="assets/persona-praticante.jpg" alt="Praticante de artes marciais">
-          <div class="persona-content">
-            <h3>Atletas e Estudantes</h3>
-            <p>Encontre o kimono perfeito para treinar e competir, combinando estilo, conforto e tecnologia.</p>
-            <!-- Link para a página de montagem do kimono -->
-            <a href="monte.html">Descubra</a>
-          </div>
-        </div>
-        <div class="persona-card">
-          <img src="assets/persona-costureira.jpg" alt="Costureira parceira">
-          <div class="persona-content">
-            <h3>Costureiras parceiras</h3>
-            <p>Conecte-se a clientes apaixonados por artes marciais e expanda sua rede como artesã especializada.</p>
-            <a href="costureira.html">Meu perfil</a>
-            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
-          </div>
-        </div>
-        <div class="persona-card">
-          <img src="assets/persona-team.jpg" alt="Dono de academia">
-          <div class="persona-content">
-            <h3>Donos de Academias</h3>
-            <p>Equipe seu time com kimonos personalizados e crie um ambiente de treino ainda mais profissional.</p>
-            <a href="agenda.html">Agendar reunião</a>
-            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
-          </div>
-        </div>
-        <div class="persona-card">
-        <img src="assets/persona-supplier.png" alt="Fornecedores de materiais">
-          <div class="persona-content">
-            <h3>Fornecedores</h3>
-            <p>Forneça tecidos e acessórios de qualidade para um mercado em constante crescimento.</p>
-            <a href="fornecedor.html">Saiba mais</a>
-            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
-          </div>
-        </div>
-      </div>
+      <p style="max-width:800px; margin:0 auto; color:#ccc; text-align:center; margin-bottom:20px;">Conectamos artesãs talentosas ao nosso ecossistema. Cadastre-se como parceira, receba encomendas de kimonos personalizados e faça parte da comunidade Fight Lab.</p>
+      <iframe src="costureira.html" title="Perfil de Costureira" style="width:100%; min-height:800px; border:none;"></iframe>
     </div>
   </section>
 
-  <!-- 3D Experience section -->
-  <section id="experience">
-    <div class="experience-content">
-      <h2>Experiência 3D Imersiva</h2>
-      <p>Nossa ferramenta de modelagem 3D permite que você visualize cada detalhe do seu kimono antes da costura. Escolha medidas, cores e adornos em tempo real e veja o resultado ganhar vida diante dos seus olhos.</p>
-      <div class="cta-buttons">
-        <a href="monte.html" class="btn btn-primary">Começar agora</a>
-        <a href="https://wa.me/5511979690880?text=Ol%C3%A1,+gostaria+de+personalizar+meu+kimono+Fight+Lab!" target="_blank" class="btn btn-secondary">Fale com um especialista</a>
-      </div>
+  <section id="academia">
+    <h2>Academias</h2>
+    <div class="container">
+      <p style="max-width:700px; margin:0 auto; color:#ccc; text-align:center; margin-bottom:20px;">Padronize os kimonos da sua equipe e fortaleça a identidade da sua academia. Solicite uma reunião para discutir medidas, cores e opções de leasing em grupo.</p>
+      <iframe src="agenda.html" title="Agenda Academias" style="width:100%; min-height:700px; border:none;"></iframe>
     </div>
   </section>
 
-  <!-- Aquecendo vidas section -->
+  <section id="fornecedor">
+    <h2>Fornecedores</h2>
+    <div class="container">
+      <p style="max-width:700px; margin:0 auto; color:#ccc; text-align:center; margin-bottom:20px;">Seja nosso parceiro e forneça tecidos, fios, patches e acessórios de alta qualidade. Junte-se ao nosso ecossistema inovador.</p>
+      <iframe src="fornecedor.html" title="Portal do Fornecedor" style="width:100%; min-height:600px; border:none;"></iframe>
+    </div>
+  </section>
+
   <section id="aquecendo">
-    <div class="aquecendo-content">
-      <h2>Aquecendo Vidas</h2>
-      <p>O Fight Lab acredita no poder das artes marciais para fortalecer o corpo e transformar comunidades. No programa <strong>Aquecendo Vidas</strong> recolhemos kimonos em boas condições para doar e transformamos peças antigas em cobertores, beneficiando pessoas em situação de rua e animais de ONGs. Participe dessa corrente de calor humano.</p>
-      <a href="https://wa.me/5511979690880?text=Quero+contribuir+com+o+projeto+Aquecendo+Vidas!" class="btn btn-primary" target="_blank">Quero ajudar</a>
+    <h2>Aquecendo Vidas</h2>
+    <div class="container" style="max-width:700px; margin:0 auto; text-align:center;">
+      <p style="color:#ccc; margin-bottom:20px;">
+        A Fight Lab acredita no poder das artes marciais para transformar comunidades. Recolhemos kimonos em boas condições para doação e transformamos peças antigas em cobertores para pessoas em situação de rua e animais de ONGs.
+      </p>
+      <a href="https://wa.me/5511979690880?text=Quero+contribuir+com+o+projeto+Aquecendo+Vidas!" target="_blank" class="btn btn-primary">Quero ajudar</a>
     </div>
   </section>
 
-  <!-- Footer section -->
-  <footer id="contact">
-    <div class="container footer-grid">
-      <div>
-        <h3>Fight Lab</h3>
-        <p>Força, técnica e estilo em cada detalhe. Conectamos pessoas, talentos e tecnologia em uma plataforma única para artes marciais.</p>
+  <footer id="contact" style="background:#0d0d0d; padding:40px 0; color:#888888;">
+    <div class="container" style="display:flex; flex-wrap:wrap; gap:40px; justify-content:space-between;">
+      <div style="flex:1 1 200px;">
+        <h3 style="color:#fff; margin-bottom:10px;">Fight Lab</h3>
+        <p style="color:#888;">Força, técnica e estilo em cada detalhe. Conectamos pessoas, talentos e tecnologia em uma plataforma única para artes marciais.</p>
       </div>
-      <div>
-        <h3>Links Rápidos</h3>
-        <ul>
-          <!-- Quick links updated: unify personalização/monte -->
-          <li><a href="monte.html">Monte seu kimono</a></li>
-          <li><a href="monte.html">Leasing</a></li>
-          <li><a href="agenda.html">Minha equipe</a></li>
-          <li><a href="costureira.html">Sou costureira</a></li>
-          <li><a href="#aquecendo">Aquecendo vidas</a></li>
+      <div style="flex:1 1 200px;">
+        <h3 style="color:#fff; margin-bottom:10px;">Navegação</h3>
+        <ul style="list-style:none; color:#888; font-size:0.9rem; padding-left:0;">
+          <li><a href="#customize" style="color:#888; text-decoration:none;">Monte seu Kimono</a></li>
+          <li><a href="#leasing" style="color:#888; text-decoration:none;">Leasing</a></li>
+          <li><a href="#costureira" style="color:#888; text-decoration:none;">Costureira</a></li>
+          <li><a href="#academia" style="color:#888; text-decoration:none;">Academia</a></li>
+          <li><a href="#fornecedor" style="color:#888; text-decoration:none;">Fornecedor</a></li>
+          <li><a href="#aquecendo" style="color:#888; text-decoration:none;">Aquecendo Vidas</a></li>
         </ul>
       </div>
-      <div>
-        <h3>Contato</h3>
-        <p>Email: <a href="mailto:cauesashihara@gmail.com">fightlab_br</a></p>
-        <div class="social-icons">
-          <a href="https://wa.me/5511979690880" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <!-- Ícone do vídeo: clique para reabrir a introdução -->
-          <a href="javascript:void(0)" onclick="openVideoModal()"><i class="fa-brands fa-youtube"></i></a>
+      <div style="flex:1 1 200px;">
+        <h3 style="color:#fff; margin-bottom:10px;">Contato</h3>
+        <p style="color:#888;">Email: <a href="mailto:cauesashihara@gmail.com" style="color:var(--primary-color); text-decoration:none;">fightlab_br</a></p>
+        <div style="display:flex; gap:15px; margin-top:10px;">
+          <a href="https://wa.me/5511979690880" target="_blank" style="color:#888; font-size:1.3rem;"><i class="fa-brands fa-whatsapp"></i></a>
+          <a href="#" style="color:#888; font-size:1.3rem;"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" style="color:#888; font-size:1.3rem;"><i class="fa-brands fa-facebook-f"></i></a>
         </div>
       </div>
     </div>
-    <div class="container" style="margin-top:30px; text-align:center; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px; font-size:0.85rem;">
-      <p>&copy; 2025 Fight Lab. Todos os direitos reservados.</p>
+    <div style="text-align:center; margin-top:30px; border-top:1px solid rgba(255,255,255,0.05); padding-top:15px; color:#666; font-size:0.8rem;">
+      &copy; 2025 Fight Lab. Todos os direitos reservados.
     </div>
   </footer>
 
-  <!-- Script para controlar a exibição do vídeo de introdução -->
+  <!-- Chat Widget -->
+  <div id="chatWidget">
+    <div id="chatToggle"><i class="fa-brands fa-whatsapp"></i></div>
+    <div id="chatBody">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <strong>Contato Rápido</strong>
+        <button id="chatCloseBtn" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;">&times;</button>
+      </div>
+      <div style="margin-top:10px;">
+        <label for="personaSelect" style="font-size:0.8rem; color:#ccc;">Quem é você?</label>
+        <select id="personaSelect" style="width:100%; padding:6px; background:#222;border:1px solid #444;border-radius:4px;color:#fff;">
+          <option value="">Selecione...</option>
+          <option value="Atleta">Atleta/Estudante</option>
+          <option value="Costureira">Costureira</option>
+          <option value="Academia">Academia</option>
+          <option value="Fornecedor">Fornecedor</option>
+          <option value="ONG">ONG</option>
+        </select>
+      </div>
+      <div style="margin-top:8px;">
+        <label for="chatName" style="font-size:0.8rem; color:#ccc;">Nome</label>
+        <input type="text" id="chatName" style="width:100%; padding:6px; background:#222;border:1px solid #444;border-radius:4px;color:#fff;">
+      </div>
+      <div style="margin-top:8px;">
+        <label for="chatPhone" style="font-size:0.8rem; color:#ccc;">WhatsApp</label>
+        <input type="tel" id="chatPhone" placeholder="(xx) xxxxx-xxxx" style="width:100%; padding:6px; background:#222;border:1px solid #444;border-radius:4px;color:#fff;">
+      </div>
+      <button id="chatSendBtn" style="margin-top:10px; width:100%; padding:8px; background:var(--primary-color);color:#fff;border:none;border-radius:4px;cursor:pointer;">Enviar</button>
+      <div style="display:flex; justify-content:space-around; margin-top:10px;">
+        <button id="referBtn" style="background:none;border:none;color:var(--primary-color);cursor:pointer;font-size:0.8rem; text-decoration:underline;">Indique e Ganhe</button>
+        <button id="discountBtn" style="background:none;border:none;color:var(--primary-color);cursor:pointer;font-size:0.8rem; text-decoration:underline;">Cupom de Desconto</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop-ups -->
+  <div id="referModal" class="small-modal">
+    <div class="small-modal-content">
+      <button class="close-small" data-target="referModal">&times;</button>
+      <h3>Indique e Ganhe</h3>
+      <p>Conhece uma costureira, academia ou fornecedor? Indique e ganhe pontos!</p>
+      <a href="#costureira" class="btn btn-primary" style="display:inline-block;margin-top:10px;">Indicar agora</a>
+      <button class="back-btn" data-target="referModal" style="display:block;margin-top:15px;background:none;border:none;color:var(--primary-color);text-decoration:underline;">Voltar</button>
+    </div>
+  </div>
+
+  <div id="discountModal" class="small-modal">
+    <div class="small-modal-content">
+      <button class="close-small" data-target="discountModal">&times;</button>
+      <h3>Desconto Especial</h3>
+      <p>Complete seu cadastro e garanta 5% de desconto na sua primeira compra.</p>
+      <a href="#costureira" class="btn btn-primary" style="display:inline-block;margin-top:10px;">Completar cadastro</a>
+      <button class="back-btn" data-target="discountModal" style="display:block;margin-top:15px;background:none;border:none;color:var(--primary-color);text-decoration:underline;">Voltar</button>
+    </div>
+  </div>
+
   <script>
+    // Video modal logic
     document.addEventListener('DOMContentLoaded', function() {
       var videoModal = document.getElementById('videoModal');
-      var introVideo = document.getElementById('introVideo');
-      var videoCloseBtn = document.getElementById('videoCloseBtn');
-      var referModal = document.getElementById('referModal');
-      var discountModal = document.getElementById('discountModal');
-
-      // Função para abrir o modal do vídeo
-      window.openVideoModal = function() {
+      var closeVideo = document.getElementById('closeVideo');
+      if (!localStorage.getItem('introShown')) {
         videoModal.style.display = 'flex';
-        if (introVideo) {
-          introVideo.currentTime = 0;
-          introVideo.play();
-        }
-      };
-      // Função para fechar qualquer modal
-      window.closeModal = function(id) {
-        var el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-        if (id === 'referModal') {
-          // após fechar o modal de indicação, mostrar modal de desconto
-          discountModal.style.display = 'flex';
-        }
-        if (id === 'videoModal' && introVideo) {
-          introVideo.pause();
-        }
-      };
-      window.openReferModal = function() {
-        referModal.style.display = 'flex';
-      };
-
-      // Mostrar o vídeo modal imediatamente ao carregar
-      videoModal.style.display = 'flex';
-      introVideo.play();
-      // Fechar ao terminar
-      introVideo.addEventListener('ended', function() {
-        videoModal.style.display = 'none';
-      });
-      if (videoCloseBtn) {
-        videoCloseBtn.addEventListener('click', function() {
-          closeModal('videoModal');
-        });
       }
-
-      // Após 5 segundos, exibir modal de indicação
-      setTimeout(function() {
-        if (referModal) {
-          referModal.style.display = 'flex';
-        }
-      }, 5000);
+      function closeIntro() {
+        videoModal.style.display = 'none';
+        localStorage.setItem('introShown','true');
+      }
+      if (closeVideo) {
+        closeVideo.addEventListener('click', closeIntro);
+      }
+    });
+    // Chat widget behaviour
+    var chatWidget = document.getElementById('chatWidget');
+    var chatToggle = document.getElementById('chatToggle');
+    var chatCloseBtn = document.getElementById('chatCloseBtn');
+    chatToggle.addEventListener('click', function() {
+      chatWidget.classList.toggle('open');
+    });
+    chatCloseBtn.addEventListener('click', function() {
+      chatWidget.classList.remove('open');
+    });
+    document.getElementById('chatSendBtn').addEventListener('click', function() {
+      var persona = document.getElementById('personaSelect').value;
+      var name = document.getElementById('chatName').value.trim();
+      var phone = document.getElementById('chatPhone').value.trim();
+      if (!persona || !name || !phone) {
+        alert('Por favor, preencha todos os campos.');
+        return;
+      }
+      var phoneDigits = phone.replace(/\D/g,'');
+      var message = '';
+      switch(persona) {
+        case 'Atleta':
+          message = 'Olá! Sou ' + name + ', atleta/estudante. Gostaria de personalizar meu kimono.';
+          break;
+        case 'Costureira':
+          message = 'Olá! Sou ' + name + ', costureira. Gostaria de ser parceira da Fight Lab.';
+          break;
+        case 'Academia':
+          message = 'Olá! Sou ' + name + ', representante de academia. Gostaria de padronizar os kimonos da minha equipe.';
+          break;
+        case 'Fornecedor':
+          message = 'Olá! Sou ' + name + ', fornecedor. Quero fornecer materiais para a Fight Lab.';
+          break;
+        case 'ONG':
+          message = 'Olá! Sou ' + name + ', represento uma ONG. Gostaria de conversar sobre a iniciativa Aquecendo Vidas.';
+          break;
+        default:
+          message = 'Olá! Sou ' + name + '.';
+      }
+      var url = 'https://wa.me/55' + phoneDigits + '?text=' + encodeURIComponent(message);
+      window.open(url, '_blank');
+    });
+    // Pop-up controls
+    function openSmallModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+    function closeSmallModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    document.getElementById('referBtn').addEventListener('click', function() {
+      openSmallModal('referModal');
+    });
+    document.getElementById('discountBtn').addEventListener('click', function() {
+      openSmallModal('discountModal');
+    });
+    document.querySelectorAll('.close-small').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = this.getAttribute('data-target');
+        closeSmallModal(target);
+      });
+    });
+    document.querySelectorAll('.back-btn').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var target = this.getAttribute('data-target');
+        closeSmallModal(target);
+      });
     });
   </script>
 </body>
