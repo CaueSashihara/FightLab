@@ -23,8 +23,7 @@
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
 
-  <!-- Biblioteca html2canvas para capturar screenshots -->
-  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <!-- Biblioteca html2canvas removida: implementamos captura de imagem diretamente via canvas -->
   <style>
     :root {
       --bg-color: #0a0a0a;
@@ -614,6 +613,63 @@
       confirmModal.style.display = 'flex';
     });
 
+    // === Captura de imagem do preview ===
+    function capturePreviewImage() {
+      return new Promise(function(resolve) {
+        const previewEl = document.getElementById('preview-container');
+        const kimonoImg = document.getElementById('kimonoImage');
+        const patchImgEl = document.getElementById('patchPreview');
+        if (!previewEl || !kimonoImg) {
+          resolve(null);
+          return;
+        }
+        const width = previewEl.clientWidth;
+        const height = previewEl.clientHeight;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        // load base kimono image
+        const baseImg = new Image();
+        baseImg.crossOrigin = 'anonymous';
+        baseImg.src = kimonoImg.src;
+        baseImg.onload = function() {
+          ctx.drawImage(baseImg, 0, 0, width, height);
+          // draw patch if visible
+          function drawPatchAndResolve() {
+            const dataUrl = canvas.toDataURL('image/png');
+            resolve(dataUrl);
+          }
+          if (patchImgEl && patchImgEl.style.display !== 'none' && patchImgEl.src) {
+            const patch = new Image();
+            patch.crossOrigin = 'anonymous';
+            patch.src = patchImgEl.src;
+            patch.onload = function() {
+              // parse percentage positions
+              let leftPercent = parseFloat(patchImgEl.style.left);
+              let topPercent = parseFloat(patchImgEl.style.top);
+              if (isNaN(leftPercent)) leftPercent = 0;
+              if (isNaN(topPercent)) topPercent = 0;
+              const x = (leftPercent / 100) * width;
+              const y = (topPercent / 100) * height;
+              const pw = patchImgEl.offsetWidth;
+              const ph = patchImgEl.offsetHeight;
+              ctx.drawImage(patch, x, y, pw, ph);
+              drawPatchAndResolve();
+            };
+            patch.onerror = function() {
+              drawPatchAndResolve();
+            };
+          } else {
+            drawPatchAndResolve();
+          }
+        };
+        baseImg.onerror = function() {
+          resolve(null);
+        };
+      });
+    }
+
     // handle user submission from confirmation modal
     submitOrderBtn.addEventListener('click', function() {
       const name = nameInput.value.trim();
@@ -624,16 +680,9 @@
         alert('Por favor, preencha todos os campos de contato.');
         return;
       }
-      // gere o número de pedido
       const orderNumber = generateOrderNumber();
-      // capture o preview do kimono como imagem usando html2canvas
-      const previewEl = document.getElementById('preview-container');
-      if (!previewEl) {
-        alert('Não foi possível capturar a imagem do kimono.');
-        return;
-      }
-      html2canvas(previewEl).then(function(canvas) {
-        const dataUrl = canvas.toDataURL('image/png');
+      // captura a imagem do preview
+      capturePreviewImage().then(function(dataUrl) {
         const heightVal = document.getElementById('heightInput').value;
         const weightVal = document.getElementById('weightInput').value;
         const barraOptVal = barraSelect.value;
@@ -655,18 +704,20 @@
           bodyText += 'Perna: ' + legVal + ' cm\n';
         }
         bodyText += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.\n\n';
-        // anexa a imagem do kimono como link embutido (data URI)
-        bodyText += 'Imagem do kimono (cole este link no navegador para visualizar):\n' + dataUrl + '\n';
-        // prepara e envia email
+        if (dataUrl) {
+          bodyText += 'Imagem do kimono (cole este link no navegador para visualizar):\n' + dataUrl + '\n';
+        } else {
+          bodyText += 'Imagem do kimono: não foi possível capturar\n';
+        }
         const recipients = 'cauesashihara@gmail.com,' + email;
         const subject = 'Pedido Fight Lab ' + orderNumber;
         const mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyText);
         window.open(mailtoLink, '_blank');
-        // envia mensagem via WhatsApp se esta for a preferência
+        // Envie via WhatsApp apenas se esta for a preferência e link disponível
         if (pref === 'whatsapp') {
           const userPhoneDigits = phone.replace(/\D/g, '');
-          const waBody = bodyText.replace(/\n/g, '%0A');
           if (userPhoneDigits.length > 0) {
+            const waBody = bodyText.replace(/\n/g, '%0A');
             const userWaLink = 'https://wa.me/55' + userPhoneDigits + '?text=' + encodeURIComponent('Pedido ' + orderNumber + '\n' + bodyText);
             window.open(userWaLink, '_blank');
           }
