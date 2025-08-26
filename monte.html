@@ -10,6 +10,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+  <!-- Hotjar Tracking Code for https://cauesashihara.github.io/FightLab/ -->
+  <script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:6502973,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  </script>
   <style>
     :root {
       --bg-color: #0a0a0a;
@@ -272,13 +284,15 @@
       <!-- Overlay for selected color -->
       <div id="colorOverlay" style="position:absolute; top:0; left:0; width:100%; height:100%; background:#ffffff; opacity:0.0; pointer-events:none;"></div>
       <!-- Preview of uploaded patch for o peito (circular badge positioned alongside the lapela) -->
-      <img id="patchPreview" alt="Patch Peito" style="position:absolute; top:28%; left:45%; width:15%; height:auto; display:none; pointer-events:none; border-radius:50%; object-fit:cover; mix-blend-mode:multiply; opacity:0.9;">
+      <img id="patchPreview" alt="Patch Peito" style="position:absolute; top:28%; left:45%; width:13.5%; height:auto; display:none; pointer-events:auto; cursor:grab; border-radius:50%; object-fit:cover; mix-blend-mode:multiply; opacity:0.9;">
     </div>
     <div class="controls">
       <h2>Personalize</h2>
       <div class="form-group">
         <label for="patchUpload">Patch (imagem)</label>
         <input type="file" id="patchUpload" accept="image/*">
+        <!-- Botão para abrir dicas de posicionamento dos patches segundo IBJJF -->
+        <button type="button" id="ibjjfTipBtn" style="margin-top:8px; font-size:0.8rem; background:none; border:none; color:var(--primary-color); text-decoration:underline; cursor:pointer;">Dicas de posicionamento (IBJJF)</button>
       </div>
         <!-- Leasing option -->
         <div class="form-group">
@@ -325,6 +339,16 @@
         </select>
       </div>
       <button id="submitOrderBtn">Confirmar Pedido</button>
+    </div>
+  </div>
+
+  <!-- Modal com dicas de posicionamento de patches da IBJJF -->
+  <div id="ibjjfModal" class="modal">
+    <div class="modal-content">
+      <h3>Dicas de posicionamento de patches</h3>
+      <p style="color:#cccccc; font-size:0.9rem;">Lembre-se de posicionar o patch apenas nas áreas permitidas pela IBJJF (International Brazilian Jiu‑Jitsu Federation). Consulte a imagem abaixo para referência:</p>
+      <img src="assets/ibjjf_guidelines.png" alt="Áreas permitidas para patches" style="max-width:100%; border-radius:4px; margin-top:10px;">
+      <button id="ibjjfCloseBtn" style="margin-top:20px; padding:10px 20px; background-color:var(--primary-color); color:#ffffff; border:none; border-radius:4px; cursor:pointer;">Entendi</button>
     </div>
   </div>
   <script>
@@ -489,6 +513,60 @@
         reader.readAsDataURL(file);
       }
     });
+
+    // === Permitir reposicionamento do patch no kimono ===
+    let draggingPatch = false;
+    let offsetXPatch = 0;
+    let offsetYPatch = 0;
+    patchPreview.addEventListener('mousedown', function(e) {
+      // Permitir drag apenas se o patch estiver visível
+      if (patchPreview.style.display === 'none') return;
+      draggingPatch = true;
+      // Armazena a posição relativa do clique dentro do patch
+      offsetXPatch = e.offsetX;
+      offsetYPatch = e.offsetY;
+      // Ajusta o cursor para indicar movimento
+      patchPreview.style.cursor = 'grabbing';
+    });
+    document.addEventListener('mouseup', function() {
+      if (draggingPatch) {
+        draggingPatch = false;
+        patchPreview.style.cursor = 'grab';
+      }
+    });
+    document.addEventListener('mousemove', function(e) {
+      if (!draggingPatch) return;
+      const container = document.getElementById('preview-container');
+      const containerRect = container.getBoundingClientRect();
+      // Calcula a nova posição em pixels relativa ao contêiner
+      let newLeftPx = e.clientX - containerRect.left - offsetXPatch;
+      let newTopPx = e.clientY - containerRect.top - offsetYPatch;
+      // Limita o patch dentro do contêiner
+      const maxLeft = containerRect.width - patchPreview.offsetWidth;
+      const maxTop = containerRect.height - patchPreview.offsetHeight;
+      if (newLeftPx < 0) newLeftPx = 0;
+      if (newTopPx < 0) newTopPx = 0;
+      if (newLeftPx > maxLeft) newLeftPx = maxLeft;
+      if (newTopPx > maxTop) newTopPx = maxTop;
+      // Converte para porcentagem para manter responsividade
+      const newLeftPercent = (newLeftPx / containerRect.width) * 100;
+      const newTopPercent = (newTopPx / containerRect.height) * 100;
+      patchPreview.style.left = newLeftPercent + '%';
+      patchPreview.style.top = newTopPercent + '%';
+    });
+
+    // === Abrir e fechar o modal de dicas da IBJJF ===
+    const ibjjfTipBtn = document.getElementById('ibjjfTipBtn');
+    const ibjjfModalEl = document.getElementById('ibjjfModal');
+    const ibjjfCloseBtn = document.getElementById('ibjjfCloseBtn');
+    if (ibjjfTipBtn && ibjjfModalEl && ibjjfCloseBtn) {
+      ibjjfTipBtn.addEventListener('click', function() {
+        ibjjfModalEl.style.display = 'flex';
+      });
+      ibjjfCloseBtn.addEventListener('click', function() {
+        ibjjfModalEl.style.display = 'none';
+      });
+    }
 
     // Show or hide leasing fields when the checkbox is toggled
     leasingCheckbox.addEventListener('change', function() {
