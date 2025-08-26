@@ -428,6 +428,31 @@
       z-index: 10;
     }
 
+    /* Botões laterais para promoções (indique e ganhe / desconto) */
+    #promoButtons {
+      position: fixed;
+      bottom: 90px; /* posicionado acima do botão do chat */
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 2500;
+    }
+    .promo-btn {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+      transition: background-color 0.2s ease;
+    }
+    .promo-btn:hover {
+      background-color: #931223;
+    }
+
     /* Estilo para modais de promoção/indicação */
     .popup-modal {
       display: none;
@@ -580,6 +605,12 @@
         <button id="discountBtnChat" style="background:none;border:none;color:var(--primary-color);cursor:pointer;font-size:0.8rem;text-decoration:underline;">Cupom de Desconto</button>
       </div>
     </div>
+  </div>
+
+  <!-- Botões laterais para indicação e desconto -->
+  <div id="promoButtons">
+    <button id="promoReferBtn" class="promo-btn">Indique e Ganhe</button>
+    <button id="promoDiscountBtn" class="promo-btn">Desconto</button>
   </div>
   <!-- Header -->
   <header>
@@ -777,10 +808,7 @@
       window.closeModal = function(id) {
         var el = document.getElementById(id);
         if (el) el.style.display = 'none';
-        if (id === 'referModal') {
-          // após fechar o modal de indicação, mostrar modal de desconto
-          discountModal.style.display = 'flex';
-        }
+        // Não abrir automaticamente nenhum outro modal ao fechar
         if (id === 'videoModal' && introVideo) {
           introVideo.pause();
         }
@@ -801,13 +829,7 @@
           closeModal('videoModal');
         });
       }
-
-      // Após 5 segundos, exibir modal de indicação
-      setTimeout(function() {
-        if (referModal) {
-          referModal.style.display = 'flex';
-        }
-      }, 5000);
+      // Removemos a abertura automática dos modais de indicação e desconto
 
       // === Chat widget logic ===
       var chatWidget = document.getElementById('chatWidget');
@@ -880,6 +902,25 @@
           }
           // close chat after triggering
           if (chatWidget) chatWidget.classList.remove('open');
+        });
+      }
+
+      // === Promo buttons outside chat ===
+      var promoReferBtn = document.getElementById('promoReferBtn');
+      var promoDiscountBtn = document.getElementById('promoDiscountBtn');
+      if (promoReferBtn) {
+        promoReferBtn.addEventListener('click', function() {
+          if (typeof openReferModal === 'function') {
+            openReferModal();
+          }
+        });
+      }
+      if (promoDiscountBtn) {
+        promoDiscountBtn.addEventListener('click', function() {
+          var dm = document.getElementById('discountModal');
+          if (dm) {
+            dm.style.display = 'flex';
+          }
         });
       }
     });

@@ -22,6 +22,9 @@
         a.appendChild(r);
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
+
+  <!-- Biblioteca html2canvas para capturar screenshots -->
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     :root {
       --bg-color: #0a0a0a;
@@ -481,6 +484,16 @@
     });
     // store recommended size
     let kimonoSize = '';
+
+    // === Contador de pedidos ===
+    // Recupera o contador armazenado ou inicia a sequência a partir de 202500198001.
+    let orderCounter = parseInt(localStorage.getItem('orderCounter') || '202500198001');
+    function generateOrderNumber() {
+      const num = orderCounter;
+      orderCounter += 1;
+      localStorage.setItem('orderCounter', orderCounter);
+      return '#' + num;
+    }
     // show measurement fields when barra is selected
     barraSelect.addEventListener('change', function() {
       barraFields.style.display = this.value === 'sim' ? 'block' : 'none';
@@ -611,43 +624,58 @@
         alert('Por favor, preencha todos os campos de contato.');
         return;
       }
-      const heightVal = document.getElementById('heightInput').value;
-      const weightVal = document.getElementById('weightInput').value;
-      const barraOptVal = barraSelect.value;
-      const armVal = document.getElementById('armInput').value;
-      const legVal = document.getElementById('legInput').value;
-      const genderVal = genderSelect.value;
-      let emailBody = '';
-      emailBody += 'Nome: ' + name + '\n';
-      emailBody += 'Email: ' + email + '\n';
-      emailBody += 'Telefone: ' + phone + '\n';
-      emailBody += 'Sexo: ' + (genderVal === 'masculino' ? 'Masculino' : 'Feminino') + '\n';
-      emailBody += 'Altura: ' + heightVal + ' cm\n';
-      emailBody += 'Peso: ' + weightVal + ' kg\n';
-      emailBody += 'Tamanho sugerido: ' + kimonoSize + '\n';
-      emailBody += 'Ajustes de comprimento/barra: ' + (barraOptVal === 'sim' ? 'Sim' : 'Não') + '\n';
-      if (barraOptVal === 'sim') {
-        emailBody += 'Envergadura: ' + armVal + ' cm\n';
-        emailBody += 'Perna: ' + legVal + ' cm\n';
+      // gere o número de pedido
+      const orderNumber = generateOrderNumber();
+      // capture o preview do kimono como imagem usando html2canvas
+      const previewEl = document.getElementById('preview-container');
+      if (!previewEl) {
+        alert('Não foi possível capturar a imagem do kimono.');
+        return;
       }
-      emailBody += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.';
-      // mailto link to send to FightLab and user
-      const recipients = 'cauesashihara@gmail.com,' + email;
-      const subject = 'Pedido de kimono - FightLab Beta';
-      const mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(emailBody);
-      window.open(mailtoLink, '_blank');
-      // open WhatsApp messages if selected
-      if (pref === 'whatsapp') {
-        const userPhoneDigits = phone.replace(/\D/g, '');
-        if (userPhoneDigits.length > 0) {
-          const userWaLink = 'https://wa.me/55' + userPhoneDigits + '?text=' + encodeURIComponent(emailBody);
-          window.open(userWaLink, '_blank');
+      html2canvas(previewEl).then(function(canvas) {
+        const dataUrl = canvas.toDataURL('image/png');
+        const heightVal = document.getElementById('heightInput').value;
+        const weightVal = document.getElementById('weightInput').value;
+        const barraOptVal = barraSelect.value;
+        const armVal = document.getElementById('armInput').value;
+        const legVal = document.getElementById('legInput').value;
+        const genderVal = genderSelect.value;
+        let bodyText = '';
+        bodyText += 'Número do Pedido: ' + orderNumber + '\n';
+        bodyText += 'Nome: ' + name + '\n';
+        bodyText += 'Email: ' + email + '\n';
+        bodyText += 'Telefone: ' + phone + '\n';
+        bodyText += 'Sexo: ' + (genderVal === 'masculino' ? 'Masculino' : 'Feminino') + '\n';
+        bodyText += 'Altura: ' + heightVal + ' cm\n';
+        bodyText += 'Peso: ' + weightVal + ' kg\n';
+        bodyText += 'Tamanho sugerido: ' + kimonoSize + '\n';
+        bodyText += 'Ajustes de comprimento/barra: ' + (barraOptVal === 'sim' ? 'Sim' : 'Não') + '\n';
+        if (barraOptVal === 'sim') {
+          bodyText += 'Envergadura: ' + armVal + ' cm\n';
+          bodyText += 'Perna: ' + legVal + ' cm\n';
         }
-        const ownerWaLink = 'https://wa.me/5511979690880?text=' + encodeURIComponent(emailBody);
-        window.open(ownerWaLink, '_blank');
-      }
-      confirmModal.style.display = 'none';
-      alert('Pedido enviado! Obrigado por entrar em contato.');
+        bodyText += '\nEstamos em modo beta, a Fight Lab agradece sua mensagem. Você será contatado em breve por nossos especialistas.\n\n';
+        // anexa a imagem do kimono como link embutido (data URI)
+        bodyText += 'Imagem do kimono (cole este link no navegador para visualizar):\n' + dataUrl + '\n';
+        // prepara e envia email
+        const recipients = 'cauesashihara@gmail.com,' + email;
+        const subject = 'Pedido Fight Lab ' + orderNumber;
+        const mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(bodyText);
+        window.open(mailtoLink, '_blank');
+        // envia mensagem via WhatsApp se esta for a preferência
+        if (pref === 'whatsapp') {
+          const userPhoneDigits = phone.replace(/\D/g, '');
+          const waBody = bodyText.replace(/\n/g, '%0A');
+          if (userPhoneDigits.length > 0) {
+            const userWaLink = 'https://wa.me/55' + userPhoneDigits + '?text=' + encodeURIComponent('Pedido ' + orderNumber + '\n' + bodyText);
+            window.open(userWaLink, '_blank');
+          }
+          const ownerWaLink = 'https://wa.me/5511979690880?text=' + encodeURIComponent('Pedido ' + orderNumber + '\n' + bodyText);
+          window.open(ownerWaLink, '_blank');
+        }
+        confirmModal.style.display = 'none';
+        alert('Pedido enviado! Obrigado por entrar em contato.');
+      });
     });
   });
   </script>
