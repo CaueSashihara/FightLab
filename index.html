@@ -392,7 +392,8 @@
       z-index: 2000;
     }
     #videoModal video {
-      max-width: 80%;
+      /* Reduzir o vídeo para 50% do tamanho atual (metade de 80% -> 40%) */
+      max-width: 40%;
       border-radius: 8px;
     }
 
@@ -447,6 +448,36 @@
       color: #ffffff;
       cursor: pointer;
     }
+
+    /* === Chat widget styling === */
+    #chatWidget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 4000;
+    }
+    #chatWidget #chatBody {
+      display: none;
+    }
+    #chatWidget.open #chatBody {
+      display: block;
+    }
+    #chatWidget.open #chatToggle {
+      display: none;
+    }
+    #chatToggle {
+      width: 60px;
+      height: 60px;
+      background-color: #25D366;
+      color: #ffffff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
   </style>
 </head>
 <body>
@@ -474,6 +505,41 @@
       <h3>Desconto Especial</h3>
       <p>Complete seu cadastro e garanta 5% de desconto na sua primeira compra.</p>
       <a href="costureira.html">Completar cadastro</a>
+    </div>
+  </div>
+
+  <!-- Chat widget -->
+  <div id="chatWidget">
+    <div id="chatToggle"><i class="fa-brands fa-whatsapp"></i></div>
+    <div id="chatBody" style="background:#111;border:1px solid #333;border-radius:8px;padding:15px;color:#fff;width:320px;max-width:90%;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <strong>Contato Rápido</strong>
+        <button id="chatCloseBtn" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;">&times;</button>
+      </div>
+      <div style="margin-bottom:8px;">
+        <label for="personaSelect" style="font-size:0.8rem;color:#ccc;">Quem é você?</label>
+        <select id="personaSelect" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;">
+          <option value="">Selecione...</option>
+          <option value="Atleta">Atleta/Estudante</option>
+          <option value="Costureira">Costureira</option>
+          <option value="Academia">Academia</option>
+          <option value="Fornecedor">Fornecedor</option>
+          <option value="ONG">ONG</option>
+        </select>
+      </div>
+      <div style="margin-bottom:8px;">
+        <label for="chatName" style="font-size:0.8rem;color:#ccc;">Nome</label>
+        <input type="text" id="chatName" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
+      </div>
+      <div style="margin-bottom:8px;">
+        <label for="chatPhone" style="font-size:0.8rem;color:#ccc;">WhatsApp</label>
+        <input type="tel" id="chatPhone" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
+      </div>
+      <button id="chatSendBtn" style="width:100%;padding:8px;background:var(--primary-color);color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Enviar</button>
+      <div style="display:flex;justify-content:space-around;margin-top:10px;">
+        <button id="referBtnChat" style="background:none;border:none;color:var(--primary-color);cursor:pointer;font-size:0.8rem;text-decoration:underline;">Indique e Ganhe</button>
+        <button id="discountBtnChat" style="background:none;border:none;color:var(--primary-color);cursor:pointer;font-size:0.8rem;text-decoration:underline;">Cupom de Desconto</button>
+      </div>
     </div>
   </div>
   <!-- Header -->
@@ -703,6 +769,67 @@
           referModal.style.display = 'flex';
         }
       }, 5000);
+
+      // === Chat widget logic ===
+      var chatWidget = document.getElementById('chatWidget');
+      var chatToggle = document.getElementById('chatToggle');
+      var chatCloseBtn = document.getElementById('chatCloseBtn');
+      var chatSendBtn = document.getElementById('chatSendBtn');
+      var referBtnChat = document.getElementById('referBtnChat');
+      var discountBtnChat = document.getElementById('discountBtnChat');
+      var personaSelect = document.getElementById('personaSelect');
+      var chatName = document.getElementById('chatName');
+      var chatPhone = document.getElementById('chatPhone');
+
+      // Toggle chat open/close
+      if (chatToggle && chatWidget) {
+        chatToggle.addEventListener('click', function() {
+          chatWidget.classList.toggle('open');
+        });
+      }
+      if (chatCloseBtn && chatWidget) {
+        chatCloseBtn.addEventListener('click', function() {
+          chatWidget.classList.remove('open');
+        });
+      }
+
+      // Send WhatsApp message with prefilled content
+      if (chatSendBtn) {
+        chatSendBtn.addEventListener('click', function() {
+          var persona = personaSelect ? personaSelect.value : '';
+          var name = chatName ? chatName.value.trim() : '';
+          var whatsappNumber = chatPhone ? chatPhone.value.trim().replace(/\D/g, '') : '';
+          if (!persona || !name || !whatsappNumber) {
+            alert('Por favor, preencha todos os campos antes de enviar.');
+            return;
+          }
+          var message = encodeURIComponent('Olá, sou ' + persona + ' ' + name + '. Quero saber mais sobre a Fight Lab.');
+          var url = 'https://wa.me/' + whatsappNumber + '?text=' + message;
+          window.open(url, '_blank');
+        });
+      }
+
+      // Open refer modal from chat
+      if (referBtnChat) {
+        referBtnChat.addEventListener('click', function() {
+          if (typeof openReferModal === 'function') {
+            openReferModal();
+          }
+          // close chat after triggering
+          if (chatWidget) chatWidget.classList.remove('open');
+        });
+      }
+      // Open discount modal from chat
+      if (discountBtnChat) {
+        discountBtnChat.addEventListener('click', function() {
+          var dm = document.getElementById('discountModal');
+          if (dm) {
+            dm.style.display = 'flex';
+          }
+          // close chat after triggering
+          if (chatWidget) chatWidget.classList.remove('open');
+        });
+      }
     });
   </script>
 </body>
