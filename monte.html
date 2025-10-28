@@ -17,302 +17,200 @@
       inset: 0;
       display: block;
     }
-    #fab {
+    #controls {
       position: fixed;
       right: 24px;
-      bottom: 24px;
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: #00ff88;
-      color: #0b1a13;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 10px 30px rgba(0,255,136,.4);
-      font-weight: 800;
-      font-size: 24px;
-    }
-    #wow {
-      position: fixed;
-      left: 24px;
       top: 24px;
-      padding: 8px 12px;
-      border-radius: 10px;
-      background: linear-gradient(135deg, #111826, #0b1220);
-      border: 1px solid rgba(255,255,255,.08);
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-    #wow b {
-      color: #00ff88;
-      letter-spacing: .5px;
-    }
-    dialog#controls {
-      width: min(92vw, 740px);
-      border: none;
-      border-radius: 16px;
-      padding: 0;
-      overflow: hidden;
-      background: rgba(16,20,28,.9);
-      color: #fff;
-      backdrop-filter: blur(14px) saturate(1.2);
-      box-shadow: 0 30px 80px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.06);
-    }
-    #controls::backdrop {
-      background: rgba(0,0,0,.45);
-      backdrop-filter: blur(4px);
-    }
-    .controls-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 20px;
-      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,0));
-      border-bottom: 1px solid rgba(255,255,255,.06);
-    }
-    .controls-body {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      padding: 18px 20px 20px;
-    }
-    .group {
-      border: 1px solid rgba(255,255,255,.06);
+      background: rgba(20, 25, 30, 0.9);
+      padding: 20px;
       border-radius: 12px;
-      padding: 14px;
-      background: rgba(255,255,255,.02);
+      backdrop-filter: blur(10px);
+      z-index: 10;
     }
-    .group h3 {
-      margin: 0 0 10px;
+    .control-group {
+      margin-bottom: 20px;
+    }
+    .control-group h3 {
+      margin: 0 0 10px 0;
       font-size: 14px;
-      letter-spacing: .3px;
-      color: #9ec9b7;
+      font-weight: 600;
+      color: #00ff88;
     }
-    .swatches {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .swatch {
-      width: 36px;
-      height: 36px;
+    .color-btn {
+      width: 40px;
+      height: 40px;
       border-radius: 8px;
-      border: 2px solid rgba(255,255,255,.7);
+      border: 2px solid #333;
       cursor: pointer;
-      box-shadow: inset 0 0 0 2px rgba(0,0,0,.25);
+      margin: 0 5px 5px 0;
+      display: inline-block;
+      transition: all 0.2s;
     }
-    .swatch.active {
-      outline: 3px solid #00ff88;
-      outline-offset: 2px;
+    .color-btn:hover {
+      border-color: #00ff88;
+      transform: scale(1.1);
     }
-    select, button, .file {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      background: #121a22;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,.08);
-      cursor: pointer;
-    }
-    button.primary {
-      background: #00ff88;
-      color: #08221a;
-      border: none;
-      font-weight: 800;
-    }
-    .row {
-      display: flex;
-      gap: 10px;
-    }
-    .hint {
-      opacity: .65;
-      font-size: 12px;
-      margin-top: 6px;
-    }
-    #toast {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      transform: translateX(-50%) translateY(20px);
-      background: #10161f;
-      color: #eafff6;
-      padding: 10px 14px;
-      border-radius: 12px;
-      border: 1px solid rgba(255,255,255,.08);
-      opacity: 0;
-      transition: .35s ease;
-    }
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .color-btn.active {
+      border-color: #00ff88;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
     }
   </style>
 </head>
 <body>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
-
   <canvas id="stage"></canvas>
-  <div id="wow">✨ <b>FightLab WOW</b> – Configure seu kimono em 3D</div>
-  <button id="fab" title="Personalizar">⚙️</button>
-
-  <dialog id="controls">
-    <div class="controls-head">
-      <h2 style="margin:0;font-size:18px;">⚡ Configurador 3D</h2>
-      <button id="close" style="width:auto;background:none;border:none;font-size:24px;cursor:pointer;">✖</button>
-    </div>
-    <div class="controls-body">
-      <div class="group">
-        <h3>🎨 Cor do Kimono</h3>
-        <div class="swatches" id="bodyColors"></div>
-      </div>
-      <div class="group">
-        <h3>🥋 Cor da Faixa</h3>
-        <div class="swatches" id="beltColors"></div>
-      </div>
-      <div class="group">
-        <h3>📐 Tamanho</h3>
-        <select id="size">
-          <option>A1</option>
-          <option>A2</option>
-          <option selected>A3</option>
-          <option>A4</option>
-        </select>
-      </div>
-      <div class="group">
-        <h3>💾 Exportar</h3>
-        <button class="primary" id="export">📸 Capturar PNG</button>
+  
+  <div id="controls">
+    <div class="control-group">
+      <h3>Cor do Kimono</h3>
+      <div>
+        <button class="color-btn active" style="background: #ffffff" data-color="white"></button>
+        <button class="color-btn" style="background: #000000" data-color="black"></button>
+        <button class="color-btn" style="background: #0066cc" data-color="blue"></button>
       </div>
     </div>
-  </dialog>
+    
+    <div class="control-group">
+      <h3>Cor da Faixa</h3>
+      <div>
+        <button class="color-btn active" style="background: #ffffff" data-belt="white"></button>
+        <button class="color-btn" style="background: #ffcc00" data-belt="yellow"></button>
+        <button class="color-btn" style="background: #000000" data-belt="black"></button>
+      </div>
+    </div>
+  </div>
 
-  <div id="toast"></div>
-
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
   <script>
-    // Scene setup
+    const canvas = document.getElementById('stage');
     const scene = new THREE.Scene();
     scene.background = new THREE.Color(0x0c0f13);
+    
     const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.set(0, 1.2, 3.5);
-
-    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('stage'), antialias: true, preserveDrawingBuffer: true });
+    camera.position.set(0, 1, 4);
+    camera.lookAt(0, 0, 0);
+    
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.shadowMap.enabled = true;
-
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-
-    // Lighting
+    
+    // Iluminação
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
     scene.add(ambientLight);
+    
     const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
-    directionalLight.position.set(5, 10, 7.5);
-    directionalLight.castShadow = true;
+    directionalLight.position.set(5, 10, 5);
     scene.add(directionalLight);
-
-    // Kimono parts
-    let kimonoBody, kimonoBelt;
-
-    function createKimono() {
-      const bodyGeo = new THREE.BoxGeometry(1.2, 1.5, 0.3);
-      const bodyMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.7 });
-      kimonoBody = new THREE.Mesh(bodyGeo, bodyMat);
-      kimonoBody.position.y = 0.75;
-      kimonoBody.castShadow = true;
-      scene.add(kimonoBody);
-
-      const beltGeo = new THREE.BoxGeometry(1.3, 0.15, 0.35);
-      const beltMat = new THREE.MeshStandardMaterial({ color: 0x000000, roughness: 0.8 });
-      kimonoBelt = new THREE.Mesh(beltGeo, beltMat);
-      kimonoBelt.position.y = 0.5;
-      kimonoBelt.castShadow = true;
-      scene.add(kimonoBelt);
-    }
-
-    createKimono();
-
-    // Color palettes
-    const bodyPalette = [
-      { name: 'Branco', hex: 0xffffff },
-      { name: 'Azul', hex: 0x1e40af },
-      { name: 'Preto', hex: 0x1f1f1f },
-      { name: 'Verde', hex: 0x15803d },
-      { name: 'Rosa', hex: 0xdb2777 }
-    ];
-
-    const beltPalette = [
-      { name: 'Branca', hex: 0xffffff },
-      { name: 'Amarela', hex: 0xfbbf24 },
-      { name: 'Laranja', hex: 0xf97316 },
-      { name: 'Verde', hex: 0x22c55e },
-      { name: 'Azul', hex: 0x3b82f6 },
-      { name: 'Roxa', hex: 0x9333ea },
-      { name: 'Marrom', hex: 0x78350f },
-      { name: 'Preta', hex: 0x000000 }
-    ];
-
-    function populateSwatches(containerId, palette, targetMesh) {
-      const container = document.getElementById(containerId);
-      palette.forEach((color, index) => {
-        const swatch = document.createElement('div');
-        swatch.className = 'swatch' + (index === 0 ? ' active' : '');
-        swatch.style.background = `#${color.hex.toString(16).padStart(6, '0')}`;
-        swatch.title = color.name;
-        swatch.onclick = () => {
-          document.querySelectorAll(`#${containerId} .swatch`).forEach(s => s.classList.remove('active'));
-          swatch.classList.add('active');
-          targetMesh.material.color.setHex(color.hex);
-          showToast(`${color.name} selecionado!`);
-        };
-        container.appendChild(swatch);
-      });
-    }
-
-    populateSwatches('bodyColors', bodyPalette, kimonoBody);
-    populateSwatches('beltColors', beltPalette, kimonoBelt);
-
-    // Dialog controls
-    const dialog = document.getElementById('controls');
-    document.getElementById('fab').onclick = () => dialog.showModal();
-    document.getElementById('close').onclick = () => dialog.close();
-
-    // Export
-    document.getElementById('export').onclick = () => {
-      renderer.render(scene, camera);
-      const link = document.createElement('a');
-      link.download = 'fightlab-kimono.png';
-      link.href = renderer.domElement.toDataURL('image/png');
-      link.click();
-      showToast('📸 Imagem capturada!');
+    
+    const backLight = new THREE.DirectionalLight(0xffffff, 0.4);
+    backLight.position.set(-5, 5, -5);
+    scene.add(backLight);
+    
+    // Grupo do kimono
+    const kimonoGroup = new THREE.Group();
+    scene.add(kimonoGroup);
+    
+    // Materiais
+    let kimonoMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0xffffff,
+      roughness: 0.7,
+      metalness: 0.1
+    });
+    
+    let beltMaterial = new THREE.MeshStandardMaterial({ 
+      color: 0xffffff,
+      roughness: 0.8,
+      metalness: 0.05
+    });
+    
+    // Corpo do kimono (torso)
+    const torsoGeometry = new THREE.BoxGeometry(1.2, 1.5, 0.3);
+    const torso = new THREE.Mesh(torsoGeometry, kimonoMaterial);
+    torso.position.y = 0.5;
+    kimonoGroup.add(torso);
+    
+    // Mangas
+    const sleeveGeometry = new THREE.BoxGeometry(0.3, 1.2, 0.3);
+    const leftSleeve = new THREE.Mesh(sleeveGeometry, kimonoMaterial);
+    leftSleeve.position.set(-0.75, 0.4, 0);
+    leftSleeve.rotation.z = 0.3;
+    kimonoGroup.add(leftSleeve);
+    
+    const rightSleeve = new THREE.Mesh(sleeveGeometry, kimonoMaterial);
+    rightSleeve.position.set(0.75, 0.4, 0);
+    rightSleeve.rotation.z = -0.3;
+    kimonoGroup.add(rightSleeve);
+    
+    // Gola
+    const collarGeometry = new THREE.BoxGeometry(0.8, 0.3, 0.35);
+    const collar = new THREE.Mesh(collarGeometry, kimonoMaterial);
+    collar.position.set(0, 1.1, 0);
+    kimonoGroup.add(collar);
+    
+    // Faixa
+    const beltGeometry = new THREE.CylinderGeometry(0.65, 0.65, 0.15, 32);
+    const belt = new THREE.Mesh(beltGeometry, beltMaterial);
+    belt.position.y = 0.2;
+    belt.rotation.x = Math.PI / 2;
+    kimonoGroup.add(belt);
+    
+    // Nó da faixa
+    const knotGeometry = new THREE.BoxGeometry(0.2, 0.25, 0.35);
+    const knot = new THREE.Mesh(knotGeometry, beltMaterial);
+    knot.position.set(0, 0.2, 0.4);
+    kimonoGroup.add(knot);
+    
+    // Controles de cor
+    const colorMap = {
+      white: 0xffffff,
+      black: 0x1a1a1a,
+      blue: 0x0066cc,
+      yellow: 0xffcc00
     };
-
-    // Toast notification
-    function showToast(message) {
-      const toast = document.getElementById('toast');
-      toast.textContent = message;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 2000);
-    }
-
-    // Animation loop
+    
+    document.querySelectorAll('[data-color]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-color]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const color = btn.dataset.color;
+        kimonoMaterial.color.setHex(colorMap[color]);
+      });
+    });
+    
+    document.querySelectorAll('[data-belt]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('[data-belt]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const color = btn.dataset.belt;
+        beltMaterial.color.setHex(colorMap[color]);
+      });
+    });
+    
+    // Rotação automática
+    let autoRotate = true;
+    let rotationSpeed = 0.005;
+    
+    // Animação
     function animate() {
       requestAnimationFrame(animate);
-      controls.update();
-      kimonoBody.rotation.y += 0.002;
-      kimonoBelt.rotation.y += 0.002;
+      
+      if (autoRotate) {
+        kimonoGroup.rotation.y += rotationSpeed;
+      }
+      
       renderer.render(scene, camera);
     }
-    animate();
-
-    // Responsive
+    
+    // Responsividade
     window.addEventListener('resize', () => {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     });
+    
+    // Iniciar animação
+    animate();
+    
+    console.log('FightLab 3D Configurador carregado com sucesso!');
   </script>
 </body>
 </html>
