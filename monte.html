@@ -1,319 +1,172 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Casca Grossa - Simulador de Kimono</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      color: #fff;
-      min-height: 100vh;
-      padding: 20px;
-    }
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-    header {
-      text-align: center;
-      padding: 20px 0 40px;
-    }
-    h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    }
-    .subtitle {
-      color: #e94560;
-      font-size: 1.2em;
-    }
-    .main-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
-      margin-bottom: 40px;
-    }
-    .preview-section {
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
-    .kimono-preview {
-      width: 100%;
-      height: 500px;
-      background: #fff;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-    }
-    .kimono-image {
-      width: 80%;
-      height: 90%;
-      background-size: contain;
-      background-repeat: no-repeat;
-      background-position: center;
-      position: relative;
-    }
-    .logo-overlay {
-      position: absolute;
-      top: 25%;
-      right: 15%;
-      width: 60px;
-      height: 60px;
-      background: rgba(0,0,0,0.1);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 12px;
-      color: rgba(0,0,0,0.3);
-    }
-    .belt-area {
-      position: absolute;
-      bottom: 30%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 70%;
-      height: 40px;
-      border-radius: 4px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .controls-section {
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-    }
-    .control-group {
-      margin-bottom: 25px;
-    }
-    .control-group label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: 600;
-      color: #e94560;
-    }
-    .color-options {
-      display: flex;
-      gap: 15px;
-    }
-    .color-btn {
-      width: 60px;
-      height: 60px;
-      border: 3px solid transparent;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-    }
-    .color-btn:hover {
-      transform: scale(1.1);
-      box-shadow: 0 4px 15px rgba(233, 69, 96, 0.5);
-    }
-    .color-btn.active {
-      border-color: #e94560;
-      transform: scale(1.15);
-    }
-    .color-btn.white {
-      background: #ffffff;
-    }
-    .color-btn.blue {
-      background: #1e3a8a;
-    }
-    .color-btn.black {
-      background: #1f2937;
-    }
-    select, input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 2px solid rgba(255,255,255,0.1);
-      background: rgba(255,255,255,0.05);
-      color: #fff;
-      font-size: 1em;
-      cursor: pointer;
-    }
-    select:focus, input[type="text"]:focus {
-      outline: none;
-      border-color: #e94560;
-    }
-    option {
-      background: #16213e;
-      color: #fff;
-    }
-    .logo-input-group {
-      display: flex;
-      gap: 10px;
-    }
-    .logo-input-group input {
-      flex: 1;
-    }
-    .logo-input-group button {
-      padding: 12px 20px;
-      background: #e94560;
-      border: none;
-      border-radius: 8px;
-      color: #fff;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .logo-input-group button:hover {
-      background: #d63651;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(233, 69, 96, 0.4);
-    }
-    .info-section {
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
-      padding: 25px;
-      text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    }
-    .info-section h3 {
-      color: #e94560;
-      margin-bottom: 15px;
-    }
-    .info-section p {
-      line-height: 1.6;
-      color: rgba(255,255,255,0.8);
-    }
-    @media (max-width: 768px) {
-      .main-content {
-        grid-template-columns: 1fr;
-      }
-      h1 {
-        font-size: 1.8em;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador de Kimono 3D - Fight Lab</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #111 0%, #222 100%);
+    color: white;
+    overflow-x: hidden;
+  }
+  header {
+    text-align: center;
+    padding: 20px 0;
+  }
+  header h1 {
+    font-size: 2.5rem;
+    color: #00ffae;
+  }
+  #simulator {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  canvas {
+    width: 600px;
+    height: 600px;
+    background: #f5f5f5;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+  .controls {
+    margin-top: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    width: 80%;
+    max-width: 700px;
+  }
+  .control-group {
+    background: rgba(255,255,255,0.05);
+    padding: 15px;
+    border-radius: 10px;
+  }
+  label {
+    color: #00ffae;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  input, select, button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background: #333;
+    color: #fff;
+  }
+  button {
+    background: #00ffae;
+    color: #111;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  button:hover {
+    background: #00d890;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <header>
-      <h1>🥋 CASCA GROSSA</h1>
-      <p class="subtitle">Simulador Realista de Kimono</p>
-    </header>
+  <header>
+    <h1>🥋 Fight Lab - Simulador 3D</h1>
+  </header>
 
-    <div class="main-content">
-      <div class="preview-section">
-        <h2 style="margin-bottom: 20px; text-align: center;">Preview do Kimono</h2>
-        <div class="kimono-preview" id="kimonoPreview">
-          <div class="kimono-image" id="kimonoImage">
-            <div class="logo-overlay" id="logoOverlay">LOGO</div>
-            <div class="belt-area" id="beltArea"></div>
-          </div>
-        </div>
+  <section id="simulator">
+    <canvas id="kimonoCanvas"></canvas>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Nome Personalizado</label>
+        <input type="text" id="customName" placeholder="Ex: L. Fontes">
+        <select id="namePosition">
+          <option value="lapela">Lapela</option>
+          <option value="costas">Costas</option>
+        </select>
+        <button onclick="addName()">Adicionar Nome</button>
       </div>
 
-      <div class="controls-section">
-        <h2 style="margin-bottom: 20px;">Configurações</h2>
-        
-        <div class="control-group">
-          <label>Cor do Kimono</label>
-          <div class="color-options">
-            <div class="color-btn white active" onclick="changeKimonoColor('white')" title="Branco"></div>
-            <div class="color-btn blue" onclick="changeKimonoColor('blue')" title="Azul"></div>
-            <div class="color-btn black" onclick="changeKimonoColor('black')" title="Preto"></div>
-          </div>
-        </div>
-
-        <div class="control-group">
-          <label for="beltColor">Cor da Faixa</label>
-          <select id="beltColor" onchange="changeBeltColor()">
-            <option value="#ffffff">Branca</option>
-            <option value="#1e40af">Azul</option>
-            <option value="#7c3aed">Roxa</option>
-            <option value="#78350f">Marrom</option>
-            <option value="#1f2937">Preta</option>
-            <option value="#dc2626">Coral (Preta/Vermelha)</option>
-          </select>
-        </div>
-
-        <div class="control-group">
-          <label for="logoText">Logo no Peito</label>
-          <div class="logo-input-group">
-            <input type="text" id="logoText" placeholder="Digite o texto da logo" value="CG">
-            <button onclick="updateLogo()">Aplicar</button>
-          </div>
-        </div>
+      <div class="control-group">
+        <label>Adicionar Patch</label>
+        <input type="file" id="patchUpload" accept="image/*">
+        <button onclick="addPatch()">Aplicar Patch</button>
       </div>
     </div>
+  </section>
 
-    <div class="info-section">
-      <h3>Sobre o Simulador</h3>
-      <p>
-        Configure seu kimono personalizado da Casca Grossa. 
-        Escolha entre as cores clássicas (branco, azul e preto), 
-        selecione a faixa correspondente à sua graduação e 
-        adicione sua logo personalizada no peito. 
-        Visual inspirado no site oficial Casca Grossa.
-      </p>
-    </div>
-  </div>
+  <script type="module">
+    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.module.js';
+    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/controls/OrbitControls.js';
 
-  <script>
-    let currentColor = 'white';
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer({canvas: document.getElementById('kimonoCanvas'), alpha: true});
+    renderer.setSize(600, 600);
+    renderer.setClearColor(0x000000, 0);
 
-    const kimonoColors = {
-      white: '#ffffff',
-      blue: '#1e3a8a',
-      black: '#1f2937'
-    };
+    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
+    scene.add(light);
 
-    function changeKimonoColor(color) {
-      currentColor = color;
-      const kimonoImage = document.getElementById('kimonoImage');
-      kimonoImage.style.background = kimonoColors[color];
-      
-      // Update active button
-      document.querySelectorAll('.color-btn').forEach(btn => {
-        btn.classList.remove('active');
-      });
-      document.querySelector(`.color-btn.${color}`).classList.add('active');
+    // Base do kimono (substituir por modelo GLTF futuramente)
+    const geometry = new THREE.BoxGeometry(2, 3, 1);
+    const textureLoader = new THREE.TextureLoader();
+    const kimonoTexture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/4/4f/Jujutsu_keikogi_white.jpg');
+    const material = new THREE.MeshStandardMaterial({map: kimonoTexture});
+    const kimono = new THREE.Mesh(geometry, material);
+    scene.add(kimono);
 
-      // Adjust logo color based on kimono color
-      const logoOverlay = document.getElementById('logoOverlay');
-      if (color === 'white') {
-        logoOverlay.style.background = 'rgba(0,0,0,0.1)';
-        logoOverlay.style.color = 'rgba(0,0,0,0.5)';
-      } else {
-        logoOverlay.style.background = 'rgba(255,255,255,0.2)';
-        logoOverlay.style.color = 'rgba(255,255,255,0.7)';
-      }
+    camera.position.z = 5;
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Adicionar nome
+    function addName() {
+      const text = document.getElementById('customName').value;
+      const pos = document.getElementById('namePosition').value;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 64;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'white';
+      ctx.font = '24px Arial';
+      ctx.fillText(text, 10, 40);
+
+      const nameTexture = new THREE.CanvasTexture(canvas);
+      const nameMaterial = new THREE.MeshBasicMaterial({map: nameTexture, transparent: true});
+      const namePlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 0.25), nameMaterial);
+
+      if (pos === 'lapela') namePlane.position.set(0, 0.5, 0.6);
+      else namePlane.position.set(0, -1, -0.6);
+
+      scene.add(namePlane);
     }
 
-    function changeBeltColor() {
-      const beltColor = document.getElementById('beltColor').value;
-      const beltArea = document.getElementById('beltArea');
-      beltArea.style.background = beltColor;
-    }
-
-    function updateLogo() {
-      const logoText = document.getElementById('logoText').value;
-      const logoOverlay = document.getElementById('logoOverlay');
-      logoOverlay.textContent = logoText || 'LOGO';
-    }
-
-    // Initialize
-    window.onload = function() {
-      changeKimonoColor('white');
-      changeBeltColor();
+    // Adicionar patch
+    window.addPatch = function() {
+      const file = document.getElementById('patchUpload').files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        const patchTexture = new THREE.TextureLoader().load(e.target.result);
+        const patchMaterial = new THREE.MeshBasicMaterial({map: patchTexture, transparent: true});
+        const patchPlane = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.8), patchMaterial);
+        patchPlane.position.set(Math.random() - 0.5, Math.random() - 0.5, 0.6);
+        scene.add(patchPlane);
+      };
+      reader.readAsDataURL(file);
     };
   </script>
 </body>
