@@ -1,37 +1,207 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>FightLab 3D</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FightLab 3D - Configurador de Kimono</title>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
     <style>
-        body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
-        #stage { width:100vw; height:100vh; display:block; }
+        body { margin: 0; overflow: hidden; font-family: Arial, sans-serif; background: #1a1a1a; }
+        #stage { width: 100vw; height: 100vh; display: block; }
+        #controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            min-width: 250px;
+        }
+        h2 { margin-top: 0; color: #00ff88; }
+        .control-group { margin-bottom: 20px; }
+        .control-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .color-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #fff;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            display: inline-block;
+        }
+        .color-btn:hover { border-color: #00ff88; }
+        .color-btn.active { border-color: #00ff88; border-width: 3px; }
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button {
+            background: #00ff88;
+            color: #000;
+            font-weight: bold;
+        }
+        button:hover { background: #00cc70; }
     </style>
 </head>
 <body>
     <canvas id="stage"></canvas>
+    <div id="controls">
+        <h2>Configurador de Kimono 3D</h2>
+        
+        <div class="control-group">
+            <label>Cor do Kimono:</label>
+            <div>
+                <span class="color-btn active" style="background: #ffffff;" data-color="0xffffff"></span>
+                <span class="color-btn" style="background: #0066ff;" data-color="0x0066ff"></span>
+                <span class="color-btn" style="background: #000000;" data-color="0x000000"></span>
+                <span class="color-btn" style="background: #ff0000;" data-color="0xff0000"></span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Tipo de Tecido:</label>
+            <select id="fabric-select">
+                <option value="smooth">Liso</option>
+                <option value="pearl">Pearl Weave</option>
+                <option value="gold">Gold Weave</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Patch/Bordado:</label>
+            <select id="patch-select">
+                <option value="none">Nenhum</option>
+                <option value="chest">Peito</option>
+                <option value="back">Costas</option>
+                <option value="both">Peito + Costas</option>
+            </select>
+        </div>
+        
+        <button onclick="resetView()">Resetar Visualização</button>
+    </div>
+
     <script>
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({canvas:document.getElementById('stage')});
+        scene.background = new THREE.Color(0x2a2a2a);
+        
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('stage'), antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
+        
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+        
+        // Kimono 3D Model (simplified)
+        const kimonoGroup = new THREE.Group();
+        
+        // Body
+        const bodyGeometry = new THREE.BoxGeometry(2, 3, 0.5);
+        const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        kimonoGroup.add(body);
+        
+        // Left Sleeve
+        const sleeveGeometry = new THREE.BoxGeometry(1.5, 0.8, 0.4);
+        const leftSleeve = new THREE.Mesh(sleeveGeometry, bodyMaterial);
+        leftSleeve.position.set(-1.75, 0.8, 0);
+        kimonoGroup.add(leftSleeve);
+        
+        // Right Sleeve
+        const rightSleeve = new THREE.Mesh(sleeveGeometry, bodyMaterial);
+        rightSleeve.position.set(1.75, 0.8, 0);
+        kimonoGroup.add(rightSleeve);
+        
+        // Collar
+        const collarGeometry = new THREE.BoxGeometry(1.2, 0.3, 0.3);
+        const collarMaterial = new THREE.MeshPhongMaterial({ color: 0xeeeeee });
+        const collar = new THREE.Mesh(collarGeometry, collarMaterial);
+        collar.position.set(0, 1.6, 0.3);
+        kimonoGroup.add(collar);
+        
+        // Patches (initially hidden)
+        const patchGeometry = new THREE.CircleGeometry(0.3, 32);
+        const patchMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000, side: THREE.DoubleSide });
+        const chestPatch = new THREE.Mesh(patchGeometry, patchMaterial);
+        chestPatch.position.set(0.5, 0.5, 0.26);
+        chestPatch.visible = false;
+        kimonoGroup.add(chestPatch);
+        
+        const backPatch = new THREE.Mesh(patchGeometry, patchMaterial);
+        backPatch.position.set(0, 0, -0.26);
+        backPatch.visible = false;
+        kimonoGroup.add(backPatch);
+        
+        scene.add(kimonoGroup);
         camera.position.z = 5;
-
+        
+        // Color selection
+        document.querySelectorAll('.color-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                const color = parseInt(this.dataset.color);
+                bodyMaterial.color.setHex(color);
+            });
+        });
+        
+        // Fabric selection
+        document.getElementById('fabric-select').addEventListener('change', function() {
+            switch(this.value) {
+                case 'smooth':
+                    bodyMaterial.roughness = 0.3;
+                    break;
+                case 'pearl':
+                    bodyMaterial.roughness = 0.6;
+                    break;
+                case 'gold':
+                    bodyMaterial.roughness = 0.8;
+                    break;
+            }
+        });
+        
+        // Patch selection
+        document.getElementById('patch-select').addEventListener('change', function() {
+            chestPatch.visible = this.value === 'chest' || this.value === 'both';
+            backPatch.visible = this.value === 'back' || this.value === 'both';
+        });
+        
+        function resetView() {
+            camera.position.set(0, 0, 5);
+            kimonoGroup.rotation.set(0, 0, 0);
+        }
+        
+        // Animation
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (e) => {
+            mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+        });
+        
         function animate() {
             requestAnimationFrame(animate);
-            cube.rotation.x += 0.01;
-            cube.rotation.y += 0.01;
+            kimonoGroup.rotation.y += (mouseX * 0.5 - kimonoGroup.rotation.y) * 0.05;
+            kimonoGroup.rotation.x += (mouseY * 0.3 - kimonoGroup.rotation.x) * 0.05;
             renderer.render(scene, camera);
         }
         animate();
+        
+        // Responsive
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     </script>
 </body>
 </html>
