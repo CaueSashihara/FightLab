@@ -1,0 +1,65 @@
+{
+  "events": [
+    {
+      "name": "view_home",
+      "props": [
+        "device",
+        "ref"
+      ]
+    },
+    {
+      "name": "click_cta_customize",
+      "props": [
+        "section"
+      ]
+    },
+    {
+      "name": "start_personalizer",
+      "props": [
+        "model",
+        "brand"
+      ]
+    },
+    {
+      "name": "3d_interaction",
+      "props": [
+        "action",
+        "zone"
+      ]
+    },
+    {
+      "name": "ibjjf_warning_shown",
+      "props": [
+        "zone",
+        "type"
+      ]
+    },
+    {
+      "name": "add_to_order",
+      "props": [
+        "price",
+        "leasing",
+        "entry_pct"
+      ]
+    },
+    {
+      "name": "open_whatsapp",
+      "props": [
+        "persona"
+      ]
+    },
+    {
+      "name": "lead_submitted",
+      "props": [
+        "form",
+        "role"
+      ]
+    },
+    {
+      "name": "social_donation_start",
+      "props": [
+        "city"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+:root{
+  /* cores */
+  --bg:#0b0b0b; --surface:#121212; --line:#232323;
+  --text:#f5f5f5; --muted:#a7a7a7;
+  --accent:#38ef7d; /* Fight Lab green */
+  --accent-2:#00a884; /* Whats style */
+  --danger:#ff4d4f; --warning:#fbbf24;
+
+  /* tipografia */
+  --font: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial;
+  --h1: clamp(28px, 3.6vw, 44px);
+  --h2: clamp(22px, 2.6vw, 32px);
+  --p: 16px; --small: 13px;
+
+  /* espaçamento (8pt grid) */
+  --s-1:4px; --s0:8px; --s1:12px; --s2:16px; --s3:24px; --s4:32px; --s5:48px;
+
+  /* raios e sombras */
+  --r:16px; --r-sm:10px;
+  --shadow: 0 10px 30px rgba(0,0,0,.35);
+}
