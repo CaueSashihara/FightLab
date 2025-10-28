@@ -4,60 +4,28 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>FightLab 3D</title>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script type="module">
-        import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
-        let scene, camera, renderer, controls, cube;
-        const qs = s => document.querySelector(s);
-        function resize(){ 
-            const c = qs('#stage'); 
-            const rect = c.getBoundingClientRect(); 
-            const w = rect.width || c.clientWidth || 640; 
-            const h = rect.height || c.clientHeight || 520; 
-            if(!camera || !renderer) return; 
-            camera.aspect = w / h; 
-            camera.updateProjectionMatrix(); 
-            renderer.setSize(w, h, false); 
-        }
-        function animate(){ 
-            requestAnimationFrame(animate);
-            if(cube) {
-                cube.rotation.x += 0.01;
-                cube.rotation.y += 0.01;
-            }
-            controls && controls.update(); 
-            renderer && scene && camera && renderer.render(scene, camera); 
-        }
-        function init3D(){
-            const canvas = qs('#stage');
-            renderer = new THREE.WebGLRenderer({
-                canvas,
-                antialias: true,
-                preserveDrawingBuffer: true,
-                alpha: true
-            });
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-            scene = new THREE.Scene(); 
-            scene.background = new THREE.Color(0x0a0a0a);
-            camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
-            camera.position.set(5, 5, 10);
-            controls = new OrbitControls(camera, renderer.domElement);
-            controls.enableDamping = true;
-            const light = new THREE.DirectionalLight(0xffffff, 1);
-            light.position.set(10, 10, 10);
-            scene.add(light);
-            scene.add(new THREE.AmbientLight(0x404040));
-            // Cria cubo girando
-            const geo = new THREE.BoxGeometry(2, 2, 2);
-            const mat = new THREE.MeshStandardMaterial({color: 0x00ff00});
-            cube = new THREE.Mesh(geo, mat);
-            scene.add(cube);
-            resize();
-            animate();
-        }
-        window.addEventListener('resize', resize);
-        window.addEventListener('DOMContentLoaded', init3D);
-    </script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script>
+    let scene = new THREE.Scene();
+    let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    let renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    let geometry = new THREE.BoxGeometry();
+    let material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+    let cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    camera.position.z = 5;
+    function animate() {
+        requestAnimationFrame(animate);
+        cube.rotation.x += 0.01;
+        cube.rotation.y += 0.01;
+        renderer.render(scene, camera);
+    }
+    animate();
+</script>
+
+    
     <style>
         body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
         #stage { width:100vw; height:100vh; display:block; }
