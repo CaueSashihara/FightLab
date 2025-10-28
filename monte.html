@@ -1,173 +1,68 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Simulador de Kimono 3D - Fight Lab</title>
-<style>
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #111 0%, #222 100%);
-    color: white;
-    overflow-x: hidden;
-  }
-  header {
-    text-align: center;
-    padding: 20px 0;
-  }
-  header h1 {
-    font-size: 2.5rem;
-    color: #00ffae;
-  }
-  #simulator {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
-  canvas {
-    width: 600px;
-    height: 600px;
-    background: #f5f5f5;
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  }
-  .controls {
-    margin-top: 20px;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
-    width: 80%;
-    max-width: 700px;
-  }
-  .control-group {
-    background: rgba(255,255,255,0.05);
-    padding: 15px;
-    border-radius: 10px;
-  }
-  label {
-    color: #00ffae;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-  }
-  input, select, button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    background: #333;
-    color: #fff;
-  }
-  button {
-    background: #00ffae;
-    color: #111;
-    font-weight: bold;
-    cursor: pointer;
-  }
-  button:hover {
-    background: #00d890;
-  }
-</style>
-</head>
-<body>
-  <header>
-    <h1>🥋 Fight Lab - Simulador 3D</h1>
-  </header>
+      logoGroup.style.display = 'none';
+      logoImage.removeAttribute('href');
+    });
 
-  <section id="simulator">
-    <canvas id="kimonoCanvas"></canvas>
-
-    <div class="controls">
-      <div class="control-group">
-        <label>Nome Personalizado</label>
-        <input type="text" id="customName" placeholder="Ex: L. Fontes">
-        <select id="namePosition">
-          <option value="lapela">Lapela</option>
-          <option value="costas">Costas</option>
-        </select>
-        <button onclick="addName()">Adicionar Nome</button>
-      </div>
-
-      <div class="control-group">
-        <label>Adicionar Patch</label>
-        <input type="file" id="patchUpload" accept="image/*">
-        <button onclick="addPatch()">Aplicar Patch</button>
-      </div>
-    </div>
-  </section>
-
-  <script type="module">
-    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.150.0/build/three.module.js';
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.150.0/examples/jsm/controls/OrbitControls.js';
-
-    let scene = new THREE.Scene();
-    let camera = new THREE.PerspectiveCamera(50, 1, 0.1, 1000);
-    let renderer = new THREE.WebGLRenderer({canvas: document.getElementById('kimonoCanvas'), alpha: true});
-    renderer.setSize(600, 600);
-    renderer.setClearColor(0x000000, 0);
-
-    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.5);
-    scene.add(light);
-
-    // Base do kimono (substituir por modelo GLTF futuramente)
-    const geometry = new THREE.BoxGeometry(2, 3, 1);
-    const textureLoader = new THREE.TextureLoader();
-    const kimonoTexture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/4/4f/Jujutsu_keikogi_white.jpg');
-    const material = new THREE.MeshStandardMaterial({map: kimonoTexture});
-    const kimono = new THREE.Mesh(geometry, material);
-    scene.add(kimono);
-
-    camera.position.z = 5;
-
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-
-    function animate() {
-      requestAnimationFrame(animate);
-      controls.update();
-      renderer.render(scene, camera);
+    // Drag para reposicionar logo
+    let dragging = false; let offset = {x:0,y:0};
+    function pointFromEvent(evt){
+      const pt = svg.createSVGPoint();
+      const ctm = svg.getScreenCTM();
+      pt.x = (evt.touches? evt.touches[0].clientX : evt.clientX);
+      pt.y = (evt.touches? evt.touches[0].clientY : evt.clientY);
+      const inv = ctm.inverse();
+      const sp = pt.matrixTransform(inv);
+      return {x: sp.x, y: sp.y};
     }
-    animate();
+    logoImage.addEventListener('pointerdown', (e)=>{
+      dragging = true; logoImage.setPointerCapture(e.pointerId);
+      const p = pointFromEvent(e);
+      offset.x = p.x - parseFloat(logoImage.getAttribute('x'));
+      offset.y = p.y - parseFloat(logoImage.getAttribute('y'));
+    });
+    svg.addEventListener('pointermove', (e)=>{
+      if(!dragging) return; const p = pointFromEvent(e);
+      logoPos.x = Math.max(120, Math.min(300, p.x - offset.x));
+      logoPos.y = Math.max(110, Math.min(280, p.y - offset.y));
+      setLogoPosition(logoPos);
+    });
+    window.addEventListener('pointerup', ()=>{ dragging=false; });
 
-    // Adicionar nome
-    function addName() {
-      const text = document.getElementById('customName').value;
-      const pos = document.getElementById('namePosition').value;
+    // Redimensionar logo com roda do mouse (sobre o logo)
+    logoImage.addEventListener('wheel', (e)=>{
+      e.preventDefault();
+      const delta = Math.sign(e.deltaY);
+      const factor = delta>0 ? 0.9 : 1.1;
+      logoPos.w = Math.max(20, Math.min(160, logoPos.w * factor));
+      logoPos.h = logoPos.w; // quadrado
+      setLogoPosition(logoPos);
+    });
 
+    // Textura
+    const textureSel = byId('texture');
+    textureSel.addEventListener('change', e=> setTexture(e.target.value));
+    setTexture('none');
+
+    // Download PNG (converte SVG -> PNG via canvas)
+    const btnDownload = byId('downloadPng');
+    btnDownload.addEventListener('click', async ()=>{
+      const xml = new XMLSerializer().serializeToString(svg);
+      const svgBlob = new Blob([xml], {type: 'image/svg+xml;charset=utf-8'});
+      const url = URL.createObjectURL(svgBlob);
+      const img = new Image();
       const canvas = document.createElement('canvas');
-      canvas.width = 256;
-      canvas.height = 64;
+      canvas.width = 1200; canvas.height = 1200; // alta resolução
       const ctx = canvas.getContext('2d');
-      ctx.fillStyle = 'white';
-      ctx.font = '24px Arial';
-      ctx.fillText(text, 10, 40);
-
-      const nameTexture = new THREE.CanvasTexture(canvas);
-      const nameMaterial = new THREE.MeshBasicMaterial({map: nameTexture, transparent: true});
-      const namePlane = new THREE.Mesh(new THREE.PlaneGeometry(1, 0.25), nameMaterial);
-
-      if (pos === 'lapela') namePlane.position.set(0, 0.5, 0.6);
-      else namePlane.position.set(0, -1, -0.6);
-
-      scene.add(namePlane);
-    }
-
-    // Adicionar patch
-    window.addPatch = function() {
-      const file = document.getElementById('patchUpload').files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        const patchTexture = new THREE.TextureLoader().load(e.target.result);
-        const patchMaterial = new THREE.MeshBasicMaterial({map: patchTexture, transparent: true});
-        const patchPlane = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.8), patchMaterial);
-        patchPlane.position.set(Math.random() - 0.5, Math.random() - 0.5, 0.6);
-        scene.add(patchPlane);
-      };
-      reader.readAsDataURL(file);
-    };
+      // fundo
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      await new Promise((res)=>{ img.onload=()=>res(); img.src=url; });
+      ctx.drawImage(img, 60, 60, 1080, 1080);
+      URL.revokeObjectURL(url);
+      const a = document.createElement('a');
+      a.download = 'kimono-fightlab.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
   </script>
 </body>
 </html>
