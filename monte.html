@@ -5,14 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>FightLab 3D</title>
     <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js" type="module"></script>
-    <style>
-        body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
-        #stage { width:100vw; height:100vh; display:block; }
-    </style>
-</head>
-<body>
-    <canvas id="stage"></canvas>
     <script type="module">
         import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
         let scene, camera, renderer, controls, cube;
@@ -66,5 +58,12 @@
         window.addEventListener('resize', resize);
         window.addEventListener('DOMContentLoaded', init3D);
     </script>
+    <style>
+        body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
+        #stage { width:100vw; height:100vh; display:block; }
+    </style>
+</head>
+<body>
+    <canvas id="stage"></canvas>
 </body>
 </html>
