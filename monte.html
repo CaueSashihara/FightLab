@@ -1,9 +1,63 @@
-<script>
-  function resize(){ const c=qs('#stage'); const rect=c.getBoundingClientRect(); const w=rect.width||c.clientWidth||640; const h=rect.height||c.clientHeight||520; if(!camera||!renderer) return; camera.aspect=w/h; camera.updateProjectionMatrix(); renderer.setSize(w,h,false); }
-  function animate(){ requestAnimationFrame(animate); controls&&controls.update(); renderer&&scene&&camera&&renderer.render(scene,camera); }
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FightLab 3D</title>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    body { margin:0; overflow:hidden; font-family:Arial,sans-serif; }
+    #stage { width:100vw; height:100vh; display:block; }
+  </style>
+</head>
+<body>
+  <canvas id="stage"></canvas>
+  <script>
+  let scene, camera, renderer, controls;
+  const qs=s=>document.querySelector(s);
+  
+  function resize(){ 
+    const c=qs('#stage'); 
+    const rect=c.getBoundingClientRect(); 
+    const w=rect.width||c.clientWidth||640; 
+    const h=rect.height||c.clientHeight||520; 
+    if(!camera||!renderer) return; 
+    camera.aspect=w/h; 
+    camera.updateProjectionMatrix(); 
+    renderer.setSize(w,h,false); 
+  }
+  
+  function animate(){ 
+    requestAnimationFrame(animate); 
+    controls&&controls.update(); 
+    renderer&&scene&&camera&&renderer.render(scene,camera); 
+  }
+  
   function init3D(){
     const canvas=qs('#stage');
     renderer=new THREE.WebGLRenderer({canvas,antialias:true,preserveDrawingBuffer:true,alpha:true});
     renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
-    scene=new THREE.Scene(); scene.background=new THREE.Color(0x0a0a0a);
-    camera=new THREE.PerspectiveCamera(45,1,0.1,
+    scene=new THREE.Scene(); 
+    scene.background=new THREE.Color(0x0a0a0a);
+    camera=new THREE.PerspectiveCamera(45,1,0.1,1000);
+    camera.position.set(5,5,10);
+    controls=new THREE.OrbitControls(camera,renderer.domElement);
+    controls.enableDamping=true;
+    const light=new THREE.DirectionalLight(0xffffff,1);
+    light.position.set(10,10,10);
+    scene.add(light);
+    scene.add(new THREE.AmbientLight(0x404040));
+    const geo=new THREE.BoxGeometry(2,2,2);
+    const mat=new THREE.MeshStandardMaterial({color:0x00ff00});
+    const cube=new THREE.Mesh(geo,mat);
+    scene.add(cube);
+    resize();
+    animate();
+  }
+  
+  window.addEventListener('resize',resize);
+  window.addEventListener('DOMContentLoaded',init3D);
+  </script>
+</body>
+</html>
