@@ -34,149 +34,264 @@
       position: fixed;
       top: 0;
       left: 0;
-      right: 0;
-      height: 70px;
+      width: 100%;
+      padding: 1rem 2rem;
+      background-color: var(--secondary-color);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 40px;
-      background-color: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
       z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
-    header .logo img {
-      height: 50px;
-      /* inverter cores do logotipo para branco sobre fundo escuro */
-      filter: invert(1);
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--primary-color);
     }
-    header nav a {
-      margin-left: 20px;
-      color: var(--text-color);
-      font-size: 0.9rem;
-      font-weight: 600;
+    nav a {
+      margin-left: 1.5rem;
+      color: var(--muted-color);
       text-decoration: none;
+      font-weight: 600;
+      transition: color 0.3s;
     }
-    header nav a:hover { color: var(--primary-color); }
+    nav a:hover {
+      color: var(--text-color);
+    }
     main {
-      padding-top: 100px;
-      padding-bottom: 60px;
-      width: 90%;
-      max-width: 1000px;
-      margin: 0 auto;
+      margin-top: 100px;
+      padding: 2rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
     }
     h1 {
       font-size: 2rem;
-      margin-bottom: 30px;
-      text-align: center;
+      margin-bottom: 1rem;
     }
     .profile-card {
-      background-color: var(--card-bg);
+      background: var(--card-bg);
       border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.05);
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
     .rating {
-      font-size: 1.6rem;
-      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      padding: 1rem;
+      background: rgba(179, 21, 47, 0.1);
+      border: 2px solid rgba(179, 21, 47, 0.3);
+      border-radius: 8px;
+    }
+    .rating .fa-star,
+    .rating .fa-star-half-stroke {
+      color: #ffc107;
+      font-size: 1.2rem;
+      margin-right: 0.2rem;
     }
     .metrics {
       display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 1rem;
     }
     .metric-item {
-      flex: 1 1 200px;
-      background-color: var(--secondary-color);
-      border-radius: 6px;
-      padding: 15px;
+      flex: 1;
+      min-width: 200px;
       text-align: center;
     }
     .metric-item h3 {
+      font-size: 0.9rem;
+      color: var(--muted-color);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    .metric-item h3 i {
+      color: var(--primary-color);
       font-size: 1.1rem;
-      margin-bottom: 8px;
-      color: var(--text-color);
     }
     .metric-item p {
-      font-size: 1.4rem;
+      font-size: 1.8rem;
       font-weight: 700;
-      color: var(--primary-color);
+      color: var(--text-color);
     }
-    .tips, .badges {
-      margin-top: 20px;
+    .tips {
+      margin-bottom: 1.5rem;
+    }
+    .tips h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.8rem;
     }
     .tips ul {
-      list-style: disc;
-      margin-left: 20px;
+      list-style: none;
+      padding-left: 0;
+    }
+    .tips li {
+      padding: 0.5rem 0;
+      padding-left: 1.5rem;
+      position: relative;
       color: var(--muted-color);
+    }
+    .tips li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: var(--primary-color);
+      font-weight: bold;
     }
     .badges {
       display: flex;
+      gap: 1rem;
       flex-wrap: wrap;
-      gap: 15px;
     }
     .badge {
-      background-color: var(--secondary-color);
-      border-radius: 50px;
-      padding: 10px 20px;
+      background: rgba(179, 21, 47, 0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 0.9rem;
+      gap: 0.5rem;
     }
-    .badge i { color: var(--primary-color); }
+    .badge i {
+      color: var(--primary-color);
+    }
+    .form-section {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+    .form-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      margin-bottom: 0.5rem;
+      color: var(--muted-color);
+      font-weight: 600;
+    }
+    .form-group input {
+      padding: 0.8rem;
+      background: var(--secondary-color);
+      border: 1px solid #333;
+      border-radius: 12px;
+      color: var(--text-color);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 2px 12px rgba(179, 21, 47, 0.3);
+    }
+    .form-group button {
+      align-self: flex-start;
+      padding: 12px 28px;
+      background-color: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: 0 4px 12px rgba(179, 21, 47, 0.4);
+      transition: all 0.3s ease;
+    }
+    .form-group button:hover {
+      background-color: #d01838;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(179, 21, 47, 0.6);
+    }
+    .feedback-section {
+      background: var(--card-bg);
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+    .feedback-section h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .feedback-hearts {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      font-size: 2rem;
+    }
+    .feedback-hearts i {
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .feedback-hearts i:hover {
+      transform: scale(1.2);
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">
-      <a href="index.html"><img src="assets/logo.png" alt="Fight Lab"></a>
-    </div>
+    <div class="logo">FIGHT LAB</div>
     <nav>
       <a href="index.html">Home</a>
+      <a href="#">Perfil</a>
+      <a href="#">Pedidos</a>
     </nav>
   </header>
   <main>
-    <h1>Meu Perfil</h1>
-    <!-- Cadastro/atualização -->
-    <div class="profile-card" style="margin-bottom:30px;">
-      <h2 style="font-size:1.4rem; margin-bottom:15px; color: var(--primary-color);">Cadastrar ou Atualizar Perfil</h2>
-      <div style="display:flex; flex-direction:column; gap:15px;">
-        <div>
-          <label for="addressInput">Endereço</label>
-          <input type="text" id="addressInput" placeholder="Rua, nº, bairro, cidade">
-        </div>
-        <div>
-          <label for="availabilityInput">Disponibilidade (horas por dia)</label>
-          <input type="number" id="availabilityInput" min="1" max="12" placeholder="Ex: 4">
-        </div>
-        <button style="align-self:flex-start; padding:10px 20px; background-color: var(--primary-color); color:#fff; border:none; border-radius:4px; font-weight:600; cursor:pointer;">Cadastrar</button>
+    <h1>Meu Perfil • Costureira</h1>
+    <!-- Formulário de Cadastro -->
+    <div class="form-section">
+      <h2>Complete seu Cadastro</h2>
+      <div class="form-group">
+        <label for="addressInput">Endereço</label>
+        <input type="text" id="addressInput" placeholder="Digite seu endereço completo">
+      </div>
+      <div class="form-group">
+        <label for="availabilityInput">Disponibilidade (horas por dia)</label>
+        <input type="number" id="availabilityInput" min="1" max="12" placeholder="Ex: 4">
+      </div>
+      <div class="form-group">
+        <button>Cadastrar</button>
       </div>
     </div>
     <!-- Perfil ativo -->
     <div class="profile-card">
       <div class="rating">
-        <span class="fa-solid fa-star"></span>
-        <span class="fa-solid fa-star"></span>
-        <span class="fa-solid fa-star"></span>
-        <span class="fa-solid fa-star"></span>
-        <span class="fa-solid fa-star-half-stroke"></span>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
         <span style="margin-left:8px; font-size:1.1rem; color: var(--muted-color);">4,8/5.0</span>
       </div>
       <div class="metrics">
         <div class="metric-item">
-          <h3>Patches confeccionados</h3>
+          <h3><i class="fa-solid fa-scissors"></i> Patches confeccionados</h3>
           <p>127</p>
         </div>
         <div class="metric-item">
-          <h3>Tempo médio de entrega</h3>
+          <h3><i class="fa-solid fa-clock"></i> Tempo médio de entrega</h3>
           <p>2,9 dias</p>
         </div>
         <div class="metric-item">
-          <h3>Avaliações recebidas</h3>
+          <h3><i class="fa-solid fa-star"></i> Avaliações recebidas</h3>
           <p>98</p>
         </div>
       </div>
@@ -192,6 +307,18 @@
         <div class="badge"><i class="fa-solid fa-medal"></i> Super Costureira</div>
         <div class="badge"><i class="fa-solid fa-truck-fast"></i> Entrega Rápida</div>
         <div class="badge"><i class="fa-solid fa-heart"></i> Cliente Favorito</div>
+      </div>
+    </div>
+    <!-- Área de Feedback -->
+    <div class="feedback-section">
+      <h2>Como foi sua experiência?</h2>
+      <p style="color: var(--muted-color); margin-bottom: 1rem;">Deixe seu feedback com corações</p>
+      <div class="feedback-hearts">
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-heart"></i>
+        <i class="fa-solid fa-heart"></i>
       </div>
     </div>
   </main>
