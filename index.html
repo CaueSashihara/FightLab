@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Fight Lab • Força, Técnica e Estilo</title>
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-
-  <!-- Hotjar Tracking Code for https://cauesashihara.github.io/FightLab/ -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script>
     (function(h,o,t,j,a,r){
         h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
@@ -23,568 +19,129 @@
     })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
   </script>
   <style>
-    /* Core variables for colours and spacing */
-    :root {
-      --bg-color: #0a0a0a;
-      --primary-color: #b3152f;     /* deep red accent reminiscent of strength */
-      --secondary-color: #111111;
-      --text-color: #f0f0f0;
-      --muted-color: #888888;
-      --card-bg: #0f0f0f;
-    }
-
-    /* Reset and basic styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    html {
-      scroll-behavior: smooth;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    a {
-      color: var(--primary-color);
-      text-decoration: none;
-    }
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
-    .container {
-      width: 90%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    /* Header and navigation */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      background-color: rgba(10, 10, 10, 0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      z-index: 1000;
-    }
-    header .logo img {
-      height: 50px;
-      /* inverter cores do logotipo para branco sobre fundo escuro */
-      filter: invert(1);
-    }
-    header nav {
-      display: flex;
-      gap: 20px;
-    }
-    header nav a {
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--text-color);
-      transition: color 0.3s ease;
-    }
-    header nav a:hover {
-      color: var(--primary-color);
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-block;
-      padding: 12px 24px;
-      border-radius: 4px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
-    .btn-primary {
-      background-color: var(--primary-color);
-      color: #ffffff;
-    }
-    .btn-primary:hover {
-      background-color: #931223;
-    }
-    .btn-secondary {
-      background-color: transparent;
-      color: var(--primary-color);
-      border: 2px solid var(--primary-color);
-    }
-    .btn-secondary:hover {
-      background-color: var(--primary-color);
-      color: #ffffff;
-    }
-
-    /* Hero section */
-    #hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: #ffffff;
-      background-image: url('assets/hero-bg.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-    #hero::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(0deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.5));
-      z-index: 0;
-    }
-    #hero .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-    #hero h1 {
-      font-size: 3rem;
-      line-height: 1.2;
-      margin-bottom: 20px;
-    }
-    #hero p {
-      font-size: 1.1rem;
-      margin-bottom: 30px;
-      color: #cccccc;
-    }
-
-    /* Generic section styling */
-    section {
-      padding: 80px 0;
-    }
-    section h2 {
-      text-align: center;
-      font-size: 2.2rem;
-      margin-bottom: 40px;
-      color: #ffffff;
-      position: relative;
-    }
-    section h2::after {
-      content: '';
-      width: 60px;
-      height: 4px;
-      background: var(--primary-color);
-      display: block;
-      margin: 10px auto 0 auto;
-    }
-
-    /* About section */
-    #about .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 40px;
-      align-items: center;
-    }
-    #about .about-text {
-      font-size: 1rem;
-      color: #cccccc;
-    }
-
-    /* Features section */
-    #features .features-grid {
-      display: grid;
-      /* Use smaller minimum width so five cards can sit on a single row on large screens */
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-    }
-    #features .feature-card {
-      background-color: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 30px 20px;
-      text-align: center;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    #features .feature-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
-    }
-    #features .feature-card i {
-      font-size: 2rem;
-      margin-bottom: 15px;
-      color: var(--primary-color);
-    }
-    #features .feature-card h3 {
-      font-size: 1.2rem;
-      margin-bottom: 10px;
-      color: #ffffff;
-    }
-    #features .feature-card p {
-      font-size: 0.9rem;
-      color: #cccccc;
-      margin-bottom: 20px;
-    }
-    #features .feature-card a {
-      display: inline-block;
-      padding: 10px 16px;
-      font-size: 0.85rem;
-      border-radius: 4px;
-      background-color: var(--primary-color);
-      color: #ffffff;
-      text-transform: uppercase;
-    }
-
-    /* Persona section */
-    #persona .persona-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-    }
-    #persona .persona-card {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      transition: transform 0.3s ease;
-    }
-    #persona .persona-card:hover {
-      transform: translateY(-6px);
-    }
-    #persona .persona-card img {
-      width: 100%;
-      height: 240px;
-      object-fit: cover;
-      object-position: center;
-    }
-    #persona .persona-card .persona-content {
-      padding: 20px;
-    }
-    #persona .persona-card h3 {
-      margin-bottom: 10px;
-      font-size: 1.3rem;
-      color: #ffffff;
-    }
-    #persona .persona-card p {
-      font-size: 0.9rem;
-      color: #cccccc;
-      margin-bottom: 15px;
-    }
-    #persona .persona-card a {
-      font-size: 0.85rem;
-      color: var(--primary-color);
-      text-transform: uppercase;
-      font-weight: 600;
-    }
-
-    /* 3D Experience section */
-    #experience {
-      position: relative;
-      background-image: url('assets/experience-bg.jpg');
-      background-size: cover;
-      background-position: center;
-    }
-    #experience::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(0deg, rgba(10, 10, 10, 0.9), rgba(10, 10, 10, 0.6));
-    }
-    #experience .experience-content {
-      position: relative;
-      z-index: 1;
-      max-width: 800px;
-      margin: 0 auto;
-      text-align: center;
-      color: #ffffff;
-      padding: 100px 20px;
-    }
-    #experience p {
-      font-size: 1rem;
-      color: #cccccc;
-      margin-bottom: 30px;
-    }
-    #experience .cta-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    /* Aquecendo Vidas section */
-    #aquecendo {
-      background-color: var(--secondary-color);
-      text-align: center;
-      color: #ffffff;
-    }
-    #aquecendo p {
-      color: #cccccc;
-      margin-bottom: 20px;
-    }
-    #aquecendo a.btn-primary {
-      margin-top: 20px;
-    }
-
-    /* Footer */
-    footer {
-      background-color: #0d0d0d;
-      padding: 40px 0;
-      color: #888888;
-    }
-    footer .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 30px;
-    }
-    footer h3 {
-      color: #ffffff;
-      margin-bottom: 15px;
-    }
-    footer ul {
-      list-style: none;
-    }
-    footer ul li {
-      margin-bottom: 10px;
-    }
-    footer ul li a {
-      color: #888888;
-      font-size: 0.9rem;
-      transition: color 0.3s ease;
-    }
-    footer ul li a:hover {
-      color: var(--primary-color);
-    }
-    footer .social-icons {
-      display: flex;
-      gap: 15px;
-      margin-top: 15px;
-    }
-    footer .social-icons a {
-      color: #888888;
-      font-size: 1.2rem;
-      transition: color 0.3s ease;
-    }
-    footer .social-icons a:hover {
-      color: var(--primary-color);
-    }
-    @media (max-width: 768px) {
-      header {
-        padding: 0 20px;
-      }
-      #hero h1 {
-        font-size: 2.4rem;
-      }
-      #hero p {
-        font-size: 1rem;
-      }
-    }
-
-    /* Modal de vídeo para introdução */
-    #videoModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.9);
-      justify-content: center;
-      align-items: center;
-      z-index: 2000;
-    }
-    /* Container interno para centralizar o vídeo e o botão */
-    #videoContainer {
-      position: relative;
-      width: 50%;
-      max-width: 50%;
-    }
-    #videoContainer video {
-      width: 100%;
-      border-radius: 8px;
-      display: block;
-    }
-    /* Botão de fechar dentro do modal de vídeo */
-    #videoContainer .close-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 1.6rem;
-      cursor: pointer;
-      line-height: 1;
-      z-index: 10;
-    }
-
-    /* Botões laterais para promoções (indique e ganhe / desconto) */
-    #promoButtons {
-      position: fixed;
-      bottom: 90px; /* posicionado acima do botão do chat */
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      z-index: 2500;
-    }
-    .promo-btn {
-      background-color: var(--primary-color);
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-      padding: 6px 10px;
-      font-size: 0.75rem;
-      cursor: pointer;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-      transition: background-color 0.2s ease;
-    }
-    .promo-btn:hover {
-      background-color: #931223;
-    }
-
-    /* Estilo para modais de promoção/indicação */
-    .popup-modal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.85);
-      justify-content: center;
-      align-items: center;
-      z-index: 3000;
-    }
-    .popup-modal .modal-box {
-      background-color: #111111;
-      padding: 30px;
-      border-radius: 8px;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      position: relative;
-    }
-    .popup-modal .modal-box h3 {
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-      color: #ffffff;
-    }
-    .popup-modal .modal-box p {
-      font-size: 0.95rem;
-      color: #cccccc;
-      margin-bottom: 20px;
-    }
-    .popup-modal .modal-box a {
-      display: inline-block;
-      padding: 10px 20px;
-      border-radius: 4px;
-      background-color: var(--primary-color);
-      color: #ffffff;
-      font-weight: 600;
-      margin-top: 10px;
-    }
-    .popup-modal .modal-box .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 1.2rem;
-      background: none;
-      border: none;
-      color: #ffffff;
-      cursor: pointer;
-    }
-
-    /* === Chat widget styling === */
-    #chatWidget {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 4000;
-    }
-    #chatWidget #chatBody {
-      display: none;
-    }
-    #chatWidget.open #chatBody {
-      display: block;
-    }
-    #chatWidget.open #chatToggle {
-      display: none;
-    }
-    #chatToggle {
-      width: 60px;
-      height: 60px;
-      background-color: #25D366;
-      color: #ffffff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-      cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    }
+    :root { --bg-color:#0a0a0a; --primary-color:#b3152f; --secondary-color:#111111; --text-color:#f0f0f0; --muted-color:#888888; --card-bg:#0f0f0f; }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Montserrat',sans-serif;background-color:var(--bg-color);color:var(--text-color);line-height:1.6;overflow-x:hidden}
+    a{color:var(--primary-color);text-decoration:none}
+    img{max-width:100%;height:auto;display:block}
+    .container{width:90%;max-width:1200px;margin:0 auto}
+    header{position:fixed;top:0;left:0;right:0;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 40px;background-color:rgba(10,10,10,.85);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.05);z-index:1000}
+    header .logo img{height:50px;filter:invert(1)}
+    header nav{display:flex;gap:20px}
+    header nav a{font-weight:600;font-size:.9rem;color:var(--text-color);transition:color .3s ease}
+    header nav a:hover{color:var(--primary-color)}
+    .btn{display:inline-block;padding:12px 24px;border-radius:4px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;transition:background-color .3s ease,color .3s ease}
+    .btn-primary{background-color:var(--primary-color);color:#fff}
+    .btn-primary:hover{background-color:#931223}
+    .btn-secondary{background-color:transparent;color:var(--primary-color);border:2px solid var(--primary-color)}
+    .btn-secondary:hover{background-color:var(--primary-color);color:#fff}
+    #hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff;background-image:url('assets/hero-bg.jpg');background-size:cover;background-position:center}
+    #hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(0deg,rgba(10,10,10,.9),rgba(10,10,10,.5));z-index:0}
+    #hero .hero-content{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:0 20px}
+    #hero h1{font-size:3rem;line-height:1.2;margin-bottom:20px}
+    #hero p{font-size:1.1rem;margin-bottom:30px;color:#ccc}
+    section{padding:80px 0}
+    section h2{text-align:center;font-size:2.2rem;margin-bottom:40px;color:#fff;position:relative}
+    section h2::after{content:'';width:60px;height:4px;background:var(--primary-color);display:block;margin:10px auto 0}
+    #about .about-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:40px;align-items:center}
+    #about .about-text{font-size:1rem;color:#ccc}
+    #features .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px}
+    #features .feature-card{background-color:var(--card-bg);border:1px solid rgba(255,255,255,.05);border-radius:8px;padding:30px 20px;text-align:center;transition:transform .3s ease,box-shadow .3s ease}
+    #features .feature-card:hover{transform:translateY(-5px);box-shadow:0 5px 20px rgba(0,0,0,.5)}
+    #features .feature-card i{font-size:2rem;margin-bottom:15px;color:var(--primary-color)}
+    #features .feature-card h3{font-size:1.2rem;margin-bottom:10px;color:#fff}
+    #features .feature-card p{font-size:.9rem;color:#ccc;margin-bottom:20px}
+    #features .feature-card a{display:inline-block;padding:10px 16px;font-size:.85rem;border-radius:4px;background-color:var(--primary-color);color:#fff;text-transform:uppercase}
+    #persona .persona-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:30px}
+    #persona .persona-card{background-color:var(--card-bg);border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,.05);transition:transform .3s ease}
+    #persona .persona-card:hover{transform:translateY(-6px)}
+    #persona .persona-card img{width:100%;height:240px;object-fit:cover;object-position:center}
+    #persona .persona-card .persona-content{padding:20px}
+    #persona .persona-card h3{margin-bottom:10px;font-size:1.3rem;color:#fff}
+    #persona .persona-card p{font-size:.9rem;color:#ccc;margin-bottom:15px}
+    #persona .persona-card a{font-size:.85rem;color:var(--primary-color);text-transform:uppercase;font-weight:600}
+    #experience{position:relative;background-image:url('assets/experience-bg.jpg');background-size:cover;background-position:center}
+    #experience::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(0deg,rgba(10,10,10,.9),rgba(10,10,10,.6))}
+    #experience .experience-content{position:relative;z-index:1;max-width:800px;margin:0 auto;text-align:center;color:#fff;padding:100px 20px}
+    #experience p{font-size:1rem;color:#ccc;margin-bottom:30px}
+    #experience .cta-buttons{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+    #aquecendo{background-color:var(--secondary-color);text-align:center;color:#fff}
+    #aquecendo p{color:#ccc;margin-bottom:20px}
+    #aquecendo a.btn-primary{margin-top:20px}
+    footer{background-color:#0d0d0d;padding:40px 0;color:#888}
+    footer .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px}
+    footer h3{color:#fff;margin-bottom:15px}
+    footer ul{list-style:none}
+    footer ul li{margin-bottom:10px}
+    footer ul li a{color:#888;font-size:.9rem;transition:color .3s ease}
+    footer ul li a:hover{color:var(--primary-color)}
+    footer .social-icons{display:flex;gap:15px;margin-top:15px}
+    footer .social-icons a{color:#888;font-size:1.2rem;transition:color .3s ease}
+    footer .social-icons a:hover{color:var(--primary-color)}
+    @media (max-width:768px){header{padding:0 20px}#hero h1{font-size:2.4rem}#hero p{font-size:1rem}}
+    #videoModal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.9);justify-content:center;align-items:center;z-index:2000}
+    #videoContainer{position:relative;width:50%;max-width:50%}
+    #videoContainer video{width:100%;border-radius:8px;display:block}
+    #videoContainer .close-btn{position:absolute;top:8px;right:8px;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;line-height:1;z-index:10}
+    #promoButtons{position:fixed;bottom:90px;right:20px;display:flex;flex-direction:column;gap:8px;z-index:2500}
+    .promo-btn{background-color:var(--primary-color);color:#fff;border:none;border-radius:4px;padding:6px 10px;font-size:.75rem;cursor:pointer;box-shadow:0 2px 4px rgba(0,0,0,.2);transition:background-color .2s ease}
+    .promo-btn:hover{background-color:#931223}
+    .popup-modal{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background-color:rgba(0,0,0,.85);justify-content:center;align-items:center;z-index:3000}
+    .popup-modal .modal-box{background-color:#111;padding:30px;border-radius:8px;width:90%;max-width:420px;text-align:center;position:relative}
+    .popup-modal .modal-box h3{margin-bottom:15px;font-size:1.4rem;color:#fff}
+    .popup-modal .modal-box p{font-size:.95rem;color:#ccc;margin-bottom:20px}
+    .popup-modal .modal-box a{display:inline-block;padding:10px 20px;border-radius:4px;background-color:var(--primary-color);color:#fff;font-weight:600;margin-top:10px}
+    .popup-modal .modal-box .close-btn{position:absolute;top:10px;right:10px;font-size:1.2rem;background:none;border:none;color:#fff;cursor:pointer}
+    #chatWidget{position:fixed;bottom:20px;right:20px;z-index:4000}
+    #chatWidget #chatBody{display:none}
+    #chatWidget.open #chatBody{display:block}
+    #chatWidget.open #chatToggle{display:none}
+    #chatToggle{width:60px;height:60px;background-color:#25D366;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;cursor:pointer;box-shadow:0 4px 10px rgba(0,0,0,.3)}
   </style>
 </head>
 <body>
-  <!-- Modal que exibe o vídeo de introdução ao carregar o site -->
   <div id="videoModal">
-    <!-- Container interno para manter o vídeo e o botão de fechar alinhados -->
     <div id="videoContainer">
-      <video id="introVideo" src="assets/intro.mp4" autoplay playsinline muted></video>
-      <!-- Botão para fechar o vídeo dentro do próprio contêiner -->
-      <button id="videoCloseBtn" class="close-btn">&times;</button>
+      <video id="introVideo" src="assets/intro.mp4" autoplay muted playsinline></video>
+      <button id="videoCloseBtn" class="close-btn">×</button>
     </div>
   </div>
 
-  <!-- Modal para indicação e recompensa -->
   <div id="referModal" class="popup-modal">
     <div class="modal-box">
-      <button class="close-btn" onclick="closeModal('referModal')">&times;</button>
+      <button class="close-btn" onclick="closeModal('referModal')">×</button>
       <h3>Indique e Ganhe</h3>
       <p>Conhece uma costureira, academia ou fornecedor? Indique e ganhe pontos!</p>
       <a href="costureira.html">Indicar agora</a>
     </div>
   </div>
 
-  <!-- Modal para cupom de desconto -->
   <div id="discountModal" class="popup-modal">
     <div class="modal-box">
-      <button class="close-btn" onclick="closeModal('discountModal')">&times;</button>
+      <button class="close-btn" onclick="closeModal('discountModal')">×</button>
       <h3>Desconto Especial</h3>
       <p>Complete seu cadastro e garanta 5% de desconto na sua primeira compra.</p>
       <a href="costureira.html">Completar cadastro</a>
     </div>
   </div>
 
-  <!-- Modal para vídeo ONG/Aquecendo Vidas -->
-  <div class="popup-modal" id="ongVideoModal">
+  <div id="ongVideoModal" class="popup-modal">
     <div class="modal-box" style="max-width: 640px;">
       <button class="close-btn" onclick="closeModal('ongVideoModal')">×</button>
       <h3>Aquecendo Vidas</h3>
-      <video controls style="width: 100%; border-radius: 8px; margin-bottom: 15px;" src="assets/Cinematic_8second_video_202511021939.mp4"></video>
+      <img src="assets/Cinematic_8second_video_202511022004.jpg" style="width: 100%; border-radius: 8px; margin-bottom: 15px;" alt="Aquecendo Vidas GIF">
       <p>Participe dessa corrente de calor humano.</p>
       <a href="https://wa.me/5511979690880?text=Quero%20ajudar%20no%20Aquecendo%20Vidas" target="_blank">Quero ajudar</a>
     </div>
   </div>
-  <!-- Chat widget -->
+
   <div id="chatWidget">
-    <!-- Botão flutuante para abrir o chat -->
     <div id="chatToggle"><i class="fa-solid fa-comments"></i></div>
     <div id="chatBody" style="background:#111;border:1px solid #333;border-radius:8px;padding:15px;color:#fff;width:320px;max-width:90%;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
         <strong>Contato Rápido</strong>
-        <button id="chatCloseBtn" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;">&times;</button>
+        <button id="chatCloseBtn" style="background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer;">×</button>
       </div>
       <div style="margin-bottom:8px;">
         <label for="personaSelect" style="font-size:0.8rem;color:#ccc;">Quem é você?</label>
@@ -599,15 +156,15 @@
       </div>
       <div style="margin-bottom:8px;">
         <label for="chatName" style="font-size:0.8rem;color:#ccc;">Nome</label>
-        <input type="text" id="chatName" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
+        <input id="chatName" type="text" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
       </div>
       <div style="margin-bottom:8px;">
         <label for="chatEmail" style="font-size:0.8rem;color:#ccc;">Email</label>
-        <input type="email" id="chatEmail" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
+        <input id="chatEmail" type="email" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
       </div>
       <div style="margin-bottom:8px;">
         <label for="chatPhone" style="font-size:0.8rem;color:#ccc;">Telefone</label>
-        <input type="tel" id="chatPhone" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
+        <input id="chatPhone" type="tel" style="width:100%;padding:6px;background:#222;border:1px solid #444;border-radius:4px;color:#fff;" />
       </div>
       <button id="chatSendBtn" style="width:100%;padding:8px;background:var(--primary-color);color:#fff;border:none;border-radius:4px;cursor:pointer;margin-top:8px;">Enviar</button>
       <div style="display:flex;justify-content:space-around;margin-top:10px;">
@@ -617,332 +174,4 @@
     </div>
   </div>
 
-  <!-- Botões laterais para indicação e desconto -->
-  <div id="promoButtons">
-    <button id="promoReferBtn" class="promo-btn">Indique e Ganhe</button>
-    <button id="promoDiscountBtn" class="promo-btn">Desconto</button>
-  </div>
-  <!-- Header -->
-  <header>
-    <div class="logo">
-      <a href="#"><img src="assets/logo.png" alt="Fight Lab"></a>
-    </div>
-    <!-- Navegação superior removida conforme solicitado; escondemos o elemento para manter o layout -->
-    <nav style="display:none;"></nav>
-  </header>
-
-  <!-- Hero section -->
-  <section id="hero">
-    <div class="hero-content">
-      <h1>Descubra o futuro dos kimonos</h1>
-      <p>Unimos força, técnica e estilo em uma plataforma inovadora. Monte seu kimono perfeito e personalize com tecnologia de ponta.</p>
-      <a href="monte.html" class="btn btn-primary">Monte seu kimono</a>
-      <a href="https://wa.me/5511979690880" target="_blank" class="btn btn-secondary">Fale Conosco</a>
-    </div>
-  </section>
-
-  <!-- About section -->
-  <section id="about">
-    <h2>Sobre a Fight Lab</h2>
-    <div class="container about-grid">
-      <div class="about-text">
-        <p>Revolucionamos a forma como os praticantes de artes marciais se relacionam com seus kimonos. Acreditamos que cada golpe conta uma história — por isso criamos uma plataforma onde você pode criar e personalizar kimonos sob medida. Conectamos costureiras, academias e fornecedores em um ecossistema completo.</p>
-        <p>Também temos um compromisso social: o programa <strong>Aquecendo Vidas</strong> distribui kimonos em bom estado e recondiciona peças antigas em cobertores para pessoas em situação de rua e animais de ONGs. Junte-se a nós nessa jornada.</p>
-      </div>
-      <div>
-        <img src="assets/about1.png" alt="Praticante de artes marciais com kimono Fight Lab">
-      </div>
-        <!-- Removido o segundo retrato de homens com kimonos pretos para simplificar a seção -->
-    </div>
-  </section>
-
-  <!-- Features section -->
-  <section id="features">
-    <h2>Soluções completas</h2>
-    <div class="container">
-      <div class="features-grid">
-        <div class="feature-card" id="monte">
-          <i class="fa-solid fa-cube"></i>
-          <h3>Monte seu Kimono</h3>
-          <p>Monte e personalize seu kimono sob medida com seleção de medidas, tecidos, cores e patches em uma experiência 3D interativa.</p>
-          <a href="monte.html">Começar</a>
-        </div>
-        <div class="feature-card" id="leasing">
-          <i class="fa-solid fa-handshake"></i>
-          <h3>Leasing</h3>
-          <p>Alugue seu kimono por ciclos de 12&nbsp;meses, com pagamentos mensais e a possibilidade de renovar com desconto ao devolver.</p>
-          <!-- Todos os CTAs de montagem levam para a página de personalização -->
-          <a href="monte.html">Saiba mais</a>
-        </div>
-        <div class="feature-card" id="equipes">
-          <i class="fa-solid fa-users"></i>
-          <h3>Minha equipe</h3>
-          <p>Se você é dono de academia ou coach, crie kimonos padronizados para todo o time e fortifique a identidade da sua equipe.</p>
-          <a href="agenda.html">Falar com a gente</a>
-        </div>
-        <div class="feature-card" id="costureira">
-          <i class="fa-solid fa-scissors"></i>
-          <h3>Sou Costureira</h3>
-          <p>Conectamos artesãs talentosas ao nosso ecossistema. Cadastre-se como parceira e receba encomendas de kimonos personalizados.</p>
-          <a href="costureira.html">Quero participar</a>
-        </div>
-        <div class="feature-card" id="aquecendo-cta">
-          <i class="fa-solid fa-heart"></i>
-          <h3>Aquecendo Vidas</h3>
-          <p>Participe da nossa iniciativa solidária doando kimonos e ajudando a aquecer o treino de quem mais precisa.</p>
-          <a href="#aquecendo">Contribuir</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Persona section -->
-  <section id="persona">
-    <h2>Para todos os perfis</h2>
-    <div class="container">
-      <div class="persona-grid">
-        <div class="persona-card">
-          <img src="assets/persona-praticante.jpg" alt="Praticante de artes marciais">
-          <div class="persona-content">
-            <h3>Atletas e Estudantes</h3>
-            <p>Encontre o kimono perfeito para treinar e competir, combinando estilo, conforto e tecnologia.</p>
-            <!-- Link para a página de montagem do kimono -->
-            <a href="monte.html">Descubra</a>
-          </div>
-        </div>
-        <div class="persona-card">
-          <img src="assets/persona-costureira.jpg" alt="Costureira parceira">
-          <div class="persona-content">
-            <h3>Costureiras parceiras</h3>
-            <p>Conecte-se a clientes apaixonados por artes marciais e expanda sua rede como artesã especializada.</p>
-            <a href="costureira.html">Meu perfil</a>
-            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
-          </div>
-        </div>
-        <div class="persona-card">
-          <img src="assets/persona-team.jpg" alt="Dono de academia">
-          <div class="persona-content">
-            <h3>Donos de Academias</h3>
-            <p>Equipe seu time com kimonos personalizados e crie um ambiente de treino ainda mais profissional.</p>
-            <a href="agenda.html">Agendar reunião</a>
-            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
-          </div>
-        </div>
-        <div class="persona-card">
-        <img src="assets/persona-supplier.png" alt="Fornecedores de materiais">
-          <div class="persona-content">
-            <h3>Fornecedores</h3>
-            <p>Forneça tecidos e acessórios de qualidade para um mercado em constante crescimento.</p>
-            <a href="fornecedor.html">Saiba mais</a>
-            <br><a href="javascript:void(0)" onclick="openReferModal()" class="indique-link" style="font-size:0.8rem; color: var(--primary-color);">Indique e ganhe</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 3D Experience section -->
-  <section id="experience">
-    <div class="experience-content">
-      <h2>Experiência 3D Imersiva</h2>
-      <p>Nossa ferramenta de modelagem 3D permite que você visualize cada detalhe do seu kimono antes da costura. Escolha medidas, cores e adornos em tempo real e veja o resultado ganhar vida diante dos seus olhos.</p>
-      <div class="cta-buttons">
-        <a href="monte.html" class="btn btn-primary">Começar agora</a>
-        <a href="https://wa.me/5511979690880?text=Ol%C3%A1,+gostaria+de+personalizar+meu+kimono+Fight+Lab!" target="_blank" class="btn btn-secondary">Fale com um especialista</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Aquecendo vidas section -->
-  <section id="aquecendo">
-    <div class="aquecendo-content">
-      <h2>Aquecendo Vidas</h2>
-      <p>O Fight Lab acredita no poder das artes marciais para fortalecer o corpo e transformar comunidades. No programa <strong>Aquecendo Vidas</strong> recolhemos kimonos em boas condições para doar e transformamos peças antigas em cobertores, beneficiando pessoas em situação de rua e animais de ONGs. Participe dessa corrente de calor humano.</p>
-      <a href="https://wa.me/5511979690880?text=Quero+contribuir+com+o+projeto+Aquecendo+Vidas!" class="btn btn-primary" target="_blank">Quero ajudar</a>
-      <button class="btn btn-secondary" onclick="openOngVideoModal()" style="margin-left: 10px;">Ver vídeo</button>
-    </div>
-  </section>
-
-  <!-- Footer section -->
-  <footer id="contact">
-    <div class="container footer-grid">
-      <div>
-        <h3>Fight Lab</h3>
-        <p>Força, técnica e estilo em cada detalhe. Conectamos pessoas, talentos e tecnologia em uma plataforma única para artes marciais.</p>
-      </div>
-      <div>
-        <h3>Links Rápidos</h3>
-        <ul>
-          <!-- Quick links updated: unify personalização/monte -->
-          <li><a href="monte.html">Monte seu kimono</a></li>
-          <li><a href="monte.html">Leasing</a></li>
-          <li><a href="agenda.html">Minha equipe</a></li>
-          <li><a href="costureira.html">Sou costureira</a></li>
-          <li><a href="#aquecendo">Aquecendo vidas</a></li>
-        </ul>
-      </div>
-      <div>
-        <h3>Contato</h3>
-        <p>Email: <a href="mailto:cauesashihara@gmail.com">fightlab_br</a></p>
-        <div class="social-icons">
-          <a href="https://wa.me/5511979690880" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <!-- Ícone do vídeo: clique para reabrir a introdução -->
-          <a href="javascript:void(0)" onclick="openVideoModal()"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-    </div>
-    <div class="container" style="margin-top:30px; text-align:center; border-top:1px solid rgba(255,255,255,0.05); padding-top:20px; font-size:0.85rem;">
-      <p>&copy; 2025 Fight Lab. Todos os direitos reservados.</p>
-    </div>
-  </footer>
-
-  <!-- Script para controlar a exibição do vídeo de introdução -->
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var videoModal = document.getElementById('videoModal');
-      var introVideo = document.getElementById('introVideo');
-      var videoCloseBtn = document.getElementById('videoCloseBtn');
-      var referModal = document.getElementById('referModal');
-      var discountModal = document.getElementById('discountModal');
-
-      // Função para abrir o modal do vídeo
-      window.openVideoModal = function() {
-        videoModal.style.display = 'flex';
-        if (introVideo) {
-          introVideo.currentTime = 0;
-          introVideo.play();
-        }
-      };
-      // Função para fechar qualquer modal
-      window.closeModal = function(id) {
-        var el = document.getElementById(id);
-        if (el) el.style.display = 'none';
-        // Não abrir automaticamente nenhum outro modal ao fechar
-        if (id === 'videoModal' && introVideo) {
-          introVideo.pause();
-        }
-      };
-      window.openReferModal = function() {
-        referModal.style.display = 'flex';
-      };
-      // Função para abrir o modal do vídeo ONG
-      window.openOngVideoModal = function() {
-        var ongModal = document.getElementById('ongVideoModal');
-        if (ongModal) {
-          ongModal.style.display = 'flex';
-        }
-      };
-      // Mostrar o vídeo modal imediatamente ao carregar
-
-      // Mostrar o vídeo modal imediatamente ao carregar
-      videoModal.style.display = 'flex';
-      introVideo.play();
-      // Fechar ao terminar
-      introVideo.addEventListener('ended', function() {
-        videoModal.style.display = 'none';
-      });
-      if (videoCloseBtn) {
-        videoCloseBtn.addEventListener('click', function() {
-          closeModal('videoModal');
-        });
-      }
-      // Removemos a abertura automática dos modais de indicação e desconto
-
-      // === Chat widget logic ===
-      var chatWidget = document.getElementById('chatWidget');
-      var chatToggle = document.getElementById('chatToggle');
-      var chatCloseBtn = document.getElementById('chatCloseBtn');
-      var chatSendBtn = document.getElementById('chatSendBtn');
-      var referBtnChat = document.getElementById('referBtnChat');
-      var discountBtnChat = document.getElementById('discountBtnChat');
-      var personaSelect = document.getElementById('personaSelect');
-      var chatName = document.getElementById('chatName');
-      var chatEmail = document.getElementById('chatEmail');
-      var chatPhone = document.getElementById('chatPhone');
-
-      // Toggle chat open/close
-      if (chatToggle && chatWidget) {
-        chatToggle.addEventListener('click', function() {
-          chatWidget.classList.toggle('open');
-        });
-      }
-      if (chatCloseBtn && chatWidget) {
-        chatCloseBtn.addEventListener('click', function() {
-          chatWidget.classList.remove('open');
-        });
-      }
-
-      // Enviar e-mail com dados preenchidos pelo usuário
-      if (chatSendBtn) {
-        chatSendBtn.addEventListener('click', function() {
-          var persona = personaSelect ? personaSelect.value : '';
-          var name = chatName ? chatName.value.trim() : '';
-          var email = chatEmail ? chatEmail.value.trim() : '';
-          var phone = chatPhone ? chatPhone.value.trim() : '';
-          if (!persona || !name || !email || !phone) {
-            alert('Por favor, preencha todos os campos antes de enviar.');
-            return;
-          }
-          // Monta o corpo do e-mail com as informações inseridas
-          var body = '';
-          body += 'Quero saber mais sobre a Fight Lab.' + '\n\n';
-          body += 'Persona: ' + persona + '\n';
-          body += 'Nome: ' + name + '\n';
-          body += 'Email: ' + email + '\n';
-          body += 'Telefone: ' + phone + '\n';
-          // Recipients: envia para Fight Lab e copia para o próprio usuário
-          var recipients = 'cauesashihara@gmail.com,' + email;
-          var subject = 'Quero saber mais - Fight Lab';
-          var mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
-          window.open(mailtoLink, '_blank');
-          // fecha o chat após o envio
-          if (chatWidget) chatWidget.classList.remove('open');
-        });
-      }
-
-      // Open refer modal from chat
-      if (referBtnChat) {
-        referBtnChat.addEventListener('click', function() {
-          if (typeof openReferModal === 'function') {
-            openReferModal();
-          }
-          // close chat after triggering
-          if (chatWidget) chatWidget.classList.remove('open');
-        });
-      }
-      // Open discount modal from chat
-      if (discountBtnChat) {
-        discountBtnChat.addEventListener('click', function() {
-          var dm = document.getElementById('discountModal');
-          if (dm) {
-            dm.style.display = 'flex';
-          }
-          // close chat after triggering
-          if (chatWidget) chatWidget.classList.remove('open');
-        });
-      }
-
-      // === Promo buttons outside chat ===
-      var promoReferBtn = document.getElementById('promoReferBtn');
-      var promoDiscountBtn = document.getElementById('promoDiscountBtn');
-      if (promoReferBtn) {
-        promoReferBtn.addEventListener('click', function() {
-          if (typeof openReferModal === 'function') {
-            openReferModal();
-          }
-        });
-      }
-      if (promoDiscountBtn) {
-        promoDiscountBtn.addEventListener('click', function() {
-          var dm = document.getElementById('discountModal');
-          if (dm) {
-            dm.style.display = 'flex';
-          }
-        });
-      }
-    });
-  </script>
-</body>
-</html>
+  <div id="promoButtons
