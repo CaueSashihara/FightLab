@@ -567,6 +567,16 @@
     </div>
   </div>
 
+  <!-- Modal para vídeo ONG/Aquecendo Vidas -->
+  <div class="popup-modal" id="ongVideoModal">
+    <div class="modal-box" style="max-width: 640px;">
+      <button class="close-btn" onclick="closeModal('ongVideoModal')">×</button>
+      <h3>Aquecendo Vidas</h3>
+      <video controls style="width: 100%; border-radius: 8px; margin-bottom: 15px;" src="assets/Cinematic_8second_video_202511021939.mp4"></video>
+      <p>Participe dessa corrente de calor humano.</p>
+      <a href="https://wa.me/5511979690880?text=Quero%20ajudar%20no%20Aquecendo%20Vidas" target="_blank">Quero ajudar</a>
+    </div>
+  </div>
   <!-- Chat widget -->
   <div id="chatWidget">
     <!-- Botão flutuante para abrir o chat -->
@@ -749,6 +759,7 @@
       <h2>Aquecendo Vidas</h2>
       <p>O Fight Lab acredita no poder das artes marciais para fortalecer o corpo e transformar comunidades. No programa <strong>Aquecendo Vidas</strong> recolhemos kimonos em boas condições para doar e transformamos peças antigas em cobertores, beneficiando pessoas em situação de rua e animais de ONGs. Participe dessa corrente de calor humano.</p>
       <a href="https://wa.me/5511979690880?text=Quero+contribuir+com+o+projeto+Aquecendo+Vidas!" class="btn btn-primary" target="_blank">Quero ajudar</a>
+      <button class="btn btn-secondary" onclick="openOngVideoModal()" style="margin-left: 10px;">Ver vídeo</button>
     </div>
   </section>
 
@@ -816,6 +827,14 @@
       window.openReferModal = function() {
         referModal.style.display = 'flex';
       };
+      // Função para abrir o modal do vídeo ONG
+      window.openOngVideoModal = function() {
+        var ongModal = document.getElementById('ongVideoModal');
+        if (ongModal) {
+          ongModal.style.display = 'flex';
+        }
+      };
+      // Mostrar o vídeo modal imediatamente ao carregar
 
       // Mostrar o vídeo modal imediatamente ao carregar
       videoModal.style.display = 'flex';
