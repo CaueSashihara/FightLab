@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      background: #0a0e12;
-      color: #fff;
+      background: #000000;
+      color: #ffffff;
       font-family: 'Segoe UI', Arial, sans-serif;
       margin: 0;
     }
@@ -20,9 +20,9 @@
     }
     #preview {
       width: 410px; height: 540px;
-      background: #fff;
+      background: #ffffff;
       border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(0, 255, 150, 0.2);
+      box-shadow: 0 4px 24px rgba(208, 33, 53, 0.2);
       position: relative;
     }
     .overlay {
@@ -32,17 +32,17 @@
     }
     .form {
       flex: 1;
-      background: #111418;
+      background: #1a1a1a;
       border-radius: 14px;
       padding: 24px 18px;
       min-width: 310px;
-      border: 1px solid #1a1f26;
+      border: 1px solid #333333;
     }
     label {
       display: block;
       margin: 14px 0 7px 0;
       font-weight: 700;
-      color: #fff;
+      color: #ffffff;
     }
     select,
     input[type="text"],
@@ -52,35 +52,33 @@
       padding: 10px 12px;
       margin-bottom: 10px;
       border-radius: 8px;
-      border: 1px solid #1a1f26;
-      background: #1a1f26;
-      color: #fff;
+      border: 1px solid #333333;
+      background: #2a2a2a;
+      color: #ffffff;
     }
     select:focus,
     input[type="text"]:focus {
       outline: none;
-      border-color: #00ff96;
-      box-shadow: 0 0 8px rgba(0, 255, 150, 0.3);
+      border-color: #d02135;
+      box-shadow: 0 0 8px rgba(208, 33, 53, 0.3);
     }
     button {
-      background: linear-gradient(135deg, #00ff96 0%, #00cc7a 100%);
-      color: #0a0e12;
+      background: #d02135;
+      color: #ffffff;
       font-weight: 700;
       cursor: pointer;
       border: none;
       transition: all 0.3s ease;
     }
     button:hover {
+      background: #b01b2c;
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 255, 150, 0.4);
+      box-shadow: 0 6px 20px rgba(208, 33, 53, 0.4);
     }
     h1 {
       margin: 24px 48px;
       font-size: 2rem;
-      background: linear-gradient(135deg, #00ff96 0%, #00cc7a 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: #d02135;
     }
   </style>
 </head>
@@ -96,10 +94,10 @@
              src="https://fightlab.s3.amazonaws.com/graciebarra_patch.png"
              style="position:absolute; left:170px; top:110px; width:62px; opacity:0.94; display:none;">
         <span id="faixa"
-              style="position:absolute; width:154px; height:18px; left:127px; top:410px; background:#222; border-radius:10px; opacity:0.95;">
+              style="position:absolute; width:154px; height:18px; left:127px; top:410px; background:#222222; border-radius:10px; opacity:0.95;">
         </span>
         <span id="customName"
-              style="position:absolute; left:120px; top:90px; font-size:1.17rem; color:#222; font-weight:800;">
+              style="position:absolute; left:120px; top:90px; font-size:1.17rem; color:#222222; font-weight:800;">
         </span>
       </div>
     </div>
@@ -112,11 +110,11 @@
       </select>
       <label for="faixaSel">Cor da Faixa:</label>
       <select id="faixaSel">
-        <option value="#faf6ee">Branca</option>
-        <option value="#00ff96">Verde Neon (FightLab)</option>
+        <option value="#ffffff">Branca</option>
+        <option value="#d02135">Vermelha (FightLab)</option>
+        <option value="#000000">Preta</option>
+        <option value="#808080">Cinza</option>
         <option value="#0080ff">Azul</option>
-        <option value="#ff1a6d">Rosa/Vermelho (FightLab)</option>
-        <option value="#111">Preta</option>
       </select>
       <label>
         <input type="checkbox" id="patchChk"> Adicionar patch/logo
