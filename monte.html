@@ -22,18 +22,27 @@
       padding: 20px;
     }
 
-    .header {
+    .hero-card {
+      background: rgba(26, 26, 26, 0.95);
+      border-radius: 14px;
+      padding: 60px 40px;
+      text-align: center;
       margin-bottom: 40px;
+      border: 1px solid #333333;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .header img {
-      height: 50px;
-      object-fit: contain;
+    .hero-card h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #d02135;
     }
 
-    .container {
+    .main-container {
       display: flex;
-      flex-direction: row;
       gap: 60px;
       align-items: flex-start;
       justify-content: center;
@@ -49,7 +58,6 @@
       width: 100%;
       max-width: 380px;
       border: 1px solid #333333;
-      order: 1;
     }
 
     label {
@@ -97,7 +105,6 @@
       justify-content: center;
       overflow: hidden;
       flex-shrink: 0;
-      order: 2;
     }
 
     #lutadorImg {
@@ -108,27 +115,19 @@
     }
 
     @media (max-width: 1024px) {
-      .container {
+      .main-container {
         flex-direction: column;
         gap: 40px;
-      }
-      
-      .form {
-        order: 0;
-      }
-      
-      #preview {
-        order: 0;
       }
     }
   </style>
 </head>
 <body>
-  <div class="header">
-    <img src="https://cauesashihara.github.io/FightLab/assets/logo.png" alt="Fight Lab Logo">
+  <div class="hero-card">
+    <h1>quase</h1>
   </div>
 
-  <div class="container">
+  <div class="main-container">
     <form class="form" oninput="updatePreview()">
       <label for="genero">Gênero:</label>
       <select id="genero">
