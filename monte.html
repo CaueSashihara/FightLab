@@ -20,15 +20,25 @@
     }
     #preview {
       width: 410px; height: 540px;
-      background: #ffffff;
+      background: #f5f1e8;
       border-radius: 16px;
       box-shadow: 0 4px 24px rgba(208, 33, 53, 0.2);
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
     }
     .overlay {
       position: absolute; left: 0; top: 0;
       width: 100%; height: 100%;
       pointer-events: none;
+    }
+    #lutadorImg {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
     }
     .form {
       flex: 1;
@@ -80,29 +90,37 @@
       font-size: 2rem;
       color: #d02135;
     }
+    .faixa-wrapper {
+      position: absolute;
+      bottom: 35%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 200px;
+      height: 20px;
+      border-radius: 10px;
+      opacity: 0.9;
+    }
   </style>
 </head>
 <body>
   <h1>🥋 Fight Lab - Simulador Lite</h1>
   <div class="container">
     <div id="preview">
-      <img id="kimonoImg"
-           src="https://fightlab.s3.amazonaws.com/kimono_branco.png"
-           style="width:410px; height:540px;">
+      <img id="lutadorImg"
+           src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png"
+           alt="Lutador">
       <div class="overlay">
-        <img id="patchImg"
-             src="https://fightlab.s3.amazonaws.com/graciebarra_patch.png"
-             style="position:absolute; left:170px; top:110px; width:62px; opacity:0.94; display:none;">
-        <span id="faixa"
-              style="position:absolute; width:154px; height:18px; left:127px; top:410px; background:#222222; border-radius:10px; opacity:0.95;">
-        </span>
-        <span id="customName"
-              style="position:absolute; left:120px; top:90px; font-size:1.17rem; color:#222222; font-weight:800;">
-        </span>
+        <div id="faixa" class="faixa-wrapper"></div>
       </div>
     </div>
-    <form class="form" oninput="updateKimono()">
-      <label for="tipo">Cor do Kimono:</label>
+    <form class="form" oninput="updateLutador()">
+      <label for="genero">Tipo de Lutador:</label>
+      <select id="genero">
+        <option value="homem">Homem</option>
+        <option value="mulher">Mulher</option>
+      </select>
+      <label for="tipo">Tipo de Kimono:</label>
       <select id="tipo">
         <option value="branco">Branco</option>
         <option value="azul">Azul</option>
@@ -116,9 +134,6 @@
         <option value="#808080">Cinza</option>
         <option value="#0080ff">Azul</option>
       </select>
-      <label>
-        <input type="checkbox" id="patchChk"> Adicionar patch/logo
-      </label>
       <label for="nome">Nome (Bordado):</label>
       <input type="text" id="nome" maxlength="14" placeholder="Ex.: L.Fontes">
       <button type="button" onclick="downloadPng()">Baixar PNG</button>
@@ -126,32 +141,31 @@
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script>
-    function updateKimono() {
-      const tipo = document.getElementById('tipo').value;
+    function updateLutador() {
+      const genero = document.getElementById('genero').value;
       const faixaCor = document.getElementById('faixaSel').value;
-      const patchOn = document.getElementById('patchChk').checked;
-      const nome = document.getElementById('nome').value;
-      const kimonoSrc = {
-        'branco': 'https://fightlab.s3.amazonaws.com/kimono_branco.png',
-        'azul': 'https://fightlab.s3.amazonaws.com/kimono_azul.png',
-        'preto': 'https://fightlab.s3.amazonaws.com/kimono_preto.png'
-      }[tipo];
-      document.getElementById('kimonoImg').src = kimonoSrc;
+      
+      const lutadorImg = genero === 'mulher' 
+        ? 'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png'
+        : 'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png';
+      
+      document.getElementById('lutadorImg').src = lutadorImg;
       document.getElementById('faixa').style.background = faixaCor;
-      document.getElementById('patchImg').style.display = patchOn ? 'block' : 'none';
-      document.getElementById('customName').textContent = nome;
     }
 
     function downloadPng() {
       const preview = document.getElementById('preview');
-      html2canvas(preview).then(canvas => {
+      html2canvas(preview, {
+        backgroundColor: null,
+        scale: 2
+      }).then(canvas => {
         const link = document.createElement('a');
-        link.download = 'kimono-fightlab.png';
+        link.download = 'lutador-fightlab.png';
         link.href = canvas.toDataURL();
         link.click();
       });
     }
-    updateKimono();
+    updateLutador();
   </script>
 </body>
 </html>
