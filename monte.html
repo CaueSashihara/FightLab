@@ -11,67 +11,61 @@
       box-sizing: border-box;
     }
     body {
-      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png') center/cover;
+      background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://images.unsplash.com/photo-1614730321146-b6fa6a46bcb4?w=1600&h=900&fit=crop') center/cover;
       background-attachment: fixed;
       color: #ffffff;
       font-family: 'Segoe UI', Arial, sans-serif;
       min-height: 100vh;
       display: flex;
-      align-items: center;
-      justify-content: center;
+      flex-direction: column;
       padding: 20px;
     }
     .header {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      padding: 30px 50px;
-      background: rgba(0, 0, 0, 0.8);
-      z-index: 10;
+      margin-bottom: 40px;
     }
     .header img {
-      height: 60px;
+      height: 50px;
       object-fit: contain;
     }
-    .wrapper {
+    .container {
       display: flex;
       gap: 60px;
       align-items: flex-start;
+      justify-content: center;
       max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    #preview {
+      width: 410px;
+      height: 540px;
+      background: #f5f1e8;
+      border-radius: 16px;
+      box-shadow: 0 4px 24px rgba(208, 33, 53, 0.3);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    #lutadorImg {
       width: 100%;
-      margin-top: 100px;
-    }
-    .title-section {
-      flex: 1;
-      text-align: center;
-      color: #ffffff;
-    }
-    .title-section h1 {
-      font-size: 3.5rem;
-      font-weight: 900;
-      margin-bottom: 20px;
-      line-height: 1.2;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
-    }
-    .title-section p {
-      font-size: 1.1rem;
-      margin-bottom: 40px;
-      color: #cccccc;
-      line-height: 1.6;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
     }
     .form {
       background: rgba(26, 26, 26, 0.95);
       border-radius: 14px;
-      padding: 40px 30px;
+      padding: 30px;
       width: 100%;
-      max-width: 400px;
+      max-width: 380px;
       border: 1px solid #333333;
-      flex: 0 0 auto;
     }
     label {
       display: block;
-      margin: 20px 0 8px 0;
+      margin: 15px 0 7px 0;
       font-weight: 700;
       color: #ffffff;
       font-size: 0.95rem;
@@ -81,7 +75,7 @@
       width: 100%;
       font-size: 1rem;
       padding: 12px 15px;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       border-radius: 8px;
       border: 1px solid #333333;
       background: #2a2a2a;
@@ -98,19 +92,10 @@
       background: #2a2a2a;
       color: #ffffff;
     }
-    .form-group {
-      margin-bottom: 5px;
-    }
     @media (max-width: 1024px) {
-      .wrapper {
+      .container {
         flex-direction: column;
         gap: 40px;
-      }
-      .title-section h1 {
-        font-size: 2.5rem;
-      }
-      .form {
-        max-width: 100%;
       }
     }
   </style>
@@ -120,46 +105,40 @@
     <img src="https://cauesashihara.github.io/FightLab/assets/logo.png" alt="Fight Lab Logo">
   </div>
 
-  <div class="wrapper">
-    <div class="title-section">
-      <h1>Descubra o futuro dos kimonos</h1>
-      <p>Unimos força, técnica e estilo em uma plataforma inovadora. Monte seu kimono perfeito e personalize com tecnologia de ponta.</p>
+  <div class="container">
+    <div id="preview">
+      <img id="lutadorImg"
+           src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png"
+           alt="Lutador">
     </div>
 
     <form class="form" oninput="updatePreview()">
-      <div class="form-group">
-        <label for="genero">Gênero:</label>
-        <select id="genero">
-          <option value="masculino">Masculino</option>
-          <option value="feminino">Feminino</option>
-        </select>
-      </div>
+      <label for="genero">Gênero:</label>
+      <select id="genero">
+        <option value="masculino">Masculino</option>
+        <option value="feminino">Feminino</option>
+      </select>
 
-      <div class="form-group">
-        <label for="tipo">Tipo de Kimono:</label>
-        <select id="tipo">
-          <option value="branco">Branco</option>
-          <option value="azul">Azul</option>
-          <option value="preto">Preto</option>
-        </select>
-      </div>
+      <label for="tipo">Tipo de Kimono:</label>
+      <select id="tipo">
+        <option value="branco">Branco</option>
+        <option value="azul">Azul</option>
+        <option value="preto">Preto</option>
+      </select>
 
-      <div class="form-group">
-        <label for="nome">Nome (Bordado na Lapela):</label>
-        <input type="text" id="nome" maxlength="10" placeholder="Máximo 10 letras">
-      </div>
+      <label for="nome">Nome (Bordado na Lapela):</label>
+      <input type="text" id="nome" maxlength="10" placeholder="Máximo 10 letras">
     </form>
   </div>
 
   <script>
     function updatePreview() {
       const genero = document.getElementById('genero').value;
-      const bodyBackground = genero === 'feminino'
-        ? 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(\'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png\') center/cover'
-        : 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(\'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png\') center/cover';
+      const lutadorImg = genero === 'feminino'
+        ? 'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png'
+        : 'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png';
       
-      document.body.style.background = bodyBackground;
-      document.body.style.backgroundAttachment = 'fixed';
+      document.getElementById('lutadorImg').src = lutadorImg;
     }
   </script>
 </body>
