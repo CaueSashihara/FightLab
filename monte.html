@@ -22,10 +22,9 @@
       flex-direction: column;
     }
 
-    /* Navbar */
     .navbar {
       background: rgba(0, 0, 0, 0.95);
-      padding: 15px 30px;
+      padding: 12px 30px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -35,43 +34,36 @@
     .navbar-left {
       display: flex;
       align-items: center;
-      gap: 40px;
+      gap: 80px;
     }
 
     .navbar-logo {
-      height: 40px;
+      height: 45px;
       width: auto;
     }
 
     .navbar-menu {
       display: flex;
-      gap: 30px;
+      gap: 60px;
       align-items: center;
     }
 
     .navbar-menu a {
       color: #ffffff;
       text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 500;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
     }
 
     .navbar-menu a:hover {
       color: #d02135;
-    }
-
-    .navbar-menu i {
-      font-size: 1.2rem;
+      transition: color 0.3s;
     }
 
     .navbar-right {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 25px;
     }
 
     .navbar-right a {
@@ -82,20 +74,44 @@
 
     .navbar-right a:hover {
       color: #d02135;
+      transition: color 0.3s;
+    }
+
+    .contato-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      position: relative;
     }
 
     .contato-label {
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #999999;
-      margin-right: 10px;
     }
 
-    .email-link {
-      color: #d02135;
+    .instagram-link {
+      color: #ffffff;
       font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
     }
 
-    /* Main content */
+    .instagram-link:hover::after {
+      content: 'Entre em contato com a gente via DM';
+      position: absolute;
+      background: #d02135;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      white-space: nowrap;
+      bottom: -35px;
+      right: 0;
+      font-weight: 400;
+      z-index: 1000;
+    }
+
     .main-content {
       flex: 1;
       padding: 40px 20px;
@@ -228,23 +244,13 @@
   </style>
 </head>
 <body>
-  <!-- Navbar -->
   <nav class="navbar">
     <div class="navbar-left">
       <img src="https://cauesashihara.github.io/FightLab/assets/logo.png" alt="Fight Lab Logo" class="navbar-logo">
       <div class="navbar-menu">
-        <a href="#">
-          <i class="fas fa-users"></i>
-          <span>Minha equipe</span>
-        </a>
-        <a href="#">
-          <i class="fas fa-sewing-machine"></i>
-          <span>Sou Costureira</span>
-        </a>
-        <a href="#">
-          <i class="fas fa-heart"></i>
-          <span>Aquecendo Vidas</span>
-        </a>
+        <a href="#">Minha equipe</a>
+        <a href="#">Sou Costureira</a>
+        <a href="#">Aquecendo Vidas</a>
       </div>
     </div>
     <div class="navbar-right">
@@ -257,17 +263,15 @@
       <a href="#" title="YouTube">
         <i class="fab fa-youtube"></i>
       </a>
-      <div style="margin-left: 20px; border-left: 1px solid #333333; padding-left: 20px;">
+      <div class="contato-section">
         <div class="contato-label">Contato</div>
-        <a href="mailto:fightlab_br@gmail.com" class="email-link">fightlab_br</a>
+        <a href="https://instagram.com/fightlab_br" class="instagram-link">fightlab_br</a>
       </div>
     </div>
   </nav>
 
-  <!-- Main Content -->
   <div class="main-content">
     <div class="container">
-      <!-- Left Section -->
       <div class="left-section">
         <form class="form" oninput="updatePreview()">
           <label for="genero">Gênero:</label>
@@ -288,7 +292,6 @@
         </form>
       </div>
 
-      <!-- Right Section -->
       <div class="right-section">
         <div id="preview">
           <img id="lutadorImg"
@@ -314,90 +317,13 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>45-50 kg</td>
-                <td>A0</td>
-                <td>A0</td>
-                <td>A0</td>
-                <td>A1</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>50-55 kg</td>
-                <td>A0</td>
-                <td>A0</td>
-                <td>A1</td>
-                <td>A1</td>
-                <td>A1</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>55-65 kg</td>
-                <td>A0</td>
-                <td>A1</td>
-                <td>A1</td>
-                <td>A1</td>
-                <td>A2</td>
-                <td>A2</td>
-                <td>A2</td>
-                <td>A3L</td>
-                <td>-</td>
-              </tr>
-              <tr>
-                <td>65-75 kg</td>
-                <td>A1</td>
-                <td>A1H</td>
-                <td>A1H</td>
-                <td>A2</td>
-                <td>A2H</td>
-                <td>A2H</td>
-                <td>A3</td>
-                <td>A3L</td>
-                <td>A4L</td>
-              </tr>
-              <tr>
-                <td>75-90 kg</td>
-                <td>A1H</td>
-                <td>A1H</td>
-                <td>A2</td>
-                <td>A2H</td>
-                <td>A3</td>
-                <td>A3L</td>
-                <td>A3</td>
-                <td>A4</td>
-                <td>A4</td>
-              </tr>
-              <tr>
-                <td>85-100 kg</td>
-                <td>A1H</td>
-                <td>A2</td>
-                <td>A2H</td>
-                <td>A3</td>
-                <td>A3H</td>
-                <td>A3</td>
-                <td>A4</td>
-                <td>A4</td>
-                <td>A4</td>
-              </tr>
-              <tr>
-                <td>100-115 kg</td>
-                <td>-</td>
-                <td>A2H</td>
-                <td>A3</td>
-                <td>A3H</td>
-                <td>A4</td>
-                <td>A4</td>
-                <td>A4</td>
-                <td>A4</td>
-                <td>A4</td>
-              </tr>
+              <tr><td>45-50 kg</td><td>A0</td><td>A0</td><td>A0</td><td>A1</td><td>-</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr><td>50-55 kg</td><td>A0</td><td>A0</td><td>A1</td><td>A1</td><td>A1</td><td>-</td><td>-</td><td>-</td><td>-</td></tr>
+              <tr><td>55-65 kg</td><td>A0</td><td>A1</td><td>A1</td><td>A1</td><td>A2</td><td>A2</td><td>A2</td><td>A3L</td><td>-</td></tr>
+              <tr><td>65-75 kg</td><td>A1</td><td>A1H</td><td>A1H</td><td>A2</td><td>A2H</td><td>A2H</td><td>A3</td><td>A3L</td><td>A4L</td></tr>
+              <tr><td>75-90 kg</td><td>A1H</td><td>A1H</td><td>A2</td><td>A2H</td><td>A3</td><td>A3L</td><td>A3</td><td>A4</td><td>A4</td></tr>
+              <tr><td>85-100 kg</td><td>A1H</td><td>A2</td><td>A2H</td><td>A3</td><td>A3H</td><td>A3</td><td>A4</td><td>A4</td><td>A4</td></tr>
+              <tr><td>100-115 kg</td><td>-</td><td>A2H</td><td>A3</td><td>A3H</td><td>A4</td><td>A4</td><td>A4</td><td>A4</td><td>A4</td></tr>
             </tbody>
           </table>
         </div>
