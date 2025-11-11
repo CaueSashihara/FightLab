@@ -2,69 +2,91 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Simulador Fight Lab Lite</title>
+  <title>Simulador Fight Lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
-      background: #000000;
+      background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png') center/cover;
+      background-attachment: fixed;
       color: #ffffff;
       font-family: 'Segoe UI', Arial, sans-serif;
-      margin: 0;
-    }
-    .container {
-      max-width: 940px;
-      margin: 40px auto;
-      display: flex;
-      gap: 32px;
-      align-items: flex-start;
-    }
-    #preview {
-      width: 410px; height: 540px;
-      background: #f5f1e8;
-      border-radius: 16px;
-      box-shadow: 0 4px 24px rgba(208, 33, 53, 0.2);
-      position: relative;
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      padding: 20px;
     }
-    .overlay {
-      position: absolute; left: 0; top: 0;
-      width: 100%; height: 100%;
-      pointer-events: none;
+    .header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 30px 50px;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10;
     }
-    #lutadorImg {
-      width: 100%;
-      height: 100%;
+    .header img {
+      height: 60px;
       object-fit: contain;
-      object-position: center;
+    }
+    .wrapper {
+      display: flex;
+      gap: 60px;
+      align-items: flex-start;
+      max-width: 1200px;
+      width: 100%;
+      margin-top: 100px;
+    }
+    .title-section {
+      flex: 1;
+      text-align: center;
+      color: #ffffff;
+    }
+    .title-section h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      line-height: 1.2;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);
+    }
+    .title-section p {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      color: #cccccc;
+      line-height: 1.6;
     }
     .form {
-      flex: 1;
-      background: #1a1a1a;
+      background: rgba(26, 26, 26, 0.95);
       border-radius: 14px;
-      padding: 24px 18px;
-      min-width: 310px;
+      padding: 40px 30px;
+      width: 100%;
+      max-width: 400px;
       border: 1px solid #333333;
+      flex: 0 0 auto;
     }
     label {
       display: block;
-      margin: 14px 0 7px 0;
+      margin: 20px 0 8px 0;
       font-weight: 700;
       color: #ffffff;
+      font-size: 0.95rem;
     }
     select,
-    input[type="text"],
-    button {
+    input[type="text"] {
       width: 100%;
-      font-size: 1.09rem;
-      padding: 10px 12px;
-      margin-bottom: 10px;
+      font-size: 1rem;
+      padding: 12px 15px;
+      margin-bottom: 15px;
       border-radius: 8px;
       border: 1px solid #333333;
       background: #2a2a2a;
       color: #ffffff;
+      font-family: 'Segoe UI', Arial, sans-serif;
     }
     select:focus,
     input[type="text"]:focus {
@@ -72,100 +94,73 @@
       border-color: #d02135;
       box-shadow: 0 0 8px rgba(208, 33, 53, 0.3);
     }
-    button {
-      background: #d02135;
+    select option {
+      background: #2a2a2a;
       color: #ffffff;
-      font-weight: 700;
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s ease;
     }
-    button:hover {
-      background: #b01b2c;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(208, 33, 53, 0.4);
+    .form-group {
+      margin-bottom: 5px;
     }
-    h1 {
-      margin: 24px 48px;
-      font-size: 2rem;
-      color: #d02135;
-    }
-    .faixa-wrapper {
-      position: absolute;
-      bottom: 35%;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 10;
-      width: 200px;
-      height: 20px;
-      border-radius: 10px;
-      opacity: 0.9;
+    @media (max-width: 1024px) {
+      .wrapper {
+        flex-direction: column;
+        gap: 40px;
+      }
+      .title-section h1 {
+        font-size: 2.5rem;
+      }
+      .form {
+        max-width: 100%;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>🥋 Fight Lab - Simulador Lite</h1>
-  <div class="container">
-    <div id="preview">
-      <img id="lutadorImg"
-           src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png"
-           alt="Lutador">
-      <div class="overlay">
-        <div id="faixa" class="faixa-wrapper"></div>
-      </div>
+  <div class="header">
+    <img src="https://cauesashihara.github.io/FightLab/assets/logo.png" alt="Fight Lab Logo">
+  </div>
+
+  <div class="wrapper">
+    <div class="title-section">
+      <h1>Descubra o futuro dos kimonos</h1>
+      <p>Unimos força, técnica e estilo em uma plataforma inovadora. Monte seu kimono perfeito e personalize com tecnologia de ponta.</p>
     </div>
-    <form class="form" oninput="updateLutador()">
-      <label for="genero">Tipo de Lutador:</label>
-      <select id="genero">
-        <option value="homem">Homem</option>
-        <option value="mulher">Mulher</option>
-      </select>
-      <label for="tipo">Tipo de Kimono:</label>
-      <select id="tipo">
-        <option value="branco">Branco</option>
-        <option value="azul">Azul</option>
-        <option value="preto">Preto</option>
-      </select>
-      <label for="faixaSel">Cor da Faixa:</label>
-      <select id="faixaSel">
-        <option value="#ffffff">Branca</option>
-        <option value="#d02135">Vermelha (FightLab)</option>
-        <option value="#000000">Preta</option>
-        <option value="#808080">Cinza</option>
-        <option value="#0080ff">Azul</option>
-      </select>
-      <label for="nome">Nome (Bordado):</label>
-      <input type="text" id="nome" maxlength="14" placeholder="Ex.: L.Fontes">
-      <button type="button" onclick="downloadPng()">Baixar PNG</button>
+
+    <form class="form" oninput="updatePreview()">
+      <div class="form-group">
+        <label for="genero">Gênero:</label>
+        <select id="genero">
+          <option value="masculino">Masculino</option>
+          <option value="feminino">Feminino</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="tipo">Tipo de Kimono:</label>
+        <select id="tipo">
+          <option value="branco">Branco</option>
+          <option value="azul">Azul</option>
+          <option value="preto">Preto</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="nome">Nome (Bordado na Lapela):</label>
+        <input type="text" id="nome" maxlength="10" placeholder="Máximo 10 letras">
+      </div>
     </form>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script>
-    function updateLutador() {
-      const genero = document.getElementById('genero').value;
-      const faixaCor = document.getElementById('faixaSel').value;
-      
-      const lutadorImg = genero === 'mulher' 
-        ? 'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png'
-        : 'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png';
-      
-      document.getElementById('lutadorImg').src = lutadorImg;
-      document.getElementById('faixa').style.background = faixaCor;
-    }
 
-    function downloadPng() {
-      const preview = document.getElementById('preview');
-      html2canvas(preview, {
-        backgroundColor: null,
-        scale: 2
-      }).then(canvas => {
-        const link = document.createElement('a');
-        link.download = 'lutador-fightlab.png';
-        link.href = canvas.toDataURL();
-        link.click();
-      });
+  <script>
+    function updatePreview() {
+      const genero = document.getElementById('genero').value;
+      const bodyBackground = genero === 'feminino'
+        ? 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(\'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png\') center/cover'
+        : 'linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url(\'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png\') center/cover';
+      
+      document.body.style.background = bodyBackground;
+      document.body.style.backgroundAttachment = 'fixed';
     }
-    updateLutador();
   </script>
 </body>
 </html>
