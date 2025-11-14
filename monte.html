@@ -11,15 +11,13 @@
         * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
-           
             background: linear-gradient(
-    rgba(0,0,0,0.5),
-    rgba(0,0,0,0.5)
-),
-url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/ChatGPT%20Image%2024%20de%20ago.%20de%202025%2C%2009_05_55.png')
-center/cover fixed;
+                rgba(0,0,0,0.5),
+                rgba(0,0,0,0.5)
+            ),
+            url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/ChatGPT%20Image%2024%20de%20ago.%20de%202025%2C%2009_05_55.png')
+            center/cover fixed;
 
-            
             font-family: 'Segoe UI', Arial, sans-serif;
             color: #fff;
             min-height:100vh;
@@ -615,7 +613,12 @@ function sendInstagramDM(){
     const nome = (document.getElementById("nome").value || "").toUpperCase();
     const tamanho = document.getElementById("sizeLabel").innerText;
 
-    let msg =
+    const barrasTexto = needBars
+        ? "Sim – Envergadura " + (barsData.arm || "não informada") +
+          " cm, Pernas " + (barsData.leg || "não informada") + " cm"
+        : "Não";
+
+    const msg =
 `OSS! Quero fazer meu kimono personalizado da Fight Lab 🥋
 
 • Nome bordado na lapela: ${nome || "—"}
@@ -627,16 +630,25 @@ function sendInstagramDM(){
 Serviços:
 • Leasing: ${leasing ? leasing+" kimono(s)/ano" : "Não"}
 • Doação: ${donation ? "Sim" : "Não"}
-• Patch no ombro direito: ${patch ? patchLabel || "Sim" : "Não"}
-• Ajuste de barras: ${needBars ? `Sim – Envergadura ${barsData.arm} cm, Pernas ${barsData.leg} cm` : "Não"}
+• Patch no ombro direito: ${patch ? (patchLabel || "Sim") : "Não"}
+• Ajuste de barras: ${barrasTexto}
 
 Arte final:
 Kimono adaptado com patch no ombro e bordado girado a 60° na lapela esquerda.
 
 Podem seguir com minha cotação?`;
 
-    navigator.clipboard.writeText(msg)
-    .then(()=> alert("Texto copiado! A DM será aberta. Basta colar e enviar."));
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(msg)
+        .then(() => {
+            alert("Texto copiado! A DM será aberta. Basta colar e enviar.");
+        })
+        .catch(() => {
+            alert("Não foi possível copiar automaticamente. Quando abrir a DM, copie e cole este texto:\n\n" + msg);
+        });
+    } else {
+        alert("Quando a DM abrir, copie e cole este texto:\n\n" + msg);
+    }
 
     window.open("https://ig.me/m/fightlab_br", "_blank");
 }
