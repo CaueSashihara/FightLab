@@ -38,17 +38,45 @@
             align-items:center;
             border-bottom:1px solid #333;
         }
-        .navbar-left { display:flex; align-items:center; gap:60px; }
+        .navbar-left { display:flex; align-items:center; gap:32px; }
         .navbar-logo { height:48px; }
-        .navbar-menu { display:flex; gap:50px; }
+
+        .navbar-menu {
+            display:flex;
+            gap:32px;
+        }
         .navbar-menu a {
             color:#fff;
             text-decoration:none;
             font-weight:600;
+            font-size:0.95rem;
         }
         .navbar-menu a:hover { color:#d02135; }
 
-        .navbar-right { display:flex; gap:20px; align-items:center; }
+        .navbar-right {
+            display:flex;
+            gap:16px;
+            align-items:center;
+        }
+
+        .navbar-toggle {
+            display:none;
+            font-size:1.4rem;
+            color:#fff;
+            cursor:pointer;
+        }
+
+        .home-btn-top {
+            background:#d02135;
+            border:none;
+            padding:8px 14px;
+            border-radius:6px;
+            color:#fff;
+            font-weight:600;
+            font-size:0.85rem;
+            cursor:pointer;
+        }
+        .home-btn-top:hover { background:#961426; }
 
         /* LAYOUT DESKTOP */
         .container {
@@ -70,7 +98,7 @@
             box-shadow:0 4px 14px #000;
         }
 
-        .form-group { margin-bottom:22px; }
+        .form-group { margin-bottom:18px; }
         .form-group label {
             display:block;
             margin-bottom:6px;
@@ -81,11 +109,12 @@
 
         .form-group input, .form-group select {
             width:100%;
-            padding:12px;
+            padding:10px 12px;
             background:#1b1b1b;
             color:#fff;
             border:1px solid #d02135;
             border-radius:6px;
+            font-size:0.95rem;
         }
 
         .size-controls {
@@ -145,14 +174,7 @@
             height:100%;
             object-fit:cover;
         }
-        #embroideryCanvas {
-            position:absolute;
-            top:0; left:0;
-            width:100%; height:100%;
-            pointer-events:none;
-        }
-
-        /* PATCH */
+        #embroideryCanvas,
         #patchCanvas {
             position:absolute;
             top:0; left:0;
@@ -160,7 +182,6 @@
             pointer-events:none;
         }
 
-        /* CONTROLS */
         .preview-controls {
             background:#101010e7;
             border:1px solid #d02135;
@@ -201,7 +222,6 @@
             font-weight:bold;
         }
 
-        /* BUTTON */
         .insta-btn {
             background:#25D366;
             border:none;
@@ -220,6 +240,24 @@
         }
         .insta-btn i { font-size:1.1rem; }
         .insta-btn:hover { filter:brightness(0.9); }
+
+        .home-btn-main {
+            background:#000000aa;
+            border:1px solid #d02135;
+            padding:10px 18px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:600;
+            color:#fff;
+            display:flex;
+            gap:8px;
+            align-items:center;
+            margin-top:12px;
+            font-size:0.95rem;
+            max-width:360px;
+            justify-content:center;
+        }
+        .home-btn-main:hover { background:#1b1b1b; }
 
         /* MODAL */
         .modal {
@@ -251,10 +289,7 @@
 
         .warning-text { color:#ffd700; font-weight:bold; }
 
-        /* ============================
-           RESPONSIVIDADE
-           ============================ */
-
+        /* RESPONSIVIDADE */
         @media (max-width: 900px) {
             body {
                 background-attachment: scroll;
@@ -268,14 +303,31 @@
             }
 
             .navbar-left {
+                width:100%;
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
                 gap:16px;
-                flex-wrap:wrap;
             }
 
             .navbar-menu {
-                gap:16px;
-                font-size:0.85rem;
-                flex-wrap:wrap;
+                display:none;
+                flex-direction:column;
+                gap:8px;
+                margin-top:8px;
+                width:100%;
+            }
+            .navbar-menu.show {
+                display:flex;
+            }
+
+            .navbar-right {
+                width:100%;
+                justify-content:space-between;
+            }
+
+            .navbar-toggle {
+                display:block;
             }
 
             .container {
@@ -313,7 +365,8 @@
             }
 
             .preview-controls,
-            .insta-btn {
+            .insta-btn,
+            .home-btn-main {
                 width:100%;
                 max-width:320px;
             }
@@ -325,7 +378,7 @@
             }
 
             .navbar-menu {
-                font-size:0.8rem;
+                font-size:0.85rem;
             }
 
             .form-section {
@@ -337,7 +390,8 @@
             }
 
             .preview-controls,
-            .insta-btn {
+            .insta-btn,
+            .home-btn-main {
                 max-width:280px;
             }
         }
@@ -350,15 +404,21 @@
     <div class="navbar-left">
         <img src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/logo.png"
              class="navbar-logo">
+
+        <div class="navbar-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+
         <div class="navbar-menu">
             <a href="#">Minha equipe</a>
             <a href="#">Sou Costureira</a>
             <a href="#">Aquecendo Vidas</a>
         </div>
     </div>
+
     <div class="navbar-right">
         <span>Contato: @fightlab_br</span>
-        <i class="fab fa-whatsapp"></i>
+        <button class="home-btn-top" onclick="goHome()">Home</button>
     </div>
 </div>
 
@@ -385,9 +445,9 @@
             </select>
         </div>
 
-        <!-- NOVO: ACADEMIA -->
+        <!-- ACADEMIA -->
         <div class="form-group">
-            <label>Academia:</label>
+            <label>Academia (onde você treina):</label>
             <select id="academia">
                 <option value="Academia parceira 1 - Mestre Kleber">Academia parceira 1 - Mestre Kleber</option>
                 <option value="Academia parceira 2 - Mestre Joao">Academia parceira 2 - Mestre Joao</option>
@@ -474,6 +534,11 @@
             Enviar cotação pelo WhatsApp
         </button>
 
+        <button class="home-btn-main" onclick="goHome()">
+            <i class="fas fa-home"></i>
+            Voltar para a página inicial
+        </button>
+
     </div>
 
 </div>
@@ -533,9 +598,7 @@
 
 
 <script>
-/* ================================
-   ESTADO
-================================ */
+/* ESTADO */
 let height = 1.70;
 let weight = 80;
 
@@ -546,9 +609,19 @@ let patchLabel = "";
 let needBars = false;
 let barsData = { arm:null, leg:null };
 
-/* ================================
-   PREVIEW
-================================ */
+/* NAV – MENU SANDUÍCHE */
+function toggleMenu() {
+    const menu = document.querySelector('.navbar-menu');
+    menu.classList.toggle('show');
+}
+
+/* HOME */
+function goHome() {
+    // ajuste o destino se o arquivo principal tiver outro nome/caminho
+    window.location.href = "index.html";
+}
+
+/* PREVIEW */
 function updatePreview() {
     const genero = document.getElementById("genero").value;
 
@@ -560,13 +633,12 @@ function updatePreview() {
     drawAll();
 }
 
-/* desenha lapela + patch no canvas */
 function drawAll() {
     drawEmbroidery();
     drawPatch();
 }
 
-/* texto na lapela girado ~60° (ajustado) */
+/* texto lapela */
 function drawEmbroidery() {
     const canvas = document.getElementById("embroideryCanvas");
     const ctx = canvas.getContext("2d");
@@ -587,7 +659,7 @@ function drawEmbroidery() {
     ctx.restore();
 }
 
-/* patch amarelo no ombro direito (ajustado) */
+/* patch ombro direito */
 function drawPatch() {
     const canvas = document.getElementById("patchCanvas");
     const ctx = canvas.getContext("2d");
@@ -617,9 +689,7 @@ function drawPatch() {
     ctx.restore();
 }
 
-/* ================================
-   ALTURA / PESO / TAMANHO
-================================ */
+/* ALTURA / PESO / TAMANHO */
 function changeHeight(v) {
     height = Math.min(2.00, Math.max(1.40, height + v));
     document.getElementById("heightDisplay").innerText =
@@ -635,7 +705,6 @@ function changeWeight(v) {
     calcSize();
 }
 
-/* tabela básica */
 function calcSize() {
     let size = "A2H";
 
@@ -674,9 +743,7 @@ function checkBars(size) {
     }
 }
 
-/* ================================
-   MODAIS
-================================ */
+/* MODAIS */
 function openModal(id){ document.getElementById(id).classList.add("show"); }
 function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
@@ -725,9 +792,7 @@ function confirmBars(){
     closeModal("barsModal");
 }
 
-/* ================================
-   ENVIAR PARA WHATSAPP
-================================ */
+/* WHATSAPP */
 function buildMessage() {
     const genero = document.getElementById("genero").value;
     const cor = document.getElementById("tipo").value;
