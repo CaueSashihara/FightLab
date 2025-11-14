@@ -4,63 +4,295 @@
     <meta charset="UTF-8">
     <title>Simulador Fight Lab</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/ChatGPT%20Image%2024%20de%20ago.%20de%202025%2C%2009_05_55.png') center/cover fixed; color: #fff; font-family: 'Segoe UI',Arial,sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-        .navbar { background: rgba(0,0,0,0.95); padding: 12px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; }
+
+        body {
+            background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
+                        url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/ChatGPT%20Image%2024%20de%20ago.%20de%202025%2C%2009_05_55.png')
+                        center/cover fixed;
+            color: #fff;
+            font-family: 'Segoe UI',Arial,sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: rgba(0,0,0,0.95);
+            padding: 12px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #333;
+        }
         .navbar-left { display: flex; align-items: center; gap: 80px; }
         .navbar-logo { height: 45px; }
         .navbar-menu { display: flex; gap: 60px; }
-        .navbar-menu a { color: #fff; text-decoration: none; font-size: 0.95rem; font-weight: 500; }
+        .navbar-menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
         .navbar-menu a:hover { color: #d02135; }
         .navbar-right { display: flex; gap: 30px; align-items: center; }
         .navbar-socials { display: flex; gap: 15px; }
         .navbar-socials a { color: #fff; font-size: 1.1rem; text-decoration: none; }
         .navbar-socials a:hover { color: #d02135; }
-        .container { flex: 1; display: flex; gap: 60px; max-width: 1400px; margin: 40px auto; padding: 0 30px; }
-        .form-section { flex: 0 0 380px; background: rgba(26,26,26,0.95); padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+
+        .container {
+            flex: 1;
+            display: flex;
+            gap: 60px;
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 30px;
+        }
+
+        .form-section {
+            flex: 0 0 380px;
+            background: rgba(26,26,26,0.95);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
         .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; color: #d02135; font-weight: 600; font-size: 0.95rem; }
-        .form-group input, .form-group select { width: 100%; padding: 10px 12px; border: 1px solid #d02135; background: #1a1a1a; color: #fff; border-radius: 4px; font-size: 0.95rem; }
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d02135;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d02135;
+            background: #1a1a1a;
+            color: #fff;
+            border-radius: 4px;
+            font-size: 0.95rem;
+        }
         .form-group input::placeholder { color: #808080; }
-        .form-group input:focus, .form-group select:focus { outline: none; box-shadow: 0 0 5px rgba(208,33,53,0.5); }
-        .size-controls { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
-        .size-btn { background: #d02135; color: #fff; border: none; width: 35px; height: 35px; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1.1rem; }
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(208,33,53,0.5);
+        }
+
+        .size-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 8px;
+        }
+        .size-btn {
+            background: #d02135;
+            color: #fff;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
         .size-btn:hover { background: #a01829; }
-        .size-value { flex: 1; text-align: center; background: #1a1a1a; border: 1px solid #d02135; padding: 8px; border-radius: 4px; color: #fff; font-weight: 600; }
-        .preview-section { flex: 1; min-width: 330px; max-width: 600px; }
-        .preview-container { position: relative; width: 330px; height: 440px; margin-bottom: 20px; }
-        .preview-box { width: 100%; height: 100%; background: rgba(26,26,26,0.95); border: 2px solid #d02135; border-radius: 8px; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.5); position: relative; }
-        .preview-box img { width: 100%; height: 100%; object-fit: cover; }
-        .embroidery-canvas { position: absolute; top: 0; left: 0; }
-        .preview-controls { background: rgba(26,26,26,0.95); border: 2px solid #d02135; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; gap: 15px; }
-        .control-group-title { color: #d02135; font-weight: 600; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
-        .checkbox-option { display: flex; align-items: center; gap: 8px; }
-        .checkbox-label { display: flex; align-items: center; gap: 8px; cursor: pointer; color: #fff; font-weight: 500; }
-        .checkbox-label input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; accent-color: #d02135; }
-        .info-icon { display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: #d02135; color: #fff; font-size: 12px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
-        .info-icon:hover { background: #a01829; transform: scale(1.1); }
-        .size-guide-table { margin-top: 30px; width: 100%; border-collapse: collapse; background: rgba(26,26,26,0.95); border: 1px solid #d02135; font-size: 0.85rem; }
-        .size-guide-table th, .size-guide-table td { padding: 8px; text-align: center; border: 1px solid #333; color: #fff; }
-        .size-guide-table th { background: #1a1a1a; color: #d02135; font-weight: 600; }
-        .suggested-size { font-size: 1.2rem; font-weight: bold; color: #d02135; margin-top: 10px; padding: 12px; background: #1a1a1a; border: 1px solid #d02135; border-radius: 4px; text-align: center; }
-        .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); }
-        .modal.show { display: flex; align-items: center; justify-content: center; }
-        .modal-content { background-color: #1a1a1a; padding: 30px; border-radius: 8px; border: 2px solid #d02135; max-width: 500px; width: 90%; color: #fff; box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
-        .modal-content h3 { color: #d02135; margin-bottom: 15px; font-size: 1.3rem; }
+        .size-value {
+            flex: 1;
+            text-align: center;
+            background: #1a1a1a;
+            border: 1px solid #d02135;
+            padding: 8px;
+            border-radius: 4px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .preview-section {
+            flex: 1;
+            min-width: 330px;
+            max-width: 600px;
+        }
+
+        .preview-container {
+            position: relative;
+            width: 330px;
+            height: 440px;
+            margin-bottom: 20px;
+        }
+        .preview-box {
+            width: 100%;
+            height: 100%;
+            background: rgba(26,26,26,0.95);
+            border: 2px solid #d02135;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .embroidery-canvas {
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        .preview-controls {
+            background: rgba(26,26,26,0.95);
+            border: 2px solid #d02135;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-group-title {
+            color: #d02135;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #fff;
+            font-weight: 500;
+        }
+        .checkbox-label input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #d02135;
+        }
+
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #d02135;
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .info-icon:hover {
+            background: #a01829;
+            transform: scale(1.1);
+        }
+
+        .suggested-size {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #d02135;
+            margin-top: 10px;
+            padding: 12px;
+            background: #1a1a1a;
+            border: 1px solid #d02135;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.7);
+        }
+        .modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #1a1a1a;
+            padding: 30px;
+            border-radius: 8px;
+            border: 2px solid #d02135;
+            max-width: 500px;
+            width: 90%;
+            color: #fff;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+        }
+        .modal-content h3 {
+            color: #d02135;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
         .modal-content p { margin-bottom: 15px; line-height: 1.5; }
-        .modal-content select, .modal-content input { width: 100%; padding: 10px; margin-bottom: 15px; background: #0a0a0a; color: #fff; border: 1px solid #d02135; border-radius: 4px; }
-        .modal-content button { background: #d02135; color: #fff; border: none; padding: 10px 20px; margin-right: 10px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        .modal-content select,
+        .modal-content input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: #0a0a0a;
+            color: #fff;
+            border: 1px solid #d02135;
+            border-radius: 4px;
+        }
+        .modal-content button {
+            background: #d02135;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
         .modal-content button:hover { background: #a01829; }
+
         .warning-text { color: #FFD700; font-weight: bold; }
-        @media(max-width:1024px) { .container { flex-direction: column; gap: 30px; } .form-section, .preview-section { flex: 1; max-width: 100%; } .preview-container { width: 100%; max-width: 500px; } }
+
+        @media(max-width:1024px) {
+            .container {
+                flex-direction: column;
+                gap: 30px;
+            }
+            .form-section,
+            .preview-section {
+                flex: 1;
+                max-width: 100%;
+            }
+            .preview-container {
+                width: 100%;
+                max-width: 500px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="navbar">
         <div class="navbar-left">
-            <img src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/logo.png" class="navbar-logo" alt="Fight Lab">
+            <img src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/logo.png"
+                 class="navbar-logo" alt="Fight Lab">
             <div class="navbar-menu">
                 <a href="#">Minha equipe</a>
                 <a href="#">Sou Costureira</a>
@@ -78,9 +310,10 @@
     </div>
 
     <div class="container">
+        <!-- COLUNA ESQUERDA -->
         <div class="form-section">
             <div class="form-group">
-                <label for="genero">Genero:</label>
+                <label for="genero">Gênero:</label>
                 <select id="genero" onchange="updatePreview()">
                     <option value="masculino">Masculino</option>
                     <option value="feminino">Feminino</option>
@@ -98,14 +331,17 @@
 
             <div class="form-group">
                 <label for="nome">Nome (Bordado na Lapela):</label>
-                <input type="text" id="nome" maxlength="10" placeholder="Maximo 10 letras" oninput="updateEmbroidery()">
+                <input type="text" id="nome"
+                       maxlength="10"
+                       placeholder="Máximo 10 letras"
+                       oninput="updateEmbroidery()">
             </div>
 
             <div class="form-group">
                 <label>Seletor de Tamanho - Altura:</label>
                 <div class="size-controls">
                     <button class="size-btn" onclick="decreaseHeight()">−</button>
-                    <div class="size-value" id="heightDisplay">1.70m</div>
+                    <div class="size-value" id="heightDisplay">1,70 m</div>
                     <button class="size-btn" onclick="increaseHeight()">+</button>
                 </div>
             </div>
@@ -114,73 +350,310 @@
                 <label>Seletor de Tamanho - Peso:</label>
                 <div class="size-controls">
                     <button class="size-btn" onclick="decreaseWeight()">−</button>
-                    <div class="size-value" id="weightDisplay">80kg</div>
+                    <div class="size-value" id="weightDisplay">80 kg</div>
                     <button class="size-btn" onclick="increaseWeight()">+</button>
                 </div>
             </div>
 
             <div class="form-group">
-                <label>Tamanho Sugerido:</label>
+                <label>Tamanho sugerido:</label>
                 <div class="suggested-size" id="suggestedSize">A2H</div>
             </div>
         </div>
 
+        <!-- COLUNA DIREITA -->
         <div class="preview-section">
             <div class="preview-container">
                 <div class="preview-box">
-                    <img id="previewImage" src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png" alt="Preview">
-                    <canvas id="embroideryCanvas" width="330" height="440"></canvas>
+                    <img id="previewImage"
+                         src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png"
+                         alt="Preview">
+                    <canvas id="embroideryCanvas"
+                            class="embroidery-canvas"
+                            width="330" height="440"></canvas>
                 </div>
             </div>
 
             <div class="preview-controls">
                 <div class="control-group">
-                    <div class="control-group-title">Opções Adicionais</div>
+                    <div class="control-group-title">Opções adicionais</div>
+
                     <div class="checkbox-option">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="leasingCheckbox" onchange="toggleLeasingModal()">
+                            <input type="checkbox" id="leasingCheckbox"
+                                   onchange="toggleLeasingModal()">
                             Leasing
                         </label>
-                        <span class="info-icon" onclick="showLeasingInfo(event)">ⓘ</span>
+                        <span class="info-icon"
+                              onclick="showLeasingInfo(event)">ⓘ</span>
                     </div>
+
                     <div class="checkbox-option">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="donationCheckbox" onchange="toggleDonationModal()">
+                            <input type="checkbox" id="donationCheckbox"
+                                   onchange="toggleDonationModal()">
                             Doação
                         </label>
-                        <span class="info-icon" onclick="showDonationInfo(event)">ⓘ</span>
+                        <span class="info-icon"
+                              onclick="showDonationInfo(event)">ⓘ</span>
                     </div>
+
                     <div class="checkbox-option">
                         <label class="checkbox-label">
-                            <input type="checkbox" id="patchCheckbox" onchange="togglePatchModal()">
-                            Patch Personalizado
+                            <input type="checkbox" id="patchCheckbox"
+                                   onchange="togglePatchModal()">
+                            Patch personalizado
                         </label>
-                        <span class="info-icon" onclick="showPatchInfo(event)">ⓘ</span>
+                        <span class="info-icon"
+                              onclick="showPatchInfo(event)">ⓘ</span>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Leasing Modal -->
+    <!-- MODAL LEASING -->
     <div id="leasingModal" class="modal">
         <div class="modal-content">
             <h3>Leasing de Kimono</h3>
             <p>Escolha a frequência de leasing:</p>
             <select id="leasingFrequency">
-                <option value="1">1 Kimono por ano</option>
-                <option value="2">2 Kimonos por ano</option>
+                <option value="1">1 kimono por ano</option>
+                <option value="2">2 kimonos por ano</option>
             </select>
             <button onclick="confirmLeasing()">Confirmar</button>
             <button onclick="closeLeasingModal()">Fechar</button>
         </div>
     </div>
 
-    <!-- Donation Modal -->
+    <!-- MODAL DOAÇÃO -->
     <div id="donationModal" class="modal">
         <div class="modal-content">
             <h3>Doação de Kimono</h3>
-            <p>Ao doar um kimono em boas condições, você recebe um abatimento de até 20% do valor do leasing mediante avaliação.</p>
-            <p><strong>📸 Importante:</strong> Você precisará enviar 3 fotos (frente, verso e lapelas) para @fightlab_br no Instagram via DM para validação.</p>
-            <input type="file" id="donationPhotos" accept="image/*" multiple placeholder="Selecione as 3 fotos">
-            <button onclick="confirmDonation()">Confir
+            <p>
+                Ao doar um kimono em boas condições, você recebe um abatimento de
+                até 20% do valor do leasing mediante avaliação.
+            </p>
+            <p class="warning-text">
+                📸 Importante: envie 3 fotos (frente, verso e lapelas)
+                para @fightlab_br via Instagram DM.
+            </p>
+            <input type="file" id="donationPhotos"
+                   accept="image/*" multiple>
+            <button onclick="confirmDonation()">Confirmar</button>
+            <button onclick="closeDonationModal()">Fechar</button>
+        </div>
+    </div>
+
+    <!-- MODAL PATCH -->
+    <div id="patchModal" class="modal">
+        <div class="modal-content">
+            <h3>Patch personalizado</h3>
+            <p>Descreva a ideia do seu patch (texto, símbolo, posição no kimono):</p>
+            <input type="text" id="patchDescription"
+                   placeholder="Ex: patch no ombro com frase OSS">
+            <button onclick="confirmPatch()">Confirmar</button>
+            <button onclick="closePatchModal()">Fechar</button>
+        </div>
+    </div>
+
+    <script>
+        // ===== ESTADO BÁSICO =====
+        let height = 1.70; // em metros
+        let weight = 80;   // em kg
+
+        const minHeight = 1.50;
+        const maxHeight = 2.00;
+        const heightStep = 0.05;
+
+        const minWeight = 50;
+        const maxWeight = 130;
+        const weightStep = 2;
+
+        const heightDisplay = document.getElementById('heightDisplay');
+        const weightDisplay = document.getElementById('weightDisplay');
+        const suggestedSizeEl = document.getElementById('suggestedSize');
+
+        const generoSelect = document.getElementById('genero');
+        const tipoSelect = document.getElementById('tipo');
+        const previewImage = document.getElementById('previewImage');
+
+        const canvas = document.getElementById('embroideryCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // ===== FUNÇÕES DE PREVIEW =====
+        function updatePreview() {
+            const genero = generoSelect.value;
+            const tipo = tipoSelect.value;
+
+            // Avatar por gênero (ajuste os caminhos conforme seus assets)
+            if (genero === 'feminino') {
+                previewImage.src =
+                    'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png';
+            } else {
+                previewImage.src =
+                    'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png';
+            }
+
+            // Poderia trocar aqui a cor do kimono via imagens diferentes
+            // ou overlay; por enquanto só recalculamos o bordado.
+            updateEmbroidery();
+        }
+
+        function checkBlackKimono() {
+            const tipo = tipoSelect.value;
+            // Aqui entraria a regra de faixa/experiência.
+            // Por enquanto, só recalculamos preview:
+            updatePreview();
+
+            // Exemplo de aviso leve:
+            if (tipo === 'preto') {
+                console.log('Regra futura: checar se faixa permite kimono preto.');
+            }
+        }
+
+        // ===== BORDADO (NOME NA LAPELA) =====
+        function updateEmbroidery() {
+            const nome = document.getElementById('nome').value.toUpperCase();
+
+            // Limpa o canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!nome) return;
+
+            ctx.save();
+            ctx.font = 'bold 22px "Segoe UI", Arial';
+            ctx.fillStyle = '#d02135';
+            ctx.textAlign = 'center';
+
+            // Posição aproximada da lapela (ajuste fino depois)
+            const x = canvas.width / 2;
+            const y = canvas.height * 0.25;
+
+            ctx.fillText(nome, x, y);
+            ctx.restore();
+        }
+
+        // ===== ALTURA / PESO / TAMANHO =====
+        function updateHeightDisplay() {
+            heightDisplay.textContent = height.toFixed(2).replace('.', ',') + ' m';
+        }
+
+        function updateWeightDisplay() {
+            weightDisplay.textContent = weight.toFixed(0) + ' kg';
+        }
+
+        function increaseHeight() {
+            if (height + heightStep <= maxHeight) {
+                height += heightStep;
+                updateHeightDisplay();
+                updateSuggestedSize();
+            }
+        }
+
+        function decreaseHeight() {
+            if (height - heightStep >= minHeight) {
+                height -= heightStep;
+                updateHeightDisplay();
+                updateSuggestedSize();
+            }
+        }
+
+        function increaseWeight() {
+            if (weight + weightStep <= maxWeight) {
+                weight += weightStep;
+                updateWeightDisplay();
+                updateSuggestedSize();
+            }
+        }
+
+        function decreaseWeight() {
+            if (weight - weightStep >= minWeight) {
+                weight -= weightStep;
+                updateWeightDisplay();
+                updateSuggestedSize();
+            }
+        }
+
+        function updateSuggestedSize() {
+            // Mapeamento simples só para demo. Ajuste com sua tabela real.
+            let size = 'A2';
+
+            if (height <= 1.60 && weight <= 60)      size = 'A0';
+            else if (height <= 1.70 && weight <= 70) size = 'A1';
+            else if (height <= 1.80 && weight <= 85) size = 'A2';
+            else if (height <= 1.90 && weight <= 95) size = 'A2H';
+            else if (height <= 1.95 && weight <= 105) size = 'A3';
+            else                                     size = 'A4';
+
+            suggestedSizeEl.textContent = size;
+        }
+
+        // ===== MODAIS =====
+        const leasingModal   = document.getElementById('leasingModal');
+        const donationModal  = document.getElementById('donationModal');
+        const patchModal     = document.getElementById('patchModal');
+
+        function toggleLeasingModal() {
+            const checked = document.getElementById('leasingCheckbox').checked;
+            leasingModal.classList.toggle('show', checked);
+        }
+        function closeLeasingModal() {
+            leasingModal.classList.remove('show');
+            document.getElementById('leasingCheckbox').checked = false;
+        }
+        function confirmLeasing() {
+            const freq = document.getElementById('leasingFrequency').value;
+            alert(`Leasing selecionado: ${freq} kimono(s) por ano.`);
+            closeLeasingModal();
+        }
+
+        function toggleDonationModal() {
+            const checked = document.getElementById('donationCheckbox').checked;
+            donationModal.classList.toggle('show', checked);
+        }
+        function closeDonationModal() {
+            donationModal.classList.remove('show');
+            document.getElementById('donationCheckbox').checked = false;
+        }
+        function confirmDonation() {
+            alert('Obrigado! Vamos avaliar as fotos do seu kimono para a doação.');
+            closeDonationModal();
+        }
+
+        function togglePatchModal() {
+            const checked = document.getElementById('patchCheckbox').checked;
+            patchModal.classList.toggle('show', checked);
+        }
+        function closePatchModal() {
+            patchModal.classList.remove('show');
+            document.getElementById('patchCheckbox').checked = false;
+        }
+        function confirmPatch() {
+            const desc = document.getElementById('patchDescription').value;
+            alert(`Patch registrado: ${desc || 'sem descrição'}.`);
+            closePatchModal();
+        }
+
+        // ===== INFO ICONS =====
+        function showLeasingInfo(event) {
+            event.stopPropagation();
+            alert('Leasing: você recebe kimonos novos em ciclos definidos, com condições especiais Fight Lab.');
+        }
+        function showDonationInfo(event) {
+            event.stopPropagation();
+            alert('Doação: seu kimono usado entra para o programa Aquecendo Vidas, com abatimento no leasing.');
+        }
+        function showPatchInfo(event) {
+            event.stopPropagation();
+            alert('Patch personalizado: crie o símbolo da sua jornada no tatame. Texto, ícone ou arte exclusiva.');
+        }
+
+        // ===== INIT =====
+        updateHeightDisplay();
+        updateWeightDisplay();
+        updateSuggestedSize();
+        updatePreview();
+    </script>
+</body>
+</html>
