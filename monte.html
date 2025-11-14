@@ -6,858 +6,642 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; }
 
         body {
-            background: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),
-                        url('https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/ChatGPT%20Image%2024%20de%20ago.%20de%202025%2C%2009_05_55.png')
-                        center/cover fixed;
+            background: linear-gradient(
+                rgba(0,0,0,0.5),
+                rgba(0,0,0,0.5)
+            ),
+            url('https://images.unsplash.com/photo-1518609878373-06d740f60d8b?q=80&w=1974&auto=format&fit=crop')
+            center/cover fixed;
+            font-family: 'Segoe UI', Arial, sans-serif;
             color: #fff;
-            font-family: 'Segoe UI',Arial,sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
         }
 
+        /* NAVBAR */
         .navbar {
             background: rgba(0,0,0,0.95);
-            padding: 12px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #333;
+            padding: 14px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            border-bottom:1px solid #333;
         }
-        .navbar-left { display: flex; align-items: center; gap: 80px; }
-        .navbar-logo { height: 45px; }
-        .navbar-menu { display: flex; gap: 60px; }
+        .navbar-left { display:flex; align-items:center; gap:60px; }
+        .navbar-logo { height:48px; }
+        .navbar-menu { display:flex; gap:50px; }
         .navbar-menu a {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
+            color:#fff;
+            text-decoration:none;
+            font-weight:600;
         }
-        .navbar-menu a:hover { color: #d02135; }
-        .navbar-right { display: flex; gap: 30px; align-items: center; }
-        .navbar-socials { display: flex; gap: 15px; }
-        .navbar-socials a { color: #fff; font-size: 1.1rem; text-decoration: none; }
-        .navbar-socials a:hover { color: #d02135; }
+        .navbar-menu a:hover { color:#d02135; }
 
+        .navbar-right { display:flex; gap:20px; align-items:center; }
+
+        /* LAYOUT */
         .container {
-            flex: 1;
-            display: flex;
-            gap: 60px;
-            max-width: 1400px;
-            margin: 40px auto;
-            padding: 0 30px;
+            flex:1;
+            display:flex;
+            gap:50px;
+            padding:40px;
+            max-width:1400px;
+            margin:auto;
         }
 
+        /* LEFT – FORM */
         .form-section {
-            flex: 0 0 380px;
-            background: rgba(26,26,26,0.95);
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            background:#121212e3;
+            border:1px solid #d02135;
+            border-radius:10px;
+            padding:28px;
+            flex:0 0 380px;
+            box-shadow:0 4px 14px #000;
         }
 
-        .form-group { margin-bottom: 20px; }
+        .form-group { margin-bottom:22px; }
         .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            color: #d02135;
-            font-weight: 600;
-            font-size: 0.95rem;
+            display:block;
+            margin-bottom:6px;
+            color:#d02135;
+            font-weight:700;
+            font-size:0.95rem;
         }
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid #d02135;
-            background: #1a1a1a;
-            color: #fff;
-            border-radius: 4px;
-            font-size: 0.95rem;
-        }
-        .form-group input::placeholder { color: #808080; }
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(208,33,53,0.5);
+
+        .form-group input, .form-group select {
+            width:100%;
+            padding:12px;
+            background:#1b1b1b;
+            color:#fff;
+            border:1px solid #d02135;
+            border-radius:6px;
         }
 
         .size-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            margin-top: 8px;
+            display:flex;
+            gap:12px;
+            align-items:center;
         }
         .size-btn {
-            background: #d02135;
-            color: #fff;
-            border: none;
-            width: 35px;
-            height: 35px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 1.1rem;
+            background:#d02135;
+            color:#fff;
+            border:none;
+            width:38px;
+            height:38px;
+            border-radius:6px;
+            font-size:1.1rem;
+            cursor:pointer;
         }
-        .size-btn:hover { background: #a01829; }
+        .size-btn:hover { background:#961426; }
         .size-value {
-            flex: 1;
-            text-align: center;
-            background: #1a1a1a;
-            border: 1px solid #d02135;
-            padding: 8px;
-            border-radius: 4px;
-            color: #fff;
-            font-weight: 600;
-        }
-
-        .preview-section {
-            flex: 1;
-            min-width: 330px;
-            max-width: 600px;
-        }
-
-        .preview-container {
-            position: relative;
-            width: 330px;
-            height: 440px;
-            margin-bottom: 20px;
-        }
-        .preview-box {
-            width: 100%;
-            height: 100%;
-            background: rgba(26,26,26,0.95);
-            border: 2px solid #d02135;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-            position: relative;
-        }
-        .preview-box img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        .embroidery-canvas {
-            position: absolute;
-            top: 0; left: 0;
-        }
-
-        .preview-controls {
-            background: rgba(26,26,26,0.95);
-            border: 2px solid #d02135;
-            border-radius: 8px;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 16px;
-        }
-
-        .control-group-title {
-            color: #d02135;
-            font-weight: 600;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .checkbox-option {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            color: #fff;
-            font-weight: 500;
-        }
-        .checkbox-label input[type="checkbox"] {
-            width: 18px;
-            height: 18px;
-            cursor: pointer;
-            accent-color: #d02135;
-        }
-
-        .info-icon {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #d02135;
-            color: #fff;
-            font-size: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        .info-icon:hover {
-            background: #a01829;
-            transform: scale(1.1);
+            flex:1;
+            text-align:center;
+            border:1px solid #d02135;
+            padding:10px;
+            border-radius:6px;
+            font-weight:600;
+            background:#141414;
         }
 
         .suggested-size {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #d02135;
-            margin-top: 10px;
-            padding: 12px;
-            background: #1a1a1a;
-            border: 1px solid #d02135;
-            border-radius: 4px;
-            text-align: center;
+            margin-top:6px;
+            padding:12px;
+            text-align:center;
+            border:1px solid #d02135;
+            background:#101010;
+            border-radius:6px;
+            font-size:1.2rem;
+            font-weight:bold;
+            color:#d02135;
         }
 
-        .wa-button {
-            background: #25D366;
-            border: none;
-            color: #fff;
-            font-weight: 700;
-            padding: 14px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.95rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .wa-button i { font-size: 1.1rem; }
-        .wa-button:hover { filter: brightness(0.9); }
+        /* RIGHT – PREVIEW */
+        .preview-section { flex:1; }
 
+        .preview-box {
+            width:360px;
+            height:480px;
+            border:2px solid #d02135;
+            border-radius:10px;
+            background:#111;
+            position:relative;
+            overflow:hidden;
+            box-shadow:0 4px 16px #000;
+            margin-bottom:20px;
+        }
+        .preview-box img {
+            width:100%;
+            height:100%;
+            object-fit:cover;
+        }
+        #embroideryCanvas {
+            position:absolute;
+            top:0; left:0;
+            width:100%; height:100%;
+            pointer-events:none;
+        }
+
+        /* PATCH */
+        #patchCanvas {
+            position:absolute;
+            top:0; left:0;
+            pointer-events:none;
+        }
+
+        /* CONTROLS */
+        .preview-controls {
+            background:#101010e7;
+            border:1px solid #d02135;
+            border-radius:10px;
+            padding:20px;
+            margin-bottom:20px;
+        }
+        .control-group-title {
+            font-size:0.9rem;
+            color:#d02135;
+            font-weight:700;
+            margin-bottom:10px;
+            text-transform:uppercase;
+        }
+
+        .checkbox-option {
+            display:flex;
+            justify-content:space-between;
+            margin-bottom:10px;
+            align-items:center;
+        }
+
+        .checkbox-option input {
+            transform:scale(1.2);
+            accent-color:#d02135;
+        }
+        .info-icon {
+            background:#d02135;
+            width:20px;
+            height:20px;
+            border-radius:50%;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            cursor:pointer;
+            font-size:11px;
+            font-weight:bold;
+        }
+
+        /* BUTTON */
+        .insta-btn {
+            background:#d02135;
+            border:none;
+            padding:14px;
+            border-radius:8px;
+            cursor:pointer;
+            font-weight:700;
+            color:#fff;
+            display:flex;
+            gap:8px;
+            align-items:center;
+            margin-top:10px;
+            font-size:1rem;
+        }
+        .insta-btn:hover { background:#961426; }
+
+        /* MODAL */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.7);
+            display:none;
+            position:fixed;
+            inset:0;
+            background:rgba(0,0,0,0.8);
+            z-index:999;
+            justify-content:center;
+            align-items:center;
         }
-        .modal.show {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        .modal.show { display:flex; }
         .modal-content {
-            background-color: #1a1a1a;
-            padding: 30px;
-            border-radius: 8px;
-            border: 2px solid #d02135;
-            max-width: 500px;
-            width: 90%;
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+            background:#141414;
+            padding:28px;
+            border:1px solid #d02135;
+            border-radius:10px;
+            width:92%;
+            max-width:430px;
         }
-        .modal-content h3 {
-            color: #d02135;
-            margin-bottom: 15px;
-            font-size: 1.3rem;
+        .modal-content h3 { margin-bottom:10px; color:#d02135; }
+        .modal-content input, .modal-content select {
+            width:100%; padding:10px;
+            background:#000; color:#fff;
+            border:1px solid #d02135;
+            border-radius:6px;
+            margin-bottom:14px;
         }
-        .modal-content p { margin-bottom: 15px; line-height: 1.5; }
-        .modal-content select,
-        .modal-content input {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 15px;
-            background: #0a0a0a;
-            color: #fff;
-            border: 1px solid #d02135;
-            border-radius: 4px;
-        }
-        .modal-content button {
-            background: #d02135;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            margin-right: 10px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        .modal-content button:hover { background: #a01829; }
 
-        .warning-text { color: #FFD700; font-weight: bold; }
-
-        @media(max-width:1024px) {
-            .container {
-                flex-direction: column;
-                gap: 30px;
-            }
-            .form-section,
-            .preview-section {
-                flex: 1;
-                max-width: 100%;
-            }
-            .preview-container {
-                width: 100%;
-                max-width: 500px;
-            }
-        }
+        .warning-text { color:#ffd700; font-weight:bold; }
     </style>
 </head>
 <body>
-    <div class="navbar">
-        <div class="navbar-left">
-            <img src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/logo.png"
-                 class="navbar-logo" alt="Fight Lab">
-            <div class="navbar-menu">
-                <a href="#">Minha equipe</a>
-                <a href="#">Sou Costureira</a>
-                <a href="#">Aquecendo Vidas</a>
-            </div>
-        </div>
-        <div class="navbar-right">
-            <span class="contact-link">Contato: @fightlab_br</span>
-            <div class="navbar-socials">
-                <a href="https://wa.me/"><i class="fab fa-whatsapp"></i></a>
-                <a href="https://instagram.com/fightlab_br"><i class="fab fa-instagram"></i></a>
-                <a href="https://youtube.com/"><i class="fab fa-youtube"></i></a>
-            </div>
+
+<!-- NAV -->
+<div class="navbar">
+    <div class="navbar-left">
+        <img src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/logo.png"
+             class="navbar-logo">
+        <div class="navbar-menu">
+            <a href="#">Minha equipe</a>
+            <a href="#">Sou Costureira</a>
+            <a href="#">Aquecendo Vidas</a>
         </div>
     </div>
-
-    <div class="container">
-        <!-- COLUNA ESQUERDA -->
-        <div class="form-section">
-            <div class="form-group">
-                <label for="genero">Gênero:</label>
-                <select id="genero" onchange="updatePreview()">
-                    <option value="masculino">Masculino</option>
-                    <option value="feminino">Feminino</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="tipo">Cor do kimono:</label>
-                <select id="tipo" onchange="checkBlackKimono()">
-                    <option value="branco">Branco</option>
-                    <option value="azul">Azul</option>
-                    <option value="preto">Preto</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="nome">Nome (Bordado na Lapela):</label>
-                <input type="text" id="nome"
-                       maxlength="10"
-                       placeholder="Máximo 10 letras"
-                       oninput="updateEmbroidery()">
-            </div>
-
-            <div class="form-group">
-                <label>Seletor de Tamanho - Altura:</label>
-                <div class="size-controls">
-                    <button class="size-btn" onclick="decreaseHeight()">−</button>
-                    <div class="size-value" id="heightDisplay">1,70 m</div>
-                    <button class="size-btn" onclick="increaseHeight()">+</button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Seletor de Tamanho - Peso:</label>
-                <div class="size-controls">
-                    <button class="size-btn" onclick="decreaseWeight()">−</button>
-                    <div class="size-value" id="weightDisplay">80 kg</div>
-                    <button class="size-btn" onclick="increaseWeight()">+</button>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>Tamanho sugerido:</label>
-                <div class="suggested-size" id="suggestedSize">A2H</div>
-            </div>
-        </div>
-
-        <!-- COLUNA DIREITA -->
-        <div class="preview-section">
-            <div class="preview-container">
-                <div class="preview-box">
-                    <img id="previewImage"
-                         src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png"
-                         alt="Preview">
-                    <canvas id="embroideryCanvas"
-                            class="embroidery-canvas"
-                            width="330" height="440"></canvas>
-                </div>
-            </div>
-
-            <div class="preview-controls">
-                <div class="control-group">
-                    <div class="control-group-title">Opções adicionais</div>
-
-                    <div class="checkbox-option">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="leasingCheckbox"
-                                   onchange="toggleLeasingModal()">
-                            Leasing
-                        </label>
-                        <span class="info-icon"
-                              onclick="showLeasingInfo(event)">ⓘ</span>
-                    </div>
-
-                    <div class="checkbox-option">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="donationCheckbox"
-                                   onchange="toggleDonationModal()">
-                            Doação
-                        </label>
-                        <span class="info-icon"
-                              onclick="showDonationInfo(event)">ⓘ</span>
-                    </div>
-
-                    <div class="checkbox-option">
-                        <label class="checkbox-label">
-                            <input type="checkbox" id="patchCheckbox"
-                                   onchange="togglePatchModal()">
-                            Patch personalizado
-                        </label>
-                        <span class="info-icon"
-                              onclick="showPatchInfo(event)">ⓘ</span>
-                    </div>
-                </div>
-            </div>
-
-            <button class="wa-button" onclick="sendWhatsAppQuote()">
-                <i class="fab fa-whatsapp"></i>
-                Enviar cotação pelo WhatsApp
-            </button>
-        </div>
+    <div class="navbar-right">
+        <span>Contato: @fightlab_br</span>
+        <i class="fab fa-instagram"></i>
     </div>
+</div>
 
-    <!-- MODAL LEASING -->
-    <div id="leasingModal" class="modal">
-        <div class="modal-content">
-            <h3>Leasing de Kimono</h3>
-            <p>Escolha a frequência de leasing:</p>
-            <select id="leasingFrequency">
-                <option value="1">1 kimono por ano</option>
-                <option value="2">2 kimonos por ano</option>
+<!-- MAIN CONTAINER -->
+<div class="container">
+
+    <!-- LEFT -->
+    <div class="form-section">
+
+        <div class="form-group">
+            <label>Gênero:</label>
+            <select id="genero" onchange="updatePreview()">
+                <option value="masculino">Masculino</option>
+                <option value="feminino">Feminino</option>
             </select>
-            <button onclick="confirmLeasing()">Confirmar</button>
-            <button onclick="closeLeasingModal()">Fechar</button>
         </div>
+
+        <div class="form-group">
+            <label>Cor do kimono:</label>
+            <select id="tipo" onchange="updatePreview()">
+                <option value="branco">Branco</option>
+                <option value="azul">Azul</option>
+                <option value="preto">Preto</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Nome (Lapela):</label>
+            <input id="nome" maxlength="10" oninput="drawAll()"
+                   placeholder="Máximo 10 letras">
+        </div>
+
+        <div class="form-group">
+            <label>Altura:</label>
+            <div class="size-controls">
+                <button class="size-btn" onclick="changeHeight(-0.05)">−</button>
+                <div class="size-value" id="heightDisplay">1,70 m</div>
+                <button class="size-btn" onclick="changeHeight(0.05)">+</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Peso:</label>
+            <div class="size-controls">
+                <button class="size-btn" onclick="changeWeight(-2)">−</button>
+                <div class="size-value" id="weightDisplay">80 kg</div>
+                <button class="size-btn" onclick="changeWeight(2)">+</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Tamanho sugerido:</label>
+            <div class="suggested-size" id="sizeLabel">A2H</div>
+        </div>
+
     </div>
 
-    <!-- MODAL DOAÇÃO -->
-    <div id="donationModal" class="modal">
-        <div class="modal-content">
-            <h3>Doação de Kimono</h3>
-            <p>
-                Ao doar um kimono em boas condições, você recebe um abatimento de
-                até 20% do valor do leasing mediante avaliação.
-            </p>
-            <p class="warning-text">
-                📸 Importante: será necessária a avaliação visual do kimono
-                (frente, costas e lapelas) pela curadoria Fight Lab.
-            </p>
-            <button onclick="confirmDonation()">Confirmar</button>
-            <button onclick="closeDonationModal()">Fechar</button>
+    <!-- RIGHT -->
+    <div class="preview-section">
+
+        <div class="preview-box">
+            <img id="previewImage"
+                 src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png">
+            <canvas id="embroideryCanvas" width="360" height="480"></canvas>
+            <canvas id="patchCanvas" width="360" height="480"></canvas>
         </div>
+
+        <div class="preview-controls">
+            <div class="control-group-title">Opções</div>
+
+            <div class="checkbox-option">
+                <label>Leasing</label>
+                <input type="checkbox" id="leasingCheck" onclick="toggleLeasing()">
+                <span class="info-icon" onclick="alert('Leasing Fight Lab: renovação programada e custo anual otimizado.')">i</span>
+            </div>
+
+            <div class="checkbox-option">
+                <label>Doação</label>
+                <input type="checkbox" id="donCheck" onclick="toggleDonation()">
+                <span class="info-icon" onclick="alert('Doação para o Aquecendo Vidas: impacto social + abatimento.')">i</span>
+            </div>
+
+            <div class="checkbox-option">
+                <label>Patch personalizado</label>
+                <input type="checkbox" id="patchCheck" onclick="togglePatch()">
+                <span class="info-icon" onclick="alert('Patch exclusivo no ombro direito, estilo da referência enviada.')">i</span>
+            </div>
+        </div>
+
+        <button class="insta-btn" onclick="sendInstagramDM()">
+            <i class="fab fa-instagram"></i>
+            Enviar cotação por DM
+        </button>
+
     </div>
 
-    <!-- MODAL PATCH -->
-    <div id="patchModal" class="modal">
-        <div class="modal-content">
-            <h3>Patch personalizado</h3>
-            <p>Descreva a ideia do seu patch (texto, símbolo, posição no kimono):</p>
-            <input type="text" id="patchDescription"
-                   placeholder="Ex: patch redondo amarelo no ombro direito">
-            <button onclick="confirmPatch()">Confirmar</button>
-            <button onclick="closePatchModal()">Fechar</button>
-        </div>
+</div>
+
+<!-- MODAL LEASING -->
+<div class="modal" id="leasingModal">
+    <div class="modal-content">
+        <h3>Leasing</h3>
+        <p>Escolha quantos kimonos por ano:</p>
+        <select id="leasingValue">
+            <option value="1">1 kimono / ano</option>
+            <option value="2">2 kimonos / ano</option>
+        </select>
+        <button onclick="confirmLeasing()">Confirmar</button>
+        <button onclick="closeModal('leasingModal')">Fechar</button>
     </div>
+</div>
 
-    <!-- MODAL AJUSTE DE BARRAS -->
-    <div id="barModal" class="modal">
-        <div class="modal-content">
-            <h3>Ajuste de barras</h3>
-            <p>
-                Para garantir caimento técnico, este kimono deverá receber
-                <strong>ajuste de barras</strong> após a primeira lavagem.
-            </p>
-            <p>
-                Informe suas medidas em centímetros:
-            </p>
-            <input type="number" id="armSpan"
-                   placeholder="Envergadura (ponta de um dedo ao outro)">
-            <input type="number" id="legLength"
-                   placeholder="Comprimento da perna (da crista ilíaca até o tornozelo)">
-            <p class="warning-text">
-                As barras serão feitas <strong>após a primeira lavagem</strong>
-                do kimono, reduzindo risco de encolhimento futuro.
-            </p>
-            <button onclick="confirmBarAdjustment()">Confirmar</button>
-            <button onclick="closeBarModal()">Fechar</button>
-        </div>
+<!-- MODAL DOAÇÃO -->
+<div class="modal" id="donationModal">
+    <div class="modal-content">
+        <h3>Doação</h3>
+        <p class="warning-text">
+            Observação: será feita avaliação visual do kimono doado.
+        </p>
+        <button onclick="confirmDonation()">Confirmar</button>
+        <button onclick="closeModal('donationModal')">Fechar</button>
     </div>
+</div>
 
-    <script>
-        // ===== ESTADO BÁSICO =====
-        let height = 1.70; // m
-        let weight = 80;   // kg
+<!-- MODAL PATCH -->
+<div class="modal" id="patchModal">
+    <div class="modal-content">
+        <h3>Patch Personalizado</h3>
+        <input id="patchText" placeholder="Descrição do patch">
+        <button onclick="confirmPatch()">Confirmar</button>
+        <button onclick="closeModal('patchModal')">Fechar</button>
+    </div>
+</div>
 
-        const minHeight = 1.50;
-        const maxHeight = 2.00;
-        const heightStep = 0.05;
+<!-- MODAL AJUSTE BARRAS -->
+<div class="modal" id="barsModal">
+    <div class="modal-content">
+        <h3>Ajuste de Barras</h3>
+        <p class="warning-text">
+            O kimono requer ajuste técnico. As barras serão feitas após a
+            primeira lavagem para evitar encolhimento.
+        </p>
 
-        const minWeight = 50;
-        const maxWeight = 130;
-        const weightStep = 2;
+        <input id="armSpan" placeholder="Envergadura (cm)">
+        <input id="legSize" placeholder="Comprimento da perna (cm)">
 
-        const heightDisplay = document.getElementById('heightDisplay');
-        const weightDisplay = document.getElementById('weightDisplay');
-        const suggestedSizeEl = document.getElementById('suggestedSize');
+        <button onclick="confirmBars()">Confirmar</button>
+        <button onclick="closeModal('barsModal')">Fechar</button>
+    </div>
+</div>
 
-        const generoSelect = document.getElementById('genero');
-        const tipoSelect = document.getElementById('tipo');
-        const previewImage = document.getElementById('previewImage');
 
-        const canvas = document.getElementById('embroideryCanvas');
-        const ctx = canvas.getContext('2d');
+<script>
+/* ================================
+   ESTADO
+================================ */
+let height = 1.70;
+let weight = 80;
 
-        const leasingModal   = document.getElementById('leasingModal');
-        const donationModal  = document.getElementById('donationModal');
-        const patchModal     = document.getElementById('patchModal');
-        const barModal       = document.getElementById('barModal');
+let leasing = null;
+let donation = false;
+let patch = false;
+let patchLabel = "";
+let needBars = false;
+let barsData = { arm:null, leg:null };
 
-        let leasingConfig = null;
-        let donationSelected = false;
-        let patchSelected = false;
-        let patchText = '';
-        let barAdjustmentNeeded = false;
-        let barAdjustmentData = { armSpan: null, legLength: null };
+/* ================================
+   PREVIEW
+================================ */
+function updatePreview() {
+    const genero = document.getElementById("genero").value;
 
-        // Tabela padrão para cálculo de tamanho e barra (valores aproximados)
-        const sizeTable = [
-            { size: 'A0',  maxHeight: 1.65, maxWeight: 60 },
-            { size: 'A1',  maxHeight: 1.75, maxWeight: 70 },
-            { size: 'A2',  maxHeight: 1.80, maxWeight: 85 },
-            { size: 'A2H', maxHeight: 1.85, maxWeight: 95 },
-            { size: 'A3',  maxHeight: 1.90, maxWeight: 105 },
-            { size: 'A4',  maxHeight: 2.00, maxWeight: 130 }
-        ];
+    document.getElementById("previewImage").src =
+        genero === "feminino"
+        ? "https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png"
+        : "https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png";
 
-        // ===== PREVIEW / IMAGEM =====
-        function updatePreview() {
-            const genero = generoSelect.value;
+    drawAll();
+}
 
-            if (genero === 'feminino') {
-                previewImage.src =
-                    'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png';
-            } else {
-                previewImage.src =
-                    'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png';
-            }
+/* desenha lapela + patch no canvas */
+function drawAll() {
+    drawEmbroidery();
+    drawPatch();
+}
 
-            redrawCanvas();
-        }
+/* texto na lapela girado ~60° */
+function drawEmbroidery() {
+    const canvas = document.getElementById("embroideryCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-        function checkBlackKimono() {
-            const tipo = tipoSelect.value;
-            if (tipo === 'preto') {
-                console.log('Regras de faixa para kimono preto podem ser aplicadas aqui.');
-            }
-            redrawCanvas();
-        }
+    const nome = document.getElementById("nome").value.toUpperCase();
+    if(!nome) return;
 
-        // ===== DESENHO NO CANVAS =====
-        function redrawCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            drawEmbroideryName();
-            if (patchSelected) {
-                drawShoulderPatch();
-            }
-        }
+    ctx.save();
+    ctx.translate(canvas.width * 0.30, canvas.height * 0.18);
+    ctx.rotate(-60 * Math.PI/180);
 
-        // 1) Nome na lapela esquerda, ~60°
-        function drawEmbroideryName() {
-            const nome = document.getElementById('nome').value.toUpperCase();
-            if (!nome) return;
+    ctx.font = "bold 22px Arial";
+    ctx.fillStyle = "#d02135";
+    ctx.textAlign = "center";
+    ctx.fillText(nome, 0, 0);
 
-            ctx.save();
-            ctx.font = 'bold 20px "Segoe UI", Arial';
-            ctx.fillStyle = '#d02135';
-            ctx.textAlign = 'center';
+    ctx.restore();
+}
 
-            // Ponto aproximado da base da lapela esquerda
-            // (ajuste fino na mão se quiser)
-            const x = canvas.width * 0.32;  // mais à esquerda
-            const y = canvas.height * 0.20; // perto do pescoço
+/* patch amarelo no ombro direito */
+function drawPatch() {
+    const canvas = document.getElementById("patchCanvas");
+    const ctx = canvas.getContext("2d");
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-            // Rotação de ~60° em torno desse ponto
-            const angle = -60 * Math.PI / 180; // sentido horário
-            ctx.translate(x, y);
-            ctx.rotate(angle);
+    if(!patch) return;
 
-            ctx.fillText(nome, 0, 0);
-            ctx.restore();
-        }
+    ctx.save();
 
-        // 4) Patch no ombro direito da imagem
-        function drawShoulderPatch() {
-            ctx.save();
-            const x = canvas.width * 0.78; // lado direito visual
-            const y = canvas.height * 0.29;
-            const radius = 32;
+    const x = canvas.width * 0.78;
+    const y = canvas.height * 0.28;
 
-            // Disco amarelo com borda
-            ctx.beginPath();
-            ctx.arc(x, y, radius, 0, Math.PI * 2);
-            ctx.fillStyle = '#f1c40f';        // amarelo tipo patch
-            ctx.fill();
-            ctx.lineWidth = 3;
-            ctx.strokeStyle = '#111';
-            ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(x, y, 36, 0, Math.PI*2);
+    ctx.fillStyle = "#f1c40f";
+    ctx.fill();
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = "#000";
+    ctx.stroke();
 
-            // Simulação de arte central
-            ctx.font = 'bold 14px "Segoe UI", Arial';
-            ctx.fillStyle = '#111';
-            ctx.textAlign = 'center';
-            ctx.fillText('FIGHT', x, y - 4);
-            ctx.fillText('LAB', x, y + 12);
+    ctx.font = "bold 14px Arial";
+    ctx.fillStyle = "#000";
+    ctx.textAlign = "center";
+    ctx.fillText("FIGHT", x, y-4);
+    ctx.fillText("LAB", x, y+12);
 
-            ctx.restore();
-        }
+    ctx.restore();
+}
 
-        function updateEmbroidery() {
-            redrawCanvas();
-        }
+/* ================================
+   ALTURA / PESO / TAMANHO
+================================ */
+function changeHeight(v) {
+    height = Math.min(2.00, Math.max(1.40, height + v));
+    document.getElementById("heightDisplay").innerText =
+        height.toFixed(2).replace(".", ",") + " m";
 
-        // ===== ALTURA / PESO / TAMANHO =====
-        function updateHeightDisplay() {
-            heightDisplay.textContent =
-                height.toFixed(2).replace('.', ',') + ' m';
-        }
+    calcSize();
+}
+function changeWeight(v) {
+    weight = Math.min(130, Math.max(40, weight + v));
+    document.getElementById("weightDisplay").innerText =
+        weight + " kg";
 
-        function updateWeightDisplay() {
-            weightDisplay.textContent = weight.toFixed(0) + ' kg';
-        }
+    calcSize();
+}
 
-        function increaseHeight() {
-            if (height + heightStep <= maxHeight) {
-                height += heightStep;
-                updateHeightDisplay();
-                updateSuggestedSize();
-            }
-        }
+/* tabela básica */
+function calcSize() {
+    let size = "A2H";
 
-        function decreaseHeight() {
-            if (height - heightStep >= minHeight) {
-                height -= heightStep;
-                updateHeightDisplay();
-                updateSuggestedSize();
-            }
-        }
+    if(height<=1.60 && weight<=60) size="A0";
+    else if(height<=1.70 && weight<=70) size="A1";
+    else if(height<=1.80 && weight<=85) size="A2";
+    else if(height<=1.88 && weight<=95) size="A2H";
+    else if(height<=1.92 && weight<=110) size="A3";
+    else size="A4";
 
-        function increaseWeight() {
-            if (weight + weightStep <= maxWeight) {
-                weight += weightStep;
-                updateWeightDisplay();
-                updateSuggestedSize();
-            }
-        }
+    document.getElementById("sizeLabel").innerText = size;
 
-        function decreaseWeight() {
-            if (weight - weightStep >= minWeight) {
-                weight -= weightStep;
-                updateWeightDisplay();
-                updateSuggestedSize();
-            }
-        }
+    checkBars(size);
+}
 
-        function updateSuggestedSize() {
-            let size = 'A2';
+/* 20% acima/abaixo dos limites → barras */
+function checkBars(size) {
+    const tabela = {
+        "A0": {h:1.60, w:60},
+        "A1": {h:1.70, w:70},
+        "A2": {h:1.80, w:85},
+        "A2H":{h:1.88, w:95},
+        "A3": {h:1.92, w:110},
+        "A4": {h:2.00, w:130},
+    };
 
-            if (height <= 1.60 && weight <= 60)      size = 'A0';
-            else if (height <= 1.70 && weight <= 70) size = 'A1';
-            else if (height <= 1.80 && weight <= 85) size = 'A2';
-            else if (height <= 1.85 && weight <= 95) size = 'A2H';
-            else if (height <= 1.90 && weight <= 105) size = 'A3';
-            else                                     size = 'A4';
+    const ref = tabela[size];
+    if(!ref) return;
 
-            suggestedSizeEl.textContent = size;
+    const diffH = Math.abs(height - ref.h) / ref.h;
+    const diffW = Math.abs(weight - ref.w) / ref.w;
 
-            const sizeEntry = sizeTable.find(s => s.size === size);
-            checkBarAdjustment(sizeEntry);
-        }
+    if(diffH > 0.20 || diffW > 0.20) {
+        needBars = true;
+        openModal("barsModal");
+    }
+}
 
-        // 3) Lógica de ajuste de barras (>20% acima/abaixo do padrão)
-        function checkBarAdjustment(sizeEntry) {
-            if (!sizeEntry) return;
+/* ================================
+   MODAIS
+================================ */
+function openModal(id){ document.getElementById(id).classList.add("show"); }
+function closeModal(id){ document.getElementById(id).classList.remove("show"); }
 
-            const heightDiffRatio =
-                Math.abs(height - sizeEntry.maxHeight) / sizeEntry.maxHeight;
-            const weightDiffRatio =
-                Math.abs(weight - sizeEntry.maxWeight) / sizeEntry.maxWeight;
+/* Leasing */
+function toggleLeasing(){
+    if(document.getElementById("leasingCheck").checked){
+        openModal("leasingModal");
+    }
+}
+function confirmLeasing(){
+    leasing = document.getElementById("leasingValue").value;
+    closeModal("leasingModal");
+}
 
-            if (heightDiffRatio > 0.20 || weightDiffRatio > 0.20) {
-                // Fora de 20% do padrão -> sugerir barras
-                openBarModal();
-            }
-        }
+/* Doação */
+function toggleDonation(){
+    if(document.getElementById("donCheck").checked){
+        openModal("donationModal");
+    }
+}
+function confirmDonation(){
+    donation = true;
+    closeModal("donationModal");
+}
 
-        // ===== MODAIS: LEASING =====
-        function toggleLeasingModal() {
-            const checked = document.getElementById('leasingCheckbox').checked;
-            if (checked) {
-                leasingModal.classList.add('show');
-            } else {
-                closeLeasingModal();
-            }
-        }
-        function closeLeasingModal() {
-            leasingModal.classList.remove('show');
-            document.getElementById('leasingCheckbox').checked = false;
-            leasingConfig = null;
-        }
-        function confirmLeasing() {
-            const freq = document.getElementById('leasingFrequency').value;
-            leasingConfig = { frequencyPerYear: Number(freq) };
-            leasingModal.classList.remove('show');
-        }
+/* Patch */
+function togglePatch(){
+    if(document.getElementById("patchCheck").checked){
+        openModal("patchModal");
+    } else {
+        patch = false;
+        drawAll();
+    }
+}
+function confirmPatch(){
+    patchLabel = document.getElementById("patchText").value;
+    patch = true;
+    closeModal("patchModal");
+    drawAll();
+}
 
-        // ===== MODAIS: DOAÇÃO =====
-        function toggleDonationModal() {
-            const checked = document.getElementById('donationCheckbox').checked;
-            if (checked) {
-                donationModal.classList.add('show');
-            } else {
-                closeDonationModal();
-            }
-        }
-        function closeDonationModal() {
-            donationModal.classList.remove('show');
-            document.getElementById('donationCheckbox').checked = false;
-            donationSelected = false;
-        }
-        function confirmDonation() {
-            donationSelected = true;
-            donationModal.classList.remove('show');
-        }
+/* Barras */
+function confirmBars(){
+    barsData.arm = document.getElementById("armSpan").value;
+    barsData.leg = document.getElementById("legSize").value;
+    closeModal("barsModal");
+}
 
-        // ===== MODAIS: PATCH =====
-        function togglePatchModal() {
-            const checked = document.getElementById('patchCheckbox').checked;
-            if (checked) {
-                patchModal.classList.add('show');
-            } else {
-                closePatchModal();
-            }
-        }
-        function closePatchModal() {
-            patchModal.classList.remove('show');
-            document.getElementById('patchCheckbox').checked = false;
-            patchSelected = false;
-            patchText = '';
-            redrawCanvas();
-        }
-        function confirmPatch() {
-            patchText = document.getElementById('patchDescription').value;
-            patchSelected = true;
-            patchModal.classList.remove('show');
-            redrawCanvas();
-        }
+/* ================================
+   ENVIAR PARA DM INSTAGRAM
+================================ */
+function sendInstagramDM(){
+    const genero = document.getElementById("genero").value;
+    const cor = document.getElementById("tipo").value;
+    const nome = (document.getElementById("nome").value || "").toUpperCase();
+    const tamanho = document.getElementById("sizeLabel").innerText;
 
-        // ===== MODAIS: AJUSTE DE BARRAS =====
-        function openBarModal() {
-            barModal.classList.add('show');
-        }
-        function closeBarModal() {
-            barModal.classList.remove('show');
-        }
-        function confirmBarAdjustment() {
-            const armSpanValue = document.getElementById('armSpan').value;
-            const legLengthValue = document.getElementById('legLength').value;
+    let msg =
+`OSS! Quero fazer meu kimono personalizado da Fight Lab 🥋
 
-            barAdjustmentNeeded = true;
-            barAdjustmentData = {
-                armSpan: armSpanValue || null,
-                legLength: legLengthValue || null
-            };
-            barModal.classList.remove('show');
-        }
-
-        // ===== INFO ICONS =====
-        function showLeasingInfo(event) {
-            event.stopPropagation();
-            alert('Leasing Fight Lab: assinatura de kimono com renovação programada, mantendo sempre o material em dia.');
-        }
-        function showDonationInfo(event) {
-            event.stopPropagation();
-            alert('Doação: seu kimono entra no programa Aquecendo Vidas, gerando impacto social e abatimento no leasing.');
-        }
-        function showPatchInfo(event) {
-            event.stopPropagation();
-            alert('Patch personalizado: arte no ombro direito do kimono, como na referência enviada, conectando história e estilo.');
-        }
-
-        // ===== WHATSAPP QUOTE =====
-        function sendWhatsAppQuote() {
-            const genero = generoSelect.value;
-            const cor = tipoSelect.value;
-            const nome = (document.getElementById('nome').value || '').toUpperCase();
-            const tamanho = suggestedSizeEl.textContent;
-
-            const leasingStr = leasingConfig
-                ? `Sim (${leasingConfig.frequencyPerYear} kimono(s)/ano)`
-                : 'Não';
-            const doacaoStr = donationSelected ? 'Sim' : 'Não';
-            const patchStr = patchSelected
-                ? `Sim – ${patchText || 'patch no ombro direito'}`
-                : 'Não';
-
-            let barrasStr = 'Não';
-            if (barAdjustmentNeeded) {
-                barrasStr = `Sim – Envergadura: ${barAdjustmentData.armSpan || 'n/d'} cm; Pernas: ${barAdjustmentData.legLength || 'n/d'} cm`;
-            }
-
-            const msg =
-`OSS! Aqui é a Fight Lab 🥋
-
-Segue o resumo da sua cotação de kimono personalizado:
-
-• Nome no bordado da lapela: ${nome || '—'}
+• Nome bordado na lapela: ${nome || "—"}
 • Gênero: ${genero}
 • Cor do kimono: ${cor}
-• Altura/Peso: ${height.toFixed(2).replace('.', ',')} m / ${weight.toFixed(0)} kg
+• Altura/Peso: ${height.toFixed(2).replace(".", ",")} m / ${weight} kg
 • Tamanho sugerido: ${tamanho}
 
-Serviços do ecossistema:
-• Leasing: ${leasingStr}
-• Programa de Doação (Aquecendo Vidas): ${doacaoStr}
-• Patch personalizado no ombro direito: ${patchStr}
-• Ajuste de barras: ${barrasStr}
+Serviços:
+• Leasing: ${leasing ? leasing+" kimono(s)/ano" : "Não"}
+• Doação: ${donation ? "Sim" : "Não"}
+• Patch no ombro direito: ${patch ? patchLabel || "Sim" : "Não"}
+• Ajuste de barras: ${needBars ? `Sim – Envergadura ${barsData.arm} cm, Pernas ${barsData.leg} cm` : "Não"}
 
 Arte final:
-Kimono seguindo a referência enviada, com bordado na lapela esquerda em volta do pescoço e patch de ombro no estilo Fight Lab.
+Kimono adaptado com patch no ombro e bordado girado a 60° na lapela esquerda.
 
-Me confirma se está tudo certo para avançarmos com a produção.`;
+Podem seguir com minha cotação?`;
 
-            // Coloque aqui o número se quiser fixo: ex "55XXXXXXXXXXX"
-            const phone = ''; // ex: '5511999999999'
-            const baseUrl = phone
-                ? `https://wa.me/${phone}?text=`
-                : 'https://wa.me/?text=';
+    navigator.clipboard.writeText(msg)
+    .then(()=> alert("Texto copiado! A DM será aberta. Basta colar e enviar."));
 
-            const url = baseUrl + encodeURIComponent(msg);
-            window.open(url, '_blank');
-        }
+    window.open("https://ig.me/m/fightlab_br", "_blank");
+}
 
-        // ===== INIT =====
-        updateHeightDisplay();
-        updateWeightDisplay();
-        updateSuggestedSize();
-        updatePreview();
-    </script>
+/* INIT */
+updatePreview();
+calcSize();
+</script>
+
 </body>
 </html>
