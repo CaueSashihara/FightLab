@@ -157,6 +157,7 @@
             display: flex;
             flex-direction: column;
             gap: 15px;
+            margin-bottom: 16px;
         }
 
         .control-group-title {
@@ -217,6 +218,22 @@
             border-radius: 4px;
             text-align: center;
         }
+
+        .wa-button {
+            background: #25D366;
+            border: none;
+            color: #fff;
+            font-weight: 700;
+            padding: 14px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .wa-button i { font-size: 1.1rem; }
+        .wa-button:hover { filter: brightness(0.9); }
 
         .modal {
             display: none;
@@ -409,6 +426,11 @@
                     </div>
                 </div>
             </div>
+
+            <button class="wa-button" onclick="sendWhatsAppQuote()">
+                <i class="fab fa-whatsapp"></i>
+                Enviar cotação pelo WhatsApp
+            </button>
         </div>
     </div>
 
@@ -435,11 +457,9 @@
                 até 20% do valor do leasing mediante avaliação.
             </p>
             <p class="warning-text">
-                📸 Importante: envie 3 fotos (frente, verso e lapelas)
-                para @fightlab_br via Instagram DM.
+                📸 Importante: será necessária a avaliação visual do kimono
+                (frente, costas e lapelas) pela curadoria Fight Lab.
             </p>
-            <input type="file" id="donationPhotos"
-                   accept="image/*" multiple>
             <button onclick="confirmDonation()">Confirmar</button>
             <button onclick="closeDonationModal()">Fechar</button>
         </div>
@@ -451,16 +471,40 @@
             <h3>Patch personalizado</h3>
             <p>Descreva a ideia do seu patch (texto, símbolo, posição no kimono):</p>
             <input type="text" id="patchDescription"
-                   placeholder="Ex: patch no ombro com frase OSS">
+                   placeholder="Ex: patch redondo amarelo no ombro direito">
             <button onclick="confirmPatch()">Confirmar</button>
             <button onclick="closePatchModal()">Fechar</button>
         </div>
     </div>
 
+    <!-- MODAL AJUSTE DE BARRAS -->
+    <div id="barModal" class="modal">
+        <div class="modal-content">
+            <h3>Ajuste de barras</h3>
+            <p>
+                Para garantir caimento técnico, este kimono deverá receber
+                <strong>ajuste de barras</strong> após a primeira lavagem.
+            </p>
+            <p>
+                Informe suas medidas em centímetros:
+            </p>
+            <input type="number" id="armSpan"
+                   placeholder="Envergadura (ponta de um dedo ao outro)">
+            <input type="number" id="legLength"
+                   placeholder="Comprimento da perna (da crista ilíaca até o tornozelo)">
+            <p class="warning-text">
+                As barras serão feitas <strong>após a primeira lavagem</strong>
+                do kimono, reduzindo risco de encolhimento futuro.
+            </p>
+            <button onclick="confirmBarAdjustment()">Confirmar</button>
+            <button onclick="closeBarModal()">Fechar</button>
+        </div>
+    </div>
+
     <script>
         // ===== ESTADO BÁSICO =====
-        let height = 1.70; // em metros
-        let weight = 80;   // em kg
+        let height = 1.70; // m
+        let weight = 80;   // kg
 
         const minHeight = 1.50;
         const maxHeight = 2.00;
@@ -481,12 +525,32 @@
         const canvas = document.getElementById('embroideryCanvas');
         const ctx = canvas.getContext('2d');
 
-        // ===== FUNÇÕES DE PREVIEW =====
+        const leasingModal   = document.getElementById('leasingModal');
+        const donationModal  = document.getElementById('donationModal');
+        const patchModal     = document.getElementById('patchModal');
+        const barModal       = document.getElementById('barModal');
+
+        let leasingConfig = null;
+        let donationSelected = false;
+        let patchSelected = false;
+        let patchText = '';
+        let barAdjustmentNeeded = false;
+        let barAdjustmentData = { armSpan: null, legLength: null };
+
+        // Tabela padrão para cálculo de tamanho e barra (valores aproximados)
+        const sizeTable = [
+            { size: 'A0',  maxHeight: 1.65, maxWeight: 60 },
+            { size: 'A1',  maxHeight: 1.75, maxWeight: 70 },
+            { size: 'A2',  maxHeight: 1.80, maxWeight: 85 },
+            { size: 'A2H', maxHeight: 1.85, maxWeight: 95 },
+            { size: 'A3',  maxHeight: 1.90, maxWeight: 105 },
+            { size: 'A4',  maxHeight: 2.00, maxWeight: 130 }
+        ];
+
+        // ===== PREVIEW / IMAGEM =====
         function updatePreview() {
             const genero = generoSelect.value;
-            const tipo = tipoSelect.value;
 
-            // Avatar por gênero (ajuste os caminhos conforme seus assets)
             if (genero === 'feminino') {
                 previewImage.src =
                     'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/mulher.png';
@@ -495,48 +559,84 @@
                     'https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png';
             }
 
-            // Poderia trocar aqui a cor do kimono via imagens diferentes
-            // ou overlay; por enquanto só recalculamos o bordado.
-            updateEmbroidery();
+            redrawCanvas();
         }
 
         function checkBlackKimono() {
             const tipo = tipoSelect.value;
-            // Aqui entraria a regra de faixa/experiência.
-            // Por enquanto, só recalculamos preview:
-            updatePreview();
-
-            // Exemplo de aviso leve:
             if (tipo === 'preto') {
-                console.log('Regra futura: checar se faixa permite kimono preto.');
+                console.log('Regras de faixa para kimono preto podem ser aplicadas aqui.');
+            }
+            redrawCanvas();
+        }
+
+        // ===== DESENHO NO CANVAS =====
+        function redrawCanvas() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawEmbroideryName();
+            if (patchSelected) {
+                drawShoulderPatch();
             }
         }
 
-        // ===== BORDADO (NOME NA LAPELA) =====
-        function updateEmbroidery() {
+        // 1) Nome na lapela esquerda, ~60°
+        function drawEmbroideryName() {
             const nome = document.getElementById('nome').value.toUpperCase();
-
-            // Limpa o canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             if (!nome) return;
 
             ctx.save();
-            ctx.font = 'bold 22px "Segoe UI", Arial';
+            ctx.font = 'bold 20px "Segoe UI", Arial';
             ctx.fillStyle = '#d02135';
             ctx.textAlign = 'center';
 
-            // Posição aproximada da lapela (ajuste fino depois)
-            const x = canvas.width / 2;
-            const y = canvas.height * 0.25;
+            // Ponto aproximado da base da lapela esquerda
+            // (ajuste fino na mão se quiser)
+            const x = canvas.width * 0.32;  // mais à esquerda
+            const y = canvas.height * 0.20; // perto do pescoço
 
-            ctx.fillText(nome, x, y);
+            // Rotação de ~60° em torno desse ponto
+            const angle = -60 * Math.PI / 180; // sentido horário
+            ctx.translate(x, y);
+            ctx.rotate(angle);
+
+            ctx.fillText(nome, 0, 0);
             ctx.restore();
+        }
+
+        // 4) Patch no ombro direito da imagem
+        function drawShoulderPatch() {
+            ctx.save();
+            const x = canvas.width * 0.78; // lado direito visual
+            const y = canvas.height * 0.29;
+            const radius = 32;
+
+            // Disco amarelo com borda
+            ctx.beginPath();
+            ctx.arc(x, y, radius, 0, Math.PI * 2);
+            ctx.fillStyle = '#f1c40f';        // amarelo tipo patch
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#111';
+            ctx.stroke();
+
+            // Simulação de arte central
+            ctx.font = 'bold 14px "Segoe UI", Arial';
+            ctx.fillStyle = '#111';
+            ctx.textAlign = 'center';
+            ctx.fillText('FIGHT', x, y - 4);
+            ctx.fillText('LAB', x, y + 12);
+
+            ctx.restore();
+        }
+
+        function updateEmbroidery() {
+            redrawCanvas();
         }
 
         // ===== ALTURA / PESO / TAMANHO =====
         function updateHeightDisplay() {
-            heightDisplay.textContent = height.toFixed(2).replace('.', ',') + ' m';
+            heightDisplay.textContent =
+                height.toFixed(2).replace('.', ',') + ' m';
         }
 
         function updateWeightDisplay() {
@@ -576,77 +676,181 @@
         }
 
         function updateSuggestedSize() {
-            // Mapeamento simples só para demo. Ajuste com sua tabela real.
             let size = 'A2';
 
             if (height <= 1.60 && weight <= 60)      size = 'A0';
             else if (height <= 1.70 && weight <= 70) size = 'A1';
             else if (height <= 1.80 && weight <= 85) size = 'A2';
-            else if (height <= 1.90 && weight <= 95) size = 'A2H';
-            else if (height <= 1.95 && weight <= 105) size = 'A3';
+            else if (height <= 1.85 && weight <= 95) size = 'A2H';
+            else if (height <= 1.90 && weight <= 105) size = 'A3';
             else                                     size = 'A4';
 
             suggestedSizeEl.textContent = size;
+
+            const sizeEntry = sizeTable.find(s => s.size === size);
+            checkBarAdjustment(sizeEntry);
         }
 
-        // ===== MODAIS =====
-        const leasingModal   = document.getElementById('leasingModal');
-        const donationModal  = document.getElementById('donationModal');
-        const patchModal     = document.getElementById('patchModal');
+        // 3) Lógica de ajuste de barras (>20% acima/abaixo do padrão)
+        function checkBarAdjustment(sizeEntry) {
+            if (!sizeEntry) return;
 
+            const heightDiffRatio =
+                Math.abs(height - sizeEntry.maxHeight) / sizeEntry.maxHeight;
+            const weightDiffRatio =
+                Math.abs(weight - sizeEntry.maxWeight) / sizeEntry.maxWeight;
+
+            if (heightDiffRatio > 0.20 || weightDiffRatio > 0.20) {
+                // Fora de 20% do padrão -> sugerir barras
+                openBarModal();
+            }
+        }
+
+        // ===== MODAIS: LEASING =====
         function toggleLeasingModal() {
             const checked = document.getElementById('leasingCheckbox').checked;
-            leasingModal.classList.toggle('show', checked);
+            if (checked) {
+                leasingModal.classList.add('show');
+            } else {
+                closeLeasingModal();
+            }
         }
         function closeLeasingModal() {
             leasingModal.classList.remove('show');
             document.getElementById('leasingCheckbox').checked = false;
+            leasingConfig = null;
         }
         function confirmLeasing() {
             const freq = document.getElementById('leasingFrequency').value;
-            alert(`Leasing selecionado: ${freq} kimono(s) por ano.`);
-            closeLeasingModal();
+            leasingConfig = { frequencyPerYear: Number(freq) };
+            leasingModal.classList.remove('show');
         }
 
+        // ===== MODAIS: DOAÇÃO =====
         function toggleDonationModal() {
             const checked = document.getElementById('donationCheckbox').checked;
-            donationModal.classList.toggle('show', checked);
+            if (checked) {
+                donationModal.classList.add('show');
+            } else {
+                closeDonationModal();
+            }
         }
         function closeDonationModal() {
             donationModal.classList.remove('show');
             document.getElementById('donationCheckbox').checked = false;
+            donationSelected = false;
         }
         function confirmDonation() {
-            alert('Obrigado! Vamos avaliar as fotos do seu kimono para a doação.');
-            closeDonationModal();
+            donationSelected = true;
+            donationModal.classList.remove('show');
         }
 
+        // ===== MODAIS: PATCH =====
         function togglePatchModal() {
             const checked = document.getElementById('patchCheckbox').checked;
-            patchModal.classList.toggle('show', checked);
+            if (checked) {
+                patchModal.classList.add('show');
+            } else {
+                closePatchModal();
+            }
         }
         function closePatchModal() {
             patchModal.classList.remove('show');
             document.getElementById('patchCheckbox').checked = false;
+            patchSelected = false;
+            patchText = '';
+            redrawCanvas();
         }
         function confirmPatch() {
-            const desc = document.getElementById('patchDescription').value;
-            alert(`Patch registrado: ${desc || 'sem descrição'}.`);
-            closePatchModal();
+            patchText = document.getElementById('patchDescription').value;
+            patchSelected = true;
+            patchModal.classList.remove('show');
+            redrawCanvas();
+        }
+
+        // ===== MODAIS: AJUSTE DE BARRAS =====
+        function openBarModal() {
+            barModal.classList.add('show');
+        }
+        function closeBarModal() {
+            barModal.classList.remove('show');
+        }
+        function confirmBarAdjustment() {
+            const armSpanValue = document.getElementById('armSpan').value;
+            const legLengthValue = document.getElementById('legLength').value;
+
+            barAdjustmentNeeded = true;
+            barAdjustmentData = {
+                armSpan: armSpanValue || null,
+                legLength: legLengthValue || null
+            };
+            barModal.classList.remove('show');
         }
 
         // ===== INFO ICONS =====
         function showLeasingInfo(event) {
             event.stopPropagation();
-            alert('Leasing: você recebe kimonos novos em ciclos definidos, com condições especiais Fight Lab.');
+            alert('Leasing Fight Lab: assinatura de kimono com renovação programada, mantendo sempre o material em dia.');
         }
         function showDonationInfo(event) {
             event.stopPropagation();
-            alert('Doação: seu kimono usado entra para o programa Aquecendo Vidas, com abatimento no leasing.');
+            alert('Doação: seu kimono entra no programa Aquecendo Vidas, gerando impacto social e abatimento no leasing.');
         }
         function showPatchInfo(event) {
             event.stopPropagation();
-            alert('Patch personalizado: crie o símbolo da sua jornada no tatame. Texto, ícone ou arte exclusiva.');
+            alert('Patch personalizado: arte no ombro direito do kimono, como na referência enviada, conectando história e estilo.');
+        }
+
+        // ===== WHATSAPP QUOTE =====
+        function sendWhatsAppQuote() {
+            const genero = generoSelect.value;
+            const cor = tipoSelect.value;
+            const nome = (document.getElementById('nome').value || '').toUpperCase();
+            const tamanho = suggestedSizeEl.textContent;
+
+            const leasingStr = leasingConfig
+                ? `Sim (${leasingConfig.frequencyPerYear} kimono(s)/ano)`
+                : 'Não';
+            const doacaoStr = donationSelected ? 'Sim' : 'Não';
+            const patchStr = patchSelected
+                ? `Sim – ${patchText || 'patch no ombro direito'}`
+                : 'Não';
+
+            let barrasStr = 'Não';
+            if (barAdjustmentNeeded) {
+                barrasStr = `Sim – Envergadura: ${barAdjustmentData.armSpan || 'n/d'} cm; Pernas: ${barAdjustmentData.legLength || 'n/d'} cm`;
+            }
+
+            const msg =
+`OSS! Aqui é a Fight Lab 🥋
+
+Segue o resumo da sua cotação de kimono personalizado:
+
+• Nome no bordado da lapela: ${nome || '—'}
+• Gênero: ${genero}
+• Cor do kimono: ${cor}
+• Altura/Peso: ${height.toFixed(2).replace('.', ',')} m / ${weight.toFixed(0)} kg
+• Tamanho sugerido: ${tamanho}
+
+Serviços do ecossistema:
+• Leasing: ${leasingStr}
+• Programa de Doação (Aquecendo Vidas): ${doacaoStr}
+• Patch personalizado no ombro direito: ${patchStr}
+• Ajuste de barras: ${barrasStr}
+
+Arte final:
+Kimono seguindo a referência enviada, com bordado na lapela esquerda em volta do pescoço e patch de ombro no estilo Fight Lab.
+
+Me confirma se está tudo certo para avançarmos com a produção.`;
+
+            // Coloque aqui o número se quiser fixo: ex "55XXXXXXXXXXX"
+            const phone = ''; // ex: '5511999999999'
+            const baseUrl = phone
+                ? `https://wa.me/${phone}?text=`
+                : 'https://wa.me/?text=';
+
+            const url = baseUrl + encodeURIComponent(msg);
+            window.open(url, '_blank');
         }
 
         // ===== INIT =====
