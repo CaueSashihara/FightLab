@@ -37,30 +37,23 @@
             justify-content:space-between;
             align-items:center;
             border-bottom:1px solid #333;
+            position:relative;
+            z-index:1000;
         }
-        .navbar-left { display:flex; align-items:center; gap:32px; }
-        .navbar-logo { height:48px; }
-
-        .navbar-menu {
-            display:flex;
-            gap:32px;
+        .navbar-left { display:flex; align-items:center; }
+        .navbar-logo {
+            height:48px;
+            filter: invert(1); /* logo preto/branco */
         }
-        .navbar-menu a {
-            color:#fff;
-            text-decoration:none;
-            font-weight:600;
-            font-size:0.95rem;
-        }
-        .navbar-menu a:hover { color:#d02135; }
 
         .navbar-right {
             display:flex;
-            gap:16px;
+            gap:12px;
             align-items:center;
         }
 
         .navbar-toggle {
-            display:none;
+            display:block;
             font-size:1.4rem;
             color:#fff;
             cursor:pointer;
@@ -77,6 +70,39 @@
             cursor:pointer;
         }
         .home-btn-top:hover { background:#961426; }
+
+        .navbar-right span {
+            font-size:0.9rem;
+        }
+
+        /* HAMBURGER MENU (DROPDOWN) */
+        .navbar-menu {
+            position:fixed;
+            top:70px;
+            right:0;
+            background:rgba(0,0,0,0.97);
+            padding:12px 20px;
+            display:none;
+            flex-direction:column;
+            gap:8px;
+            z-index:998;
+            width:220px;
+            border-left:1px solid #333;
+            border-bottom:1px solid #333;
+        }
+        .navbar-menu.show {
+            display:flex;
+        }
+        .navbar-menu a {
+            color:#fff;
+            text-decoration:none;
+            font-weight:600;
+            font-size:0.9rem;
+            padding:6px 0;
+        }
+        .navbar-menu a:hover {
+            color:#d02135;
+        }
 
         /* LAYOUT DESKTOP */
         .container {
@@ -297,37 +323,6 @@
 
             .navbar {
                 padding:10px 16px;
-                flex-direction:column;
-                align-items:flex-start;
-                gap:8px;
-            }
-
-            .navbar-left {
-                width:100%;
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                gap:16px;
-            }
-
-            .navbar-menu {
-                display:none;
-                flex-direction:column;
-                gap:8px;
-                margin-top:8px;
-                width:100%;
-            }
-            .navbar-menu.show {
-                display:flex;
-            }
-
-            .navbar-right {
-                width:100%;
-                justify-content:space-between;
-            }
-
-            .navbar-toggle {
-                display:block;
             }
 
             .container {
@@ -377,10 +372,6 @@
                 height:40px;
             }
 
-            .navbar-menu {
-                font-size:0.85rem;
-            }
-
             .form-section {
                 padding:18px;
             }
@@ -403,23 +394,23 @@
 <div class="navbar">
     <div class="navbar-left">
         <img src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/logo.png"
-             class="navbar-logo">
-
-        <div class="navbar-toggle" onclick="toggleMenu()">
-            <i class="fas fa-bars"></i>
-        </div>
-
-        <div class="navbar-menu">
-            <a href="#">Minha equipe</a>
-            <a href="#">Sou Costureira</a>
-            <a href="#">Aquecendo Vidas</a>
-        </div>
+             class="navbar-logo" alt="Fight Lab">
     </div>
 
     <div class="navbar-right">
         <span>Contato: @fightlab_br</span>
         <button class="home-btn-top" onclick="goHome()">Home</button>
+        <div class="navbar-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
     </div>
+</div>
+
+<!-- HAMBURGER DROPDOWN MENU -->
+<div class="navbar-menu" id="topMenu">
+    <a href="agenda.html">Minha equipe</a>
+    <a href="costureira.html">Sou costureira</a>
+    <a href="index.html#aquecendo">Aquecendo vidas</a>
 </div>
 
 <!-- MAIN CONTAINER -->
@@ -502,7 +493,7 @@
 
         <div class="preview-box">
             <img id="previewImage"
-                 src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png">
+                 src="https://raw.githubusercontent.com/CaueSashihara/FightLab/main/assets/homem.png" alt="Preview">
             <canvas id="embroideryCanvas" width="360" height="480"></canvas>
             <canvas id="patchCanvas" width="360" height="480"></canvas>
         </div>
@@ -609,15 +600,19 @@ let patchLabel = "";
 let needBars = false;
 let barsData = { arm:null, leg:null };
 
+/* CONTADOR DE PEDIDOS */
+let orderCounter = 202500010201;
+
 /* NAV – MENU SANDUÍCHE */
 function toggleMenu() {
-    const menu = document.querySelector('.navbar-menu');
-    menu.classList.toggle('show');
+    const menu = document.getElementById('topMenu');
+    if (menu) {
+        menu.classList.toggle('show');
+    }
 }
 
 /* HOME */
 function goHome() {
-    // ajuste o destino se o arquivo principal tiver outro nome/caminho
     window.location.href = "index.html";
 }
 
@@ -638,7 +633,7 @@ function drawAll() {
     drawPatch();
 }
 
-/* texto lapela */
+/* texto lapela girado ~60° na esquerda */
 function drawEmbroidery() {
     const canvas = document.getElementById("embroideryCanvas");
     const ctx = canvas.getContext("2d");
@@ -793,7 +788,7 @@ function confirmBars(){
 }
 
 /* WHATSAPP */
-function buildMessage() {
+function buildMessage(orderId) {
     const genero = document.getElementById("genero").value;
     const cor = document.getElementById("tipo").value;
     const academia = document.getElementById("academia").value;
@@ -806,8 +801,9 @@ function buildMessage() {
         : "Não";
 
     const msg =
-`OSS! Quero fazer meu kimono personalizado da Fight Lab 🥋
+`Quero fazer meu kimono personalizado da Fight Lab 🥋
 
+• Número do pedido: ${orderId}
 • Nome bordado na lapela: ${nome || "—"}
 • Gênero: ${genero}
 • Cor do kimono: ${cor}
@@ -821,16 +817,20 @@ Serviços:
 • Patch no ombro direito: ${patch ? (patchLabel || "Sim") : "Não"}
 • Ajuste de barras: ${barrasTexto}
 
-Podem seguir com minha cotação?`;
+Podem seguir com minha cotação?
+
+OSS`;
 
     return msg;
 }
 
 function sendWhatsApp() {
-    const msg = buildMessage();
+    const currentOrder = orderCounter;
+    const msg = buildMessage(currentOrder);
     const phone = "5511979690880";
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
     window.open(url, "_blank");
+    orderCounter++;
 }
 
 /* INIT */
