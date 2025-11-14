@@ -197,7 +197,7 @@
 
         /* BUTTON */
         .insta-btn {
-            background:#d02135;
+            background:#25D366;
             border:none;
             padding:14px;
             border-radius:8px;
@@ -210,7 +210,8 @@
             margin-top:10px;
             font-size:1rem;
         }
-        .insta-btn:hover { background:#961426; }
+        .insta-btn i { font-size:1.1rem; }
+        .insta-btn:hover { filter:brightness(0.9); }
 
         /* MODAL */
         .modal {
@@ -258,7 +259,7 @@
     </div>
     <div class="navbar-right">
         <span>Contato: @fightlab_br</span>
-        <i class="fab fa-instagram"></i>
+        <i class="fab fa-whatsapp"></i>
     </div>
 </div>
 
@@ -348,9 +349,9 @@
             </div>
         </div>
 
-        <button class="insta-btn" onclick="sendInstagramDM()">
-            <i class="fab fa-instagram"></i>
-            Enviar cotação por DM
+        <button class="insta-btn" onclick="sendWhatsApp()">
+            <i class="fab fa-whatsapp"></i>
+            Enviar cotação pelo WhatsApp
         </button>
 
     </div>
@@ -445,7 +446,7 @@ function drawAll() {
     drawPatch();
 }
 
-/* texto na lapela girado ~60° */
+/* texto na lapela girado ~60° (ajustado) */
 function drawEmbroidery() {
     const canvas = document.getElementById("embroideryCanvas");
     const ctx = canvas.getContext("2d");
@@ -455,10 +456,11 @@ function drawEmbroidery() {
     if(!nome) return;
 
     ctx.save();
-    ctx.translate(canvas.width * 0.30, canvas.height * 0.18);
+    // levemente mais para o centro e um pouco mais baixo
+    ctx.translate(canvas.width * 0.35, canvas.height * 0.22);
     ctx.rotate(-60 * Math.PI/180);
 
-    ctx.font = "bold 22px Arial";
+    ctx.font = "bold 18px Arial";
     ctx.fillStyle = "#d02135";
     ctx.textAlign = "center";
     ctx.fillText(nome, 0, 0);
@@ -466,7 +468,7 @@ function drawEmbroidery() {
     ctx.restore();
 }
 
-/* patch amarelo no ombro direito */
+/* patch amarelo no ombro direito (ajustado) */
 function drawPatch() {
     const canvas = document.getElementById("patchCanvas");
     const ctx = canvas.getContext("2d");
@@ -476,22 +478,23 @@ function drawPatch() {
 
     ctx.save();
 
-    const x = canvas.width * 0.78;
-    const y = canvas.height * 0.28;
+    // ligeiro ajuste de posição de ombro
+    const x = canvas.width * 0.80;
+    const y = canvas.height * 0.27;
 
     ctx.beginPath();
-    ctx.arc(x, y, 36, 0, Math.PI*2);
+    ctx.arc(x, y, 32, 0, Math.PI*2);
     ctx.fillStyle = "#f1c40f";
     ctx.fill();
     ctx.lineWidth = 3;
     ctx.strokeStyle = "#000";
     ctx.stroke();
 
-    ctx.font = "bold 14px Arial";
+    ctx.font = "bold 13px Arial";
     ctx.fillStyle = "#000";
     ctx.textAlign = "center";
     ctx.fillText("FIGHT", x, y-4);
-    ctx.fillText("LAB", x, y+12);
+    ctx.fillText("LAB", x, y+10);
 
     ctx.restore();
 }
@@ -605,9 +608,9 @@ function confirmBars(){
 }
 
 /* ================================
-   ENVIAR PARA DM INSTAGRAM
+   ENVIAR PARA WHATSAPP
 ================================ */
-function sendInstagramDM(){
+function buildMessage() {
     const genero = document.getElementById("genero").value;
     const cor = document.getElementById("tipo").value;
     const nome = (document.getElementById("nome").value || "").toUpperCase();
@@ -633,24 +636,16 @@ Serviços:
 • Patch no ombro direito: ${patch ? (patchLabel || "Sim") : "Não"}
 • Ajuste de barras: ${barrasTexto}
 
-Arte final:
-Kimono adaptado com patch no ombro e bordado girado a 60° na lapela esquerda.
-
 Podem seguir com minha cotação?`;
 
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(msg)
-        .then(() => {
-            alert("Texto copiado! A DM será aberta. Basta colar e enviar.");
-        })
-        .catch(() => {
-            alert("Não foi possível copiar automaticamente. Quando abrir a DM, copie e cole este texto:\n\n" + msg);
-        });
-    } else {
-        alert("Quando a DM abrir, copie e cole este texto:\n\n" + msg);
-    }
+    return msg;
+}
 
-    window.open("https://ig.me/m/fightlab_br", "_blank");
+function sendWhatsApp() {
+    const msg = buildMessage();
+    const phone = "5511979690880"; // +55 11 97969-0880
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank");
 }
 
 /* INIT */
