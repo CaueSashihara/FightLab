@@ -10,6 +10,10 @@
     <style>
         * { margin:0; padding:0; box-sizing:border-box; }
 
+        html, body {
+            overflow-x: hidden;
+        }
+
         body {
             background: linear-gradient(
                 rgba(0,0,0,0.5),
@@ -46,7 +50,7 @@
 
         .navbar-right { display:flex; gap:20px; align-items:center; }
 
-        /* LAYOUT */
+        /* LAYOUT DESKTOP */
         .container {
             flex:1;
             display:flex;
@@ -152,6 +156,7 @@
         #patchCanvas {
             position:absolute;
             top:0; left:0;
+            width:100%; height:100%;
             pointer-events:none;
         }
 
@@ -162,6 +167,7 @@
             border-radius:10px;
             padding:20px;
             margin-bottom:20px;
+            max-width:360px;
         }
         .control-group-title {
             font-size:0.9rem;
@@ -209,6 +215,8 @@
             align-items:center;
             margin-top:10px;
             font-size:1rem;
+            max-width:360px;
+            justify-content:center;
         }
         .insta-btn i { font-size:1.1rem; }
         .insta-btn:hover { filter:brightness(0.9); }
@@ -242,6 +250,99 @@
         }
 
         .warning-text { color:#ffd700; font-weight:bold; }
+
+        /* ============================
+           RESPONSIVIDADE
+           ============================ */
+
+        /* Tablets e celulares */
+        @media (max-width: 900px) {
+            body {
+                background-attachment: scroll;
+            }
+
+            .navbar {
+                padding:10px 16px;
+                flex-direction:column;
+                align-items:flex-start;
+                gap:8px;
+            }
+
+            .navbar-left {
+                gap:16px;
+                flex-wrap:wrap;
+            }
+
+            .navbar-menu {
+                gap:16px;
+                font-size:0.85rem;
+                flex-wrap:wrap;
+            }
+
+            .container {
+                flex-direction:column;
+                gap:24px;
+                padding:20px 16px 32px;
+                max-width:100%;
+            }
+
+            .form-section {
+                flex:1 1 100%;
+                width:100%;
+            }
+
+            .preview-section {
+                flex:1 1 100%;
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+            }
+
+            .preview-box {
+                width:100%;
+                max-width:320px;
+                height:auto;
+                aspect-ratio:3/4;
+            }
+
+            .preview-box img,
+            #embroideryCanvas,
+            #patchCanvas {
+                width:100%;
+                height:100%;
+            }
+
+            .preview-controls,
+            .insta-btn {
+                width:100%;
+                max-width:320px;
+            }
+        }
+
+        /* Celulares bem pequenos */
+        @media (max-width: 480px) {
+            .navbar-logo {
+                height:40px;
+            }
+
+            .navbar-menu {
+                font-size:0.8rem;
+            }
+
+            .form-section {
+                padding:18px;
+            }
+
+            .preview-box {
+                max-width:280px;
+            }
+
+            .preview-controls,
+            .insta-btn {
+                max-width:280px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -456,7 +557,7 @@ function drawEmbroidery() {
     if(!nome) return;
 
     ctx.save();
-    // levemente mais para o centro e um pouco mais baixo
+    // posição ajustada para parecer na lapela esquerda
     ctx.translate(canvas.width * 0.35, canvas.height * 0.22);
     ctx.rotate(-60 * Math.PI/180);
 
@@ -478,7 +579,7 @@ function drawPatch() {
 
     ctx.save();
 
-    // ligeiro ajuste de posição de ombro
+    // posição de ombro direito
     const x = canvas.width * 0.80;
     const y = canvas.height * 0.27;
 
