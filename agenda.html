@@ -1,179 +1,49 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Agenda para Donos de Academia | Fight Lab</title>
+  <title>Minha Equipe • Agendar reunião | Fight Lab</title>
+  <meta name="description" content="Dono de academia? Agende uma reunião com a Fight Lab e padronize os kimonos do seu time.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    :root {
-      --bg-color: #0a0a0a;
-      --primary-color: #b3152f;
-      --secondary-color: #111111;
-      --text-color: #f0f0f0;
-      --muted-color: #888888;
-      --card-bg: #0f0f0f;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      min-height: 100vh;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 40px;
-      background-color: rgba(10,10,10,0.85);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid rgba(255,255,255,0.05);
-      z-index: 1000;
-    }
-    header .logo img {
-      height: 50px;
-      /* inverter cores do logotipo para branco sobre fundo escuro */
-      filter: invert(1);
-    }
-    header nav a {
-      margin-left: 20px;
-      color: var(--text-color);
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-decoration: none;
-    }
-    header nav a:hover { color: var(--primary-color); }
-    main {
-      padding-top: 100px;
-      padding-bottom: 60px;
-      width: 90%;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-    form {
-      background-color: var(--card-bg);
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.05);
-      padding: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-    label {
-      font-size: 0.9rem;
-      color: var(--muted-color);
-    }
-    input, textarea {
-      padding: 10px;
-      border-radius: 4px;
-      background-color: var(--secondary-color);
-      border: 1px solid #444444;
-      color: #ffffff;
-      font-size: 0.9rem;
-    }
-    input:focus, textarea:focus { outline: none; border-color: var(--primary-color); }
-    button {
-      padding: 12px 24px;
-      border-radius: 4px;
-      background-color: var(--primary-color);
-      color: #ffffff;
-      font-weight: 600;
-      text-transform: uppercase;
-      cursor: pointer;
-      border: none;
-      transition: background-color 0.3s ease;
-    }
-    button:hover { background-color: #931223; }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <a href="index.html"><img src="assets/logo.png" alt="Fight Lab"></a>
-    </div>
-    <nav>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Fight Lab — início"><img src="assets/logo.png" alt="Fight Lab"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav" id="nav" aria-label="Principal">
       <a href="index.html">Home</a>
+      <a href="monte.html">Monte seu Kimono</a>
+      <a href="agenda.html" aria-current="page">Minha Equipe</a>
+      <a href="costureira.html">Costureira</a>
+      <a href="fornecedor.html">Fornecedor</a>
+      <a class="btn-wa" href="https://wa.me/5511979690880" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Fale conosco</a>
     </nav>
   </header>
-  <main>
-    <h1>Proposta de Agenda</h1>
-    <form id="agendaForm">
-      <div>
-        <label for="subjectInput">Assunto</label>
-        <input type="text" id="subjectInput" required>
-      </div>
-      <div>
-        <label for="dateInput">Data</label>
-        <input type="date" id="dateInput" required>
-      </div>
-      <div>
-        <label for="timeInput">Hora</label>
-        <input type="time" id="timeInput" required>
-      </div>
-      <div>
-        <label for="cellInput">Celular</label>
-        <input type="tel" id="cellInput" required>
-      </div>
-      <div>
-        <label for="emailInput">Email</label>
-        <input type="email" id="emailInput" required>
-      </div>
-      <div>
-        <label for="cnpjInput">CNPJ</label>
-        <input type="text" id="cnpjInput" required>
-      </div>
-      <button type="button" id="agendaSubmitBtn">Enviar Proposta</button>
+
+  <main class="container" style="max-width:640px;padding:120px 0 60px">
+    <h1 style="text-align:center;margin-bottom:10px">Agende uma reunião</h1>
+    <p style="text-align:center;color:var(--muted);margin-bottom:30px">Padronize os kimonos da sua academia. Preencha e retornamos com uma proposta.</p>
+    <form class="form" data-fightlab-form data-subject="Proposta de agenda — Dono de academia" novalidate>
+      <div class="form-group"><label for="subject">Assunto</label><input id="subject" name="Assunto" type="text" required></div>
+      <div class="form-group"><label for="date">Data preferida</label><input id="date" name="Data" type="date" required></div>
+      <div class="form-group"><label for="time">Horário</label><input id="time" name="Hora" type="time" required></div>
+      <div class="form-group"><label for="phone">Celular</label><input id="phone" name="Celular" type="tel" inputmode="tel" required></div>
+      <div class="form-group"><label for="email">E-mail</label><input id="email" name="email" type="email" required></div>
+      <div class="form-group"><label for="cnpj">CNPJ</label><input id="cnpj" name="CNPJ" type="text" inputmode="numeric" required></div>
+      <div class="form-status" role="status" aria-live="polite"></div>
+      <button type="submit" class="btn btn-primary">Enviar proposta</button>
+      <p class="form-note">Ao enviar, retornaremos por e-mail/WhatsApp. Nenhum dado é armazenado sem seu contato.</p>
     </form>
   </main>
-  <script>
-    document.getElementById('agendaSubmitBtn').addEventListener('click', function() {
-      // gather information
-      const subject = document.getElementById('subjectInput').value.trim();
-      const date = document.getElementById('dateInput').value;
-      const time = document.getElementById('timeInput').value;
-      const cell = document.getElementById('cellInput').value.trim();
-      const email = document.getElementById('emailInput').value.trim();
-      const cnpj = document.getElementById('cnpjInput').value.trim();
-      if (!subject || !date || !time || !cell || !email || !cnpj) {
-        alert('Por favor, preencha todos os campos.');
-        return;
-      }
-      // build message
-      let body = '';
-      body += 'Assunto: ' + subject + '\n';
-      body += 'Data: ' + date + '\n';
-      body += 'Hora: ' + time + '\n';
-      body += 'Celular: ' + cell + '\n';
-      body += 'Email: ' + email + '\n';
-      body += 'CNPJ: ' + cnpj + '\n';
-      body += '\nSolicito uma reunião para discutir kimono e customizações para minha academia.';
-      const recipients = 'cauesashihara@gmail.com,' + email;
-      const subjectLine = 'Proposta de agenda - Dono de academia';
-      const mailtoLink = 'mailto:' + encodeURIComponent(recipients) + '?subject=' + encodeURIComponent(subjectLine) + '&body=' + encodeURIComponent(body);
-      window.open(mailtoLink, '_blank');
-      // open WhatsApp link to Fight Lab
-      const waLink = 'https://wa.me/5511979690880?text=' + encodeURIComponent(body);
-      window.open(waLink, '_blank');
-      alert('Proposta enviada! Aguarde o retorno.');
-    });
-  </script>
+
+  <a class="fab-wa" href="https://wa.me/5511979690880" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+  <script src="main.js" defer></script>
 </body>
 </html>
