@@ -1,326 +1,104 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Meu Perfil • Costureira | Fight Lab</title>
-  <!-- Google Fonts -->
+  <title>Sou Costureira • Perfil | Fight Lab</title>
+  <meta name="description" content="Cadastre-se como costureira parceira da Fight Lab, receba encomendas de kimonos personalizados e acompanhe suas métricas.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
-  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
   <style>
-    :root {
-      --bg-color: #0a0a0a;
-      --primary-color: #b3152f;
-      --secondary-color: #111111;
-      --text-color: #f0f0f0;
-      --muted-color: #888888;
-      --card-bg: #0f0f0f;
-    }
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      min-height: 100vh;
-    }
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 1rem 2rem;
-      background-color: var(--secondary-color);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      z-index: 1000;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--primary-color);
-    }
-    nav a {
-      margin-left: 1.5rem;
-      color: var(--muted-color);
-      text-decoration: none;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-    nav a:hover {
-      color: var(--text-color);
-    }
-    main {
-      margin-top: 100px;
-      padding: 2rem;
-      max-width: 900px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-    .profile-card {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    }
-    .rating {
-      display: flex;
-      align-items: center;
-      margin-bottom: 1.5rem;
-      padding: 1rem;
-      background: rgba(179, 21, 47, 0.1);
-      border: 2px solid rgba(179, 21, 47, 0.3);
-      border-radius: 8px;
-    }
-    .rating .fa-star,
-    .rating .fa-star-half-stroke {
-      color: #ffc107;
-      font-size: 1.2rem;
-      margin-right: 0.2rem;
-    }
-    .metrics {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .metric-item {
-      flex: 1;
-      min-width: 200px;
-      text-align: center;
-    }
-    .metric-item h3 {
-      font-size: 0.9rem;
-      color: var(--muted-color);
-      margin-bottom: 0.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .metric-item h3 i {
-      color: var(--primary-color);
-      font-size: 1.1rem;
-    }
-    .metric-item p {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--text-color);
-    }
-    .tips {
-      margin-bottom: 1.5rem;
-    }
-    .tips h3 {
-      font-size: 1.2rem;
-      margin-bottom: 0.8rem;
-    }
-    .tips ul {
-      list-style: none;
-      padding-left: 0;
-    }
-    .tips li {
-      padding: 0.5rem 0;
-      padding-left: 1.5rem;
-      position: relative;
-      color: var(--muted-color);
-    }
-    .tips li::before {
-      content: '•';
-      position: absolute;
-      left: 0;
-      color: var(--primary-color);
-      font-weight: bold;
-    }
-    .badges {
-      display: flex;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .badge {
-      background: rgba(179, 21, 47, 0.2);
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .badge i {
-      color: var(--primary-color);
-    }
-    .form-section {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 2rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-    }
-    .form-section h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 1.5rem;
-    }
-    .form-group label {
-      margin-bottom: 0.5rem;
-      color: var(--muted-color);
-      font-weight: 600;
-    }
-    .form-group input {
-      padding: 0.8rem;
-      background: var(--secondary-color);
-      border: 1px solid #333;
-      border-radius: 12px;
-      color: var(--text-color);
-      font-family: 'Montserrat', sans-serif;
-      font-size: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      transition: all 0.3s ease;
-    }
-    .form-group input:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 2px 12px rgba(179, 21, 47, 0.3);
-    }
-    .form-group button {
-      align-self: flex-start;
-      padding: 12px 28px;
-      background-color: var(--primary-color);
-      color: #fff;
-      border: none;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      font-size: 1rem;
-      box-shadow: 0 4px 12px rgba(179, 21, 47, 0.4);
-      transition: all 0.3s ease;
-    }
-    .form-group button:hover {
-      background-color: #d01838;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(179, 21, 47, 0.6);
-    }
-    .feedback-section {
-      background: var(--card-bg);
-      border-radius: 8px;
-      padding: 2rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      text-align: center;
-    }
-    .feedback-section h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
-    }
-    .feedback-hearts {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 1rem;
-      font-size: 2rem;
-    }
-    .feedback-hearts i {
-      color: var(--primary-color);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .feedback-hearts i:hover {
-      transform: scale(1.2);
-    }
+    .metrics{display:flex;gap:16px;flex-wrap:wrap;margin:20px 0}
+    .metric{flex:1;min-width:180px;text-align:center;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:16px}
+    .metric h4{font-size:.82rem;color:var(--muted);margin-bottom:6px;display:flex;gap:6px;justify-content:center;align-items:center}
+    .metric h4 i{color:var(--primary)}
+    .metric p{font-size:1.7rem;font-weight:700}
+    .rating{display:flex;align-items:center;gap:4px;background:rgba(214,31,52,.1);border:1px solid rgba(214,31,52,.3);border-radius:8px;padding:12px 16px}
+    .rating .fa-star,.rating .fa-star-half-stroke{color:#ffc107}
+    .badges{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+    .badge{background:rgba(214,31,52,.18);padding:6px 14px;border-radius:20px;font-size:.85rem;display:flex;gap:6px;align-items:center}
+    .badge i{color:var(--primary)}
+    .tips li{color:var(--muted);padding:4px 0 4px 18px;position:relative;list-style:none}
+    .tips li::before{content:'•';position:absolute;left:0;color:var(--primary)}
+    .hearts{display:flex;justify-content:center;gap:12px;font-size:1.8rem;margin-top:10px}
+    .hearts button{background:none;border:0;color:#555;cursor:pointer;transition:transform .2s,color .2s}
+    .hearts button.active,.hearts button:hover{color:var(--primary);transform:scale(1.15)}
   </style>
 </head>
 <body>
-  <header>
-    <div class="logo">FIGHT LAB</div>
-    <nav>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Fight Lab — início"><img src="assets/logo.png" alt="Fight Lab"></a>
+    <button class="nav-toggle" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav"><i class="fa-solid fa-bars"></i></button>
+    <nav class="nav" id="nav" aria-label="Principal">
       <a href="index.html">Home</a>
-      <a href="#">Perfil</a>
-      <a href="#">Pedidos</a>
+      <a href="monte.html">Monte seu Kimono</a>
+      <a href="agenda.html">Minha Equipe</a>
+      <a href="costureira.html" aria-current="page">Costureira</a>
+      <a href="fornecedor.html">Fornecedor</a>
+      <a class="btn-wa" href="https://wa.me/5511979690880" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i> Fale conosco</a>
     </nav>
   </header>
-  <main>
-    <h1>Meu Perfil • Costureira</h1>
-    <!-- Formulário de Cadastro -->
-    <div class="form-section">
-      <h2>Complete seu Cadastro</h2>
-      <div class="form-group">
-        <label for="addressInput">Endereço</label>
-        <input type="text" id="addressInput" placeholder="Digite seu endereço completo">
-      </div>
-      <div class="form-group">
-        <label for="availabilityInput">Disponibilidade (horas por dia)</label>
-        <input type="number" id="availabilityInput" min="1" max="12" placeholder="Ex: 4">
-      </div>
-      <div class="form-group">
-        <button>Cadastrar</button>
-      </div>
-    </div>
-    <!-- Perfil ativo -->
-    <div class="profile-card">
-      <div class="rating">
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star-half-stroke"></i>
-        <span style="margin-left:8px; font-size:1.1rem; color: var(--muted-color);">4,8/5.0</span>
-      </div>
+
+  <main class="container" style="max-width:900px;padding:110px 0 60px">
+    <h1 style="margin-bottom:20px">Sou Costureira</h1>
+
+    <!-- Cadastro -->
+    <form class="form" data-fightlab-form data-subject="Cadastro de costureira — Fight Lab" novalidate style="margin-bottom:24px">
+      <h2 style="font-size:1.3rem">Complete seu cadastro</h2>
+      <div class="form-group"><label for="name">Nome completo</label><input id="name" name="Nome" type="text" required></div>
+      <div class="form-group"><label for="email">E-mail</label><input id="email" name="email" type="email" required></div>
+      <div class="form-group"><label for="phone">Telefone/WhatsApp</label><input id="phone" name="Telefone" type="tel" required></div>
+      <div class="form-group"><label for="address">Endereço</label><input id="address" name="Endereço" type="text" placeholder="Endereço completo" required></div>
+      <div class="form-group"><label for="avail">Disponibilidade (horas/dia)</label><input id="avail" name="Disponibilidade" type="number" min="1" max="12" placeholder="Ex: 4" required></div>
+      <div class="form-status" role="status" aria-live="polite"></div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
+    </form>
+
+    <!-- Perfil (demonstração) -->
+    <div class="card">
+      <div class="rating"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i><span style="margin-left:8px;color:var(--muted)">4,8 / 5,0</span></div>
       <div class="metrics">
-        <div class="metric-item">
-          <h3><i class="fa-solid fa-scissors"></i> Patches confeccionados</h3>
-          <p>127</p>
-        </div>
-        <div class="metric-item">
-          <h3><i class="fa-solid fa-clock"></i> Tempo médio de entrega</h3>
-          <p>2,9 dias</p>
-        </div>
-        <div class="metric-item">
-          <h3><i class="fa-solid fa-star"></i> Avaliações recebidas</h3>
-          <p>98</p>
-        </div>
+        <div class="metric"><h4><i class="fa-solid fa-scissors"></i> Patches confeccionados</h4><p>127</p></div>
+        <div class="metric"><h4><i class="fa-solid fa-clock"></i> Tempo médio de entrega</h4><p>2,9 dias</p></div>
+        <div class="metric"><h4><i class="fa-solid fa-star"></i> Avaliações recebidas</h4><p>98</p></div>
       </div>
-      <div class="tips">
-        <h3>Dicas de Melhoria</h3>
-        <ul>
-          <li>Use linhas reforçadas para maior durabilidade.</li>
-          <li>Mantenha o acabamento interno limpo e sem fios soltos.</li>
-          <li>Envie fotos de progresso para o cliente acompanhar o trabalho.</li>
-        </ul>
-      </div>
-      <div class="badges">
-        <div class="badge"><i class="fa-solid fa-medal"></i> Super Costureira</div>
-        <div class="badge"><i class="fa-solid fa-truck-fast"></i> Entrega Rápida</div>
-        <div class="badge"><i class="fa-solid fa-heart"></i> Cliente Favorito</div>
-      </div>
+      <div class="tips"><h3 style="margin-bottom:8px">Dicas de melhoria</h3><ul style="padding:0">
+        <li>Use linhas reforçadas para maior durabilidade.</li>
+        <li>Mantenha o acabamento interno limpo e sem fios soltos.</li>
+        <li>Envie fotos de progresso para o cliente acompanhar.</li>
+      </ul></div>
+      <div class="badges"><span class="badge"><i class="fa-solid fa-medal"></i> Super Costureira</span><span class="badge"><i class="fa-solid fa-truck-fast"></i> Entrega Rápida</span><span class="badge"><i class="fa-solid fa-heart"></i> Cliente Favorito</span></div>
     </div>
-    <!-- Área de Feedback -->
-    <div class="feedback-section">
-      <h2>Como foi sua experiência?</h2>
-      <p style="color: var(--muted-color); margin-bottom: 1rem;">Deixe seu feedback com corações</p>
-      <div class="feedback-hearts">
-        <i class="fa-solid fa-heart"></i>
-        <i class="fa-solid fa-heart"></i>
-        <i class="fa-solid fa-heart"></i>
-        <i class="fa-solid fa-heart"></i>
-        <i class="fa-solid fa-heart"></i>
+
+    <!-- Feedback -->
+    <div class="card" style="text-align:center;margin-top:24px">
+      <h2 style="font-size:1.3rem">Como foi sua experiência?</h2>
+      <p style="color:var(--muted)">Deixe seu feedback com corações</p>
+      <div class="hearts" id="hearts" role="group" aria-label="Avaliação de 1 a 5 corações">
+        <button aria-label="1 coração"><i class="fa-solid fa-heart"></i></button>
+        <button aria-label="2 corações"><i class="fa-solid fa-heart"></i></button>
+        <button aria-label="3 corações"><i class="fa-solid fa-heart"></i></button>
+        <button aria-label="4 corações"><i class="fa-solid fa-heart"></i></button>
+        <button aria-label="5 corações"><i class="fa-solid fa-heart"></i></button>
       </div>
     </div>
   </main>
+
+  <a class="fab-wa" href="https://wa.me/5511979690880" target="_blank" rel="noopener" aria-label="Falar no WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+  <script src="main.js" defer></script>
+  <script>
+    // Feedback por corações (visual, em memória)
+    (function(){
+      var hearts = Array.prototype.slice.call(document.querySelectorAll('#hearts button'));
+      hearts.forEach(function(h,i){
+        h.addEventListener('click', function(){ hearts.forEach(function(x,j){ x.classList.toggle('active', j<=i); }); });
+      });
+    })();
+  </script>
 </body>
 </html>

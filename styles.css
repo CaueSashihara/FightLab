@@ -1,0 +1,143 @@
+/* ==========================================================================
+   Fight Lab — v2 · Folha de estilos compartilhada
+   Design tokens + componentes reutilizados em todas as páginas.
+   ========================================================================== */
+:root{
+  --bg:#0a0a0a;
+  --surface:#0f0f11;
+  --surface-2:#15161a;
+  --line:rgba(255,255,255,.08);
+  --primary:#d61f34;
+  --primary-600:#b3152f;
+  --primary-700:#931223;
+  --text:#f2f2f3;
+  --muted:#a9adb5;            /* clareado p/ contraste AA */
+  --wa:#25D366;
+  --radius:10px;
+  --shadow:0 6px 24px rgba(0,0,0,.45);
+  --container:1200px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Montserrat',system-ui,Segoe UI,Roboto,sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--primary);text-decoration:none}
+.container{width:90%;max-width:var(--container);margin:0 auto}
+.visually-hidden{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* Acessibilidade: foco visível global */
+:focus-visible{outline:3px solid var(--primary);outline-offset:2px;border-radius:4px}
+
+/* ---------- Header / navegação ---------- */
+.site-header{
+  position:fixed;inset:0 0 auto 0;height:68px;z-index:1000;
+  display:flex;align-items:center;justify-content:space-between;padding:0 clamp(16px,4vw,40px);
+  background:rgba(10,10,10,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);
+}
+.site-header .brand img{height:44px;filter:invert(1)}
+.nav{display:flex;align-items:center;gap:22px}
+.nav a{color:var(--text);font-weight:600;font-size:.9rem;transition:color .2s}
+.nav a:hover,.nav a[aria-current="page"]{color:var(--primary)}
+.nav .btn-wa{display:inline-flex;align-items:center;gap:8px;background:var(--wa);color:#fff;padding:8px 14px;border-radius:6px}
+.nav-toggle{display:none;background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer}
+@media(max-width:860px){
+  .nav{position:fixed;top:68px;right:0;flex-direction:column;align-items:flex-start;gap:6px;
+    width:240px;padding:16px;background:rgba(10,10,10,.98);border-left:1px solid var(--line);
+    border-bottom:1px solid var(--line);transform:translateX(105%);transition:transform .25s;height:auto}
+  .nav.open{transform:translateX(0)}
+  .nav a{width:100%;padding:8px 0}
+  .nav-toggle{display:block}
+}
+
+/* ---------- Botões ---------- */
+.btn{display:inline-block;padding:12px 24px;border-radius:6px;font-weight:600;text-transform:uppercase;
+  letter-spacing:.5px;cursor:pointer;border:2px solid transparent;transition:background .2s,color .2s,transform .15s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-700)}
+.btn-secondary{background:transparent;color:var(--text);border-color:var(--primary)}
+.btn-secondary:hover{background:var(--primary);color:#fff}
+.btn-wa{background:var(--wa);color:#fff}
+
+/* ---------- Seções ---------- */
+section{padding:80px 0}
+.section-title{text-align:center;font-size:clamp(1.6rem,4vw,2.2rem);margin-bottom:40px;color:#fff}
+.section-title::after{content:"";width:60px;height:4px;background:var(--primary);display:block;margin:12px auto 0;border-radius:2px}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;
+  background:linear-gradient(0deg,rgba(10,10,10,.92),rgba(10,10,10,.5)),url('assets/hero-bg.jpg') center/cover no-repeat;color:#fff}
+.hero-content{position:relative;z-index:1;max-width:820px;padding:90px 20px 0}
+.hero h1{font-size:clamp(2.2rem,6vw,3.2rem);line-height:1.15;margin-bottom:18px}
+.hero p{font-size:1.1rem;color:#d7d7d7;margin-bottom:28px}
+.hero .actions{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.play-link{display:inline-flex;align-items:center;gap:8px;margin-top:20px;color:#fff;background:none;border:0;cursor:pointer;font-weight:600}
+.play-link i{color:var(--primary);font-size:1.3rem}
+
+/* ---------- Cards ---------- */
+.grid{display:grid;gap:24px}
+.grid.cols-auto{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px 22px;transition:transform .25s,box-shadow .25s}
+.card:hover{transform:translateY(-5px);box-shadow:var(--shadow)}
+.card i.card-ico{font-size:2rem;color:var(--primary);margin-bottom:14px}
+.card h3{color:#fff;font-size:1.2rem;margin-bottom:10px}
+.card p{color:#cfcfcf;font-size:.92rem;margin-bottom:18px}
+.card .card-cta{color:var(--primary);font-weight:600;text-transform:uppercase;font-size:.85rem}
+
+.persona-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;transition:transform .25s}
+.persona-card:hover{transform:translateY(-6px)}
+.persona-card img{width:100%;height:220px;object-fit:cover}
+.persona-card .body{padding:20px}
+.persona-card h3{color:#fff;margin-bottom:8px}
+.persona-card p{color:#cfcfcf;font-size:.9rem;margin-bottom:12px}
+
+/* ---------- Faixas ---------- */
+.band{background:linear-gradient(0deg,rgba(10,10,10,.92),rgba(10,10,10,.6)),url('assets/experience-bg.jpg') center/cover fixed;text-align:center}
+.band .inner{max-width:820px;margin:0 auto;padding:90px 20px;color:#fff}
+.band p{color:#d7d7d7;margin-bottom:26px}
+.solid{background:var(--surface-2);text-align:center}
+
+/* ---------- Formulários ---------- */
+.form{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:28px;display:flex;flex-direction:column;gap:18px;box-shadow:var(--shadow)}
+.form-group{display:flex;flex-direction:column;gap:6px}
+.form-group label{color:var(--muted);font-weight:600;font-size:.9rem}
+.form-group input,.form-group select,.form-group textarea{
+  padding:11px 12px;background:var(--surface-2);border:1px solid #333;border-radius:8px;color:var(--text);
+  font:inherit;font-size:.95rem;transition:border .2s,box-shadow .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(214,31,52,.25)}
+.form-note{font-size:.8rem;color:var(--muted)}
+.form-status{font-size:.9rem;padding:10px 12px;border-radius:8px;display:none}
+.form-status.ok{display:block;background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.4);color:#7ee2a8}
+.form-status.err{display:block;background:rgba(214,31,52,.12);border:1px solid rgba(214,31,52,.4);color:#ef8a97}
+
+/* ---------- Modais (acessíveis) ---------- */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:3000;padding:16px}
+.modal.open{display:flex}
+.modal-box{background:var(--surface);border:1px solid var(--primary);border-radius:var(--radius);padding:28px;width:100%;max-width:440px;position:relative}
+.modal-box h3{color:#fff;margin-bottom:12px}
+.modal-box p{color:#cfcfcf;margin-bottom:16px}
+.modal-box .close{position:absolute;top:10px;right:12px;background:none;border:0;color:#fff;font-size:1.5rem;cursor:pointer;line-height:1}
+.warning{color:#ffd54a;font-weight:600}
+
+/* ---------- Widgets flutuantes ---------- */
+.fab-wa{position:fixed;right:20px;bottom:20px;width:58px;height:58px;border-radius:50%;background:var(--wa);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:1.7rem;box-shadow:var(--shadow);z-index:2500}
+.fab-wa:hover{filter:brightness(.95)}
+
+/* ---------- Footer ---------- */
+.site-footer{background:#0c0c0d;padding:48px 0 24px;color:var(--muted)}
+.footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:30px}
+.site-footer h3{color:#fff;margin-bottom:14px}
+.site-footer ul{list-style:none}
+.site-footer li{margin-bottom:9px}
+.site-footer a{color:var(--muted);font-size:.9rem}
+.site-footer a:hover{color:var(--primary)}
+.social{display:flex;gap:14px;margin-top:12px}
+.social a{font-size:1.2rem}
+.footer-bottom{text-align:center;border-top:1px solid var(--line);margin-top:30px;padding-top:18px;font-size:.85rem}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .band{background-attachment:scroll}}
