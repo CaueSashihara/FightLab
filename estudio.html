@@ -174,16 +174,46 @@
     </div>
   </div>
 
-  <!-- Modal Concluir -->
-  <div class="modal" id="finishModal" role="dialog" aria-modal="true" aria-label="Concluir personalização">
-    <div class="modal-box">
+  <!-- Modal Fechar pedido -->
+  <div class="modal" id="finishModal" role="dialog" aria-modal="true" aria-label="Fechar pedido">
+    <div class="modal-box" style="max-height:90vh;overflow-y:auto">
       <button class="close" data-close-modal="finishModal" aria-label="Fechar">&times;</button>
-      <h3>Seu kimono personalizado</h3>
-      <img id="finishPreview" alt="Prévia da sua personalização">
-      <p id="finishSummary" style="font-size:.9rem;color:#cfcfcf;white-space:pre-line"></p>
-      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px">
-        <a class="btn btn-secondary" id="downloadBtn" download="fightlab-kimono.png">Baixar imagem</a>
-        <button class="btn btn-wa" id="waBtn" style="display:flex;gap:8px;align-items:center"><i class="fa-brands fa-whatsapp"></i> Enviar cotação</button>
+
+      <!-- Passo 1: pedido -->
+      <div id="orderStep">
+        <h3>Fechar pedido</h3>
+        <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+          <img id="finishPreview" alt="Prévia da sua personalização" style="width:150px;flex:0 0 auto">
+          <p id="finishSummary" style="font-size:.82rem;color:#cfcfcf;white-space:pre-line;flex:1;min-width:180px"></p>
+        </div>
+        <form id="orderForm" style="margin-top:14px;display:flex;flex-direction:column;gap:12px" novalidate>
+          <div><label>Nome*</label><input type="text" id="ordName" required></div>
+          <div><label>E-mail*</label><input type="email" id="ordEmail" required></div>
+          <div><label>Telefone / WhatsApp*</label><input type="tel" id="ordPhone" required></div>
+          <div><label>Comentários / o que você quer pedir</label>
+            <textarea id="ordNotes" rows="3" placeholder="Ex: bordado dourado, prazo desejado, cor especial, referência de patch…" style="width:100%;padding:10px;background:var(--surface-2);border:1px solid #333;border-radius:8px;color:var(--text);font:inherit"></textarea></div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:130px"><label>Ajuste de manga (cm)</label><input type="text" id="ordSleeve" inputmode="numeric" placeholder="opcional"></div>
+            <div style="flex:1;min-width:130px"><label>Ajuste de calça (cm)</label><input type="text" id="ordPants" inputmode="numeric" placeholder="opcional"></div>
+          </div>
+          <p class="form-note" style="font-size:.75rem;color:var(--muted)">As barras são ajustadas após a 1ª lavagem para evitar encolhimento. Deixe em branco se não precisar.</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:4px">
+            <button type="submit" class="btn btn-primary" style="display:flex;gap:8px;align-items:center"><i class="fa-solid fa-bag-shopping"></i> Fechar pedido</button>
+            <a class="btn btn-secondary" id="downloadBtn" download="fightlab-kimono.png">Baixar imagem</a>
+          </div>
+        </form>
+      </div>
+
+      <!-- Passo 2: confirmação (demo) -->
+      <div id="orderDone" hidden style="text-align:center;padding:10px 0">
+        <div style="font-size:3rem;color:var(--wa)"><i class="fa-solid fa-circle-check"></i></div>
+        <h3 id="orderNumber" style="margin:8px 0"></h3>
+        <p style="color:#cfcfcf;font-size:.92rem">Recebemos os detalhes do seu kimono e enviamos para nossa equipe. 🥋</p>
+        <p style="color:var(--warn);font-size:.82rem;margin-top:10px"><i class="fa-solid fa-triangle-exclamation"></i> Checkout em construção — este é um pedido de demonstração; nenhum pagamento foi processado.</p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+          <button class="btn btn-wa" id="waBtn" style="display:flex;gap:8px;align-items:center"><i class="fa-brands fa-whatsapp"></i> Falar no WhatsApp</button>
+          <button class="btn btn-secondary" data-close-modal="finishModal">Continuar editando</button>
+        </div>
       </div>
     </div>
   </div>

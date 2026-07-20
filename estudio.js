@@ -203,16 +203,74 @@
       + '• Tamanho: ' + sizeLabel.textContent + '\n'
       + '• Personalizações: ' + (els.length ? els.join(', ') : 'nenhuma') + '\n\nPodem seguir com minha cotação? OSS';
   }
+  var CONTACT_EMAIL = 'cauesashihara@gmail.com';
+  var FORM_ENDPOINT = (window.FIGHTLAB && window.FIGHTLAB.formEndpoint) || '';
+  var lastOrderText = '';
+
   document.getElementById('finishBtn').addEventListener('click', function () {
     canvas.discardActiveObject(); canvas.requestRenderAll();
     var data = composite();
     document.getElementById('finishPreview').src = data;
     document.getElementById('downloadBtn').href = data;
     document.getElementById('finishSummary').textContent = summary();
+    // reinicia para o passo 1
+    document.getElementById('orderStep').hidden = false;
+    document.getElementById('orderDone').hidden = true;
     openModal('finishModal');
   });
+
+  function buildOrder() {
+    var name = (document.getElementById('ordName').value || '').trim();
+    var email = (document.getElementById('ordEmail').value || '').trim();
+    var phone = (document.getElementById('ordPhone').value || '').trim();
+    var notes = (document.getElementById('ordNotes').value || '').trim();
+    var sleeve = (document.getElementById('ordSleeve').value || '').trim();
+    var pants = (document.getElementById('ordPants').value || '').trim();
+    var num = 'FL-' + Date.now().toString().slice(-6);
+    var els = canvas.getObjects().map(function (o) { return o._flname || 'Elemento'; });
+    var body = 'NOVO PEDIDO (DEMO) — Fight Lab\n'
+      + 'Pedido: ' + num + '\n\n'
+      + 'CLIENTE\n• Nome: ' + name + '\n• E-mail: ' + email + '\n• Telefone/WhatsApp: ' + phone + '\n\n'
+      + 'KIMONO\n'
+      + '• Modelo: ' + (model === 'mulher' ? 'Feminino' : 'Masculino') + '\n'
+      + '• Cor: ' + color + '\n'
+      + '• Academia: ' + document.getElementById('academia').value + '\n'
+      + '• Altura/Peso: ' + altura.value + ' m / ' + peso.value + ' kg\n'
+      + '• Tamanho: ' + sizeLabel.textContent + '\n'
+      + '• Personalizações: ' + (els.length ? els.join(', ') : 'nenhuma') + '\n\n'
+      + 'AJUSTES\n• Manga: ' + (sleeve ? sleeve + ' cm' : 'sem ajuste') + '\n• Calça: ' + (pants ? pants + ' cm' : 'sem ajuste') + '\n\n'
+      + 'COMENTÁRIOS DO CLIENTE\n' + (notes || '(nenhum)') + '\n\n'
+      + '— Pedido de demonstração; checkout em construção.';
+    return { num: num, name: name, email: email, body: body, ok: !!(name && email && phone) };
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var form = e.target;
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var o = buildOrder();
+    lastOrderText = o.body;
+
+    // Entrega: Formspree (se configurado) — senão abre o e-mail com o pedido
+    if (FORM_ENDPOINT) {
+      var fd = new FormData();
+      fd.append('pedido', o.num); fd.append('nome', o.name); fd.append('email', o.email); fd.append('detalhes', o.body);
+      fetch(FORM_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: fd }).catch(function () {});
+    } else {
+      var mailto = 'mailto:' + encodeURIComponent(CONTACT_EMAIL) + '?cc=' + encodeURIComponent(o.email)
+        + '&subject=' + encodeURIComponent('Novo pedido (demo) ' + o.num + ' - Fight Lab')
+        + '&body=' + encodeURIComponent(o.body);
+      window.open(mailto, '_blank');
+    }
+
+    // Confirmação (demo)
+    document.getElementById('orderNumber').textContent = 'Pedido ' + o.num + ' registrado';
+    document.getElementById('orderStep').hidden = true;
+    document.getElementById('orderDone').hidden = false;
+  });
+
   document.getElementById('waBtn').addEventListener('click', function () {
-    window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(summary()), '_blank');
+    window.open('https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent(lastOrderText || summary()), '_blank');
   });
 
   applyGarment();
