@@ -251,7 +251,12 @@
     var o = buildOrder();
     lastOrderText = o.body;
 
-    // Entrega: Formspree (se configurado) — senão abre o e-mail com o pedido
+    // 1) Mostra a confirmação (demo) primeiro — não depende da entrega
+    document.getElementById('orderNumber').textContent = 'Pedido ' + o.num + ' registrado';
+    document.getElementById('orderStep').hidden = true;
+    document.getElementById('orderDone').hidden = false;
+
+    // 2) Entrega: Formspree (se configurado) — senão abre o e-mail com o pedido
     if (FORM_ENDPOINT) {
       var fd = new FormData();
       fd.append('pedido', o.num); fd.append('nome', o.name); fd.append('email', o.email); fd.append('detalhes', o.body);
@@ -260,13 +265,8 @@
       var mailto = 'mailto:' + encodeURIComponent(CONTACT_EMAIL) + '?cc=' + encodeURIComponent(o.email)
         + '&subject=' + encodeURIComponent('Novo pedido (demo) ' + o.num + ' - Fight Lab')
         + '&body=' + encodeURIComponent(o.body);
-      window.open(mailto, '_blank');
+      setTimeout(function () { var w = window.open(mailto); if (!w) location.href = mailto; }, 400);
     }
-
-    // Confirmação (demo)
-    document.getElementById('orderNumber').textContent = 'Pedido ' + o.num + ' registrado';
-    document.getElementById('orderStep').hidden = true;
-    document.getElementById('orderDone').hidden = false;
   });
 
   document.getElementById('waBtn').addEventListener('click', function () {
