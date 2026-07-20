@@ -205,18 +205,49 @@
   }
   var CONTACT_EMAIL = 'cauesashihara@gmail.com';
   var FORM_ENDPOINT = (window.FIGHTLAB && window.FIGHTLAB.formEndpoint) || '';
-  var lastOrderText = '';
+  // Web3Forms: entrega o e-mail COM anexo (grátis). Gere a chave em web3forms.com (só e-mail, sem senha).
+  var WEB3_KEY = (window.FIGHTLAB && window.FIGHTLAB.web3formsKey) || '';
+  var lastOrderText = '', hiResURL = '', hiResName = 'fightlab-kimono.jpg';
+
+  function dataUrlBytes(u) { var i = u.indexOf(','); return Math.floor((u.length - i - 1) * 3 / 4); }
+  function dataUrlToBlob(u) {
+    var p = u.split(','), mime = p[0].match(/:(.*?);/)[1], bin = atob(p[1]), n = bin.length, arr = new Uint8Array(n);
+    while (n--) arr[n] = bin.charCodeAt(n); return new Blob([arr], { type: mime });
+  }
+  // Prévia composta em ALTA RESOLUÇÃO, garantindo < 5 MB (reduz qualidade/escala se preciso)
+  function makeHiRes(cb) {
+    var factor = 3;
+    var fabURL = canvas.toDataURL({ format: 'png', multiplier: factor });
+    var fimg = new Image();
+    fimg.onload = function () {
+      var W = Math.round(sz.w * factor), H = Math.round(sz.h * factor);
+      var out = document.createElement('canvas'); out.width = W; out.height = H;
+      var ctx = out.getContext('2d');
+      ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, W, H);
+      var iw = garment.naturalWidth || sz.w, ih = garment.naturalHeight || sz.h;
+      var s = Math.min(W / iw, H / ih), dw = iw * s, dh = ih * s;
+      ctx.filter = (garment.style.filter && garment.style.filter !== 'none') ? garment.style.filter : 'none';
+      ctx.drawImage(garment, (W - dw) / 2, (H - dh) / 2, dw, dh); ctx.filter = 'none';
+      ctx.drawImage(fimg, 0, 0, W, H);
+      var q = 0.92, url = out.toDataURL('image/jpeg', q);
+      while (dataUrlBytes(url) > 5 * 1024 * 1024 && q > 0.4) { q -= 0.1; url = out.toDataURL('image/jpeg', q); }
+      cb(url);
+    };
+    fimg.onerror = function () { cb(composite()); };
+    fimg.src = fabURL;
+  }
 
   document.getElementById('finishBtn').addEventListener('click', function () {
     canvas.discardActiveObject(); canvas.requestRenderAll();
-    var data = composite();
-    document.getElementById('finishPreview').src = data;
-    document.getElementById('downloadBtn').href = data;
     document.getElementById('finishSummary').textContent = summary();
-    // reinicia para o passo 1
     document.getElementById('orderStep').hidden = false;
     document.getElementById('orderDone').hidden = true;
     openModal('finishModal');
+    makeHiRes(function (url) {
+      hiResURL = url;
+      document.getElementById('finishPreview').src = url;
+      var dl = document.getElementById('downloadBtn'); dl.href = url; dl.setAttribute('download', hiResName);
+    });
   });
 
   function buildOrder() {
@@ -256,16 +287,30 @@
     document.getElementById('orderStep').hidden = true;
     document.getElementById('orderDone').hidden = false;
 
-    // 2) Entrega: Formspree (se configurado) — senão abre o e-mail com o pedido
-    if (FORM_ENDPOINT) {
+    // 2) Entrega com ANEXO em alta resolução
+    var blob = hiResURL ? dataUrlToBlob(hiResURL) : null;
+    if (WEB3_KEY) {
+      // Web3Forms: e-mail com anexo, automático
       var fd = new FormData();
-      fd.append('pedido', o.num); fd.append('nome', o.name); fd.append('email', o.email); fd.append('detalhes', o.body);
-      fetch(FORM_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: fd }).catch(function () {});
+      fd.append('access_key', WEB3_KEY);
+      fd.append('subject', 'Novo pedido (demo) ' + o.num + ' - Fight Lab');
+      fd.append('from_name', o.name || 'Cliente Fight Lab');
+      fd.append('email', o.email || CONTACT_EMAIL);
+      fd.append('message', o.body);
+      if (blob) fd.append('attachment', blob, hiResName);
+      fetch('https://api.web3forms.com/submit', { method: 'POST', body: fd }).catch(function () {});
+    } else if (FORM_ENDPOINT) {
+      var fd2 = new FormData();
+      fd2.append('pedido', o.num); fd2.append('nome', o.name); fd2.append('email', o.email); fd2.append('detalhes', o.body);
+      if (blob) fd2.append('anexo', blob, hiResName);
+      fetch(FORM_ENDPOINT, { method: 'POST', headers: { Accept: 'application/json' }, body: fd2 }).catch(function () {});
     } else {
+      // Sem backend: baixa a imagem em alta resolução e abre o e-mail pra anexar
+      if (hiResURL) { var a = document.createElement('a'); a.href = hiResURL; a.download = hiResName; document.body.appendChild(a); a.click(); a.remove(); }
       var mailto = 'mailto:' + encodeURIComponent(CONTACT_EMAIL) + '?cc=' + encodeURIComponent(o.email)
         + '&subject=' + encodeURIComponent('Novo pedido (demo) ' + o.num + ' - Fight Lab')
-        + '&body=' + encodeURIComponent(o.body);
-      setTimeout(function () { var w = window.open(mailto); if (!w) location.href = mailto; }, 400);
+        + '&body=' + encodeURIComponent(o.body + '\n\n[Anexe a imagem "' + hiResName + '" que acabou de ser baixada no seu dispositivo.]');
+      setTimeout(function () { var w = window.open(mailto); if (!w) location.href = mailto; }, 500);
     }
   });
 
