@@ -50,9 +50,36 @@
     azul: 'brightness(.7) sepia(1) hue-rotate(175deg) saturate(4)',
     preto: 'brightness(.28) contrast(1.15)'
   };
+  // Recolor incide SÓ no tecido do kimono (pixels claros e pouco saturados)
+  var COLOR_RGB = { azul: [40, 92, 176], preto: [26, 26, 28] };
+  var recolorCache = {};
+  function baseSrc() { return model === 'mulher' ? 'assets/mulher.png' : 'assets/homem.png'; }
   function applyGarment() {
-    garment.src = model === 'mulher' ? 'assets/mulher.png' : 'assets/homem.png';
-    garment.style.filter = COLOR_FILTER[color];
+    garment.style.filter = 'none';
+    if (color === 'branco') { garment.src = baseSrc(); return; }
+    var base = baseSrc(), key = base + '|' + color;
+    if (recolorCache[key]) { garment.src = recolorCache[key]; return; }
+    var img = new Image();
+    img.onload = function () {
+      var W = img.naturalWidth, H = img.naturalHeight;
+      var c = document.createElement('canvas'); c.width = W; c.height = H;
+      var x = c.getContext('2d'); x.drawImage(img, 0, 0);
+      var im; try { im = x.getImageData(0, 0, W, H); } catch (e) { garment.src = base; garment.style.filter = COLOR_FILTER[color]; return; }
+      var d = im.data, tc = COLOR_RGB[color] || [40, 92, 176];
+      for (var k = 0; k < d.length; k += 4) {
+        if (d[k + 3] < 20) continue;                 // ignora transparência (fundo)
+        var r = d[k], g = d[k + 1], b = d[k + 2];
+        var lum = (r + g + b) / 3, sat = Math.max(r, g, b) - Math.min(r, g, b);
+        if (lum > 120 && sat < 48) {                 // tecido do gi: claro e neutro
+          var t = 0.35 + 0.65 * (lum / 255);         // preserva o sombreado do tecido
+          d[k] = Math.round(tc[0] * t); d[k + 1] = Math.round(tc[1] * t); d[k + 2] = Math.round(tc[2] * t);
+        }
+      }
+      x.putImageData(im, 0, 0);
+      var url = c.toDataURL('image/png'); recolorCache[key] = url; garment.src = url;
+    };
+    img.onerror = function () { garment.src = base; garment.style.filter = COLOR_FILTER[color]; };
+    img.src = base;
   }
   document.querySelectorAll('[data-model]').forEach(function (b) {
     b.addEventListener('click', function () {
