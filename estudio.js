@@ -50,9 +50,7 @@
     azul: 'brightness(.7) sepia(1) hue-rotate(175deg) saturate(4)',
     preto: 'brightness(.28) contrast(1.15)'
   };
-  var photoMode = false;
   function applyGarment() {
-    if (photoMode) return; // foto do usuário tem prioridade sobre o mockup
     garment.src = model === 'mulher' ? 'assets/mulher.png' : 'assets/homem.png';
     garment.style.filter = COLOR_FILTER[color];
   }
@@ -90,74 +88,6 @@
     sizeLabel.textContent = s;
   }
   altura.addEventListener('input', calcSize); peso.addEventListener('input', calcSize); calcSize();
-
-  /* ---------- Foto do usuário: vira a base da prévia ---------- */
-  var userPhoto = document.getElementById('userPhoto');
-  var userPhotoDz = document.getElementById('userPhotoDz');
-  var removePhoto = document.getElementById('removePhoto');
-  userPhoto.addEventListener('change', function (e) { if (e.target.files[0]) setUserPhoto(e.target.files[0]); });
-  ['dragover', 'dragenter'].forEach(function (ev) { userPhotoDz.addEventListener(ev, function (e) { e.preventDefault(); userPhotoDz.style.borderColor = 'var(--primary)'; }); });
-  userPhotoDz.addEventListener('drop', function (e) { e.preventDefault(); userPhotoDz.style.borderColor = ''; if (e.dataTransfer.files[0]) setUserPhoto(e.dataTransfer.files[0]); });
-  function setUserPhoto(file) {
-    var r = new FileReader();
-    r.onload = function (ev) { garment.src = ev.target.result; garment.style.filter = 'none'; photoMode = true; removePhoto.hidden = false; };
-    r.readAsDataURL(file);
-  }
-  removePhoto.addEventListener('click', function () { photoMode = false; removePhoto.hidden = true; userPhoto.value = ''; applyGarment(); });
-
-  /* ---------- Rosto (avatar): cola o rosto na cabeça do boneco ---------- */
-  var faceInput = document.getElementById('faceInput');
-  var faceDz = document.getElementById('faceDz');
-  faceInput.addEventListener('change', function (e) { if (e.target.files[0]) handleFace(e.target.files[0]); });
-  ['dragover', 'dragenter'].forEach(function (ev) { faceDz.addEventListener(ev, function (e) { e.preventDefault(); faceDz.style.borderColor = 'var(--primary)'; }); });
-  faceDz.addEventListener('drop', function (e) { e.preventDefault(); faceDz.style.borderColor = ''; if (e.dataTransfer.files[0]) handleFace(e.dataTransfer.files[0]); });
-
-  function readAsDataURL(file) { return new Promise(function (res) { var r = new FileReader(); r.onload = function (ev) { res(ev.target.result); }; r.readAsDataURL(file); }); }
-  function loadImg(url) { return new Promise(function (res, rej) { var i = new Image(); i.onload = function () { res(i); }; i.onerror = rej; i.src = url; }); }
-
-  function handleFace(file) {
-    readAsDataURL(file).then(function (url) { return loadImg(url); }).then(function (img) {
-      return cropFace(img);
-    }).then(function (faceURL) {
-      addFace(faceURL);
-      // vai pra aba Camadas pra ver o elemento
-      var camTool = document.querySelector('.tool[data-tab="camadas"]'); if (camTool) { /* opcional */ }
-    }).catch(function () {});
-  }
-
-  // Recorta o rosto (usa FaceDetector quando disponível; senão usa a imagem inteira — a máscara circular disfarça)
-  function cropFace(img) {
-    return new Promise(function (resolve) {
-      var done = function (u) { resolve(u); };
-      if ('FaceDetector' in window) {
-        try {
-          var det = new window.FaceDetector({ fastMode: true, maxDetectedFaces: 1 });
-          det.detect(img).then(function (faces) {
-            if (faces && faces.length) {
-              var b = faces[0].boundingBox;
-              var cx = b.x + b.width / 2, cy = b.y + b.height / 2, side = b.width * 1.9;
-              var c = document.createElement('canvas'); c.width = c.height = Math.round(side);
-              c.getContext('2d').drawImage(img, cx - side / 2, cy - side / 2, side, side, 0, 0, side, side);
-              done(c.toDataURL('image/png'));
-            } else { done(img.src); }
-          }).catch(function () { done(img.src); });
-        } catch (e) { done(img.src); }
-      } else { done(img.src); }
-    });
-  }
-
-  function addFace(url) {
-    fabric.Image.fromURL(url, function (img) {
-      img.set({ _flname: 'Rosto (avatar)' });
-      var r = Math.min(img.width, img.height) / 2;
-      img.clipPath = new fabric.Circle({ radius: r, originX: 'center', originY: 'center' });
-      var scale = (0.24 * sz.w) / img.width;
-      img.scale(scale);
-      img.set({ left: sz.w * 0.5, top: sz.h * 0.15, originX: 'center', originY: 'center' });
-      canvas.add(img); canvas.setActiveObject(img); img.bringToFront();
-      canvas.requestRenderAll(); renderLayers();
-    });
-  }
 
   /* ---------- Adicionar objeto na área de estampa ---------- */
   function placeCenter(obj, targetFrac) {
