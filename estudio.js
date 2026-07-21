@@ -70,7 +70,8 @@
         if (d[k + 3] < 20) continue;                 // ignora transparência (fundo)
         var r = d[k], g = d[k + 1], b = d[k + 2];
         var lum = (r + g + b) / 3, sat = Math.max(r, g, b) - Math.min(r, g, b);
-        if (lum > 120 && sat < 48) {                 // tecido do gi: claro e neutro
+        // tecido do gi: claro E neutro (r-b baixo). Pele é quente (r-b alto) → fica de fora
+        if (lum > 135 && sat < 50 && (r - b) < 40) {
           var t = 0.35 + 0.65 * (lum / 255);         // preserva o sombreado do tecido
           d[k] = Math.round(tc[0] * t); d[k + 1] = Math.round(tc[1] * t); d[k + 2] = Math.round(tc[2] * t);
         }
