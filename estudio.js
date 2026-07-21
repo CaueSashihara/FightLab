@@ -48,10 +48,11 @@
   var COLOR_FILTER = {
     branco: 'none',
     azul: 'brightness(.7) sepia(1) hue-rotate(175deg) saturate(4)',
-    preto: 'brightness(.28) contrast(1.15)'
+    preto: 'brightness(.28) contrast(1.15)',
+    verde: 'brightness(.5) sepia(1) hue-rotate(55deg) saturate(2.5)'
   };
   // Recolor incide SÓ no tecido do kimono (pixels claros e pouco saturados)
-  var COLOR_RGB = { azul: [40, 92, 176], preto: [26, 26, 28] };
+  var COLOR_RGB = { azul: [40, 92, 176], preto: [26, 26, 28], verde: [44, 74, 42] };
   var recolorCache = {};
   function baseSrc() { return model === 'mulher' ? 'assets/mulher.png' : 'assets/homem.png'; }
   function applyGarment() {
@@ -94,6 +95,20 @@
       b.classList.add('active'); color = b.dataset.color; applyGarment();
     });
   });
+
+  // Presets de tendência 2026 (aplicam cor + trama num toque)
+  var PRESETS = { preto:{c:'preto',t:0}, ultralight:{c:'branco',t:3}, verde:{c:'verde',t:2}, royal:{c:'azul',t:1}, classico:{c:'branco',t:0} };
+  document.querySelectorAll('.trend').forEach(function (tb) {
+    tb.addEventListener('click', function () {
+      document.querySelectorAll('.trend').forEach(function (x) { x.classList.remove('active'); });
+      tb.classList.add('active');
+      var p = PRESETS[tb.dataset.preset]; if (!p) return;
+      var sw = document.querySelector('[data-color="' + p.c + '"]'); if (sw) sw.click();
+      var tec = document.getElementById('tecido'); if (tec) tec.selectedIndex = p.t;
+    });
+  });
+  function tecidoVal() { var t = document.getElementById('tecido'); return t ? t.value : '-'; }
+  function detalhesVal() { var ds = Array.prototype.slice.call(document.querySelectorAll('.detalhe:checked')).map(function (c) { return c.value; }); return ds.length ? ds.join(', ') : 'nenhum'; }
   var altura = document.getElementById('altura'), peso = document.getElementById('peso'), sizeLabel = document.getElementById('sizeLabel');
   var SIZE_ORDER = ['A0', 'A1', 'A2', 'A2H', 'A3', 'A4', 'A5'];
   function calcSize() {
@@ -239,9 +254,11 @@
     return 'Kimono personalizado — Fight Lab 🥋\n'
       + '• Modelo: ' + (model === 'mulher' ? 'Feminino' : 'Masculino') + '\n'
       + '• Cor: ' + color + '\n'
+      + '• Tecido: ' + tecidoVal() + '\n'
       + '• Academia: ' + document.getElementById('academia').value + '\n'
       + '• Altura/Peso: ' + altura.value + ' m / ' + peso.value + ' kg\n'
       + '• Tamanho sugerido: ' + sizeLabel.textContent + ' (a confirmar)\n'
+      + '• Detalhes premium: ' + detalhesVal() + '\n'
       + '• Personalizações: ' + (els.length ? els.join(', ') : 'nenhuma') + '\n\nPodem seguir com minha cotação? OSS';
   }
   var CONTACT_EMAIL = 'cauesashihara@gmail.com';
@@ -306,9 +323,11 @@
       + 'KIMONO\n'
       + '• Modelo: ' + (model === 'mulher' ? 'Feminino' : 'Masculino') + '\n'
       + '• Cor: ' + color + '\n'
+      + '• Tecido: ' + tecidoVal() + '\n'
       + '• Academia: ' + document.getElementById('academia').value + '\n'
       + '• Altura/Peso: ' + altura.value + ' m / ' + peso.value + ' kg\n'
       + '• Tamanho sugerido: ' + sizeLabel.textContent + ' (a confirmar)\n'
+      + '• Detalhes premium: ' + detalhesVal() + '\n'
       + '• Personalizações: ' + (els.length ? els.join(', ') : 'nenhuma') + '\n\n'
       + 'AJUSTES\n• Manga: ' + (sleeve ? sleeve + ' cm' : 'sem ajuste') + '\n• Calça: ' + (pants ? pants + ' cm' : 'sem ajuste') + '\n\n'
       + 'COMENTÁRIOS DO CLIENTE\n' + (notes || '(nenhum)') + '\n\n'
