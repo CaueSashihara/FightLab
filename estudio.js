@@ -50,7 +50,9 @@
     azul: 'brightness(.7) sepia(1) hue-rotate(175deg) saturate(4)',
     preto: 'brightness(.28) contrast(1.15)'
   };
+  var photoMode = false;
   function applyGarment() {
+    if (photoMode) return; // foto do usuário tem prioridade sobre o mockup
     garment.src = model === 'mulher' ? 'assets/mulher.png' : 'assets/homem.png';
     garment.style.filter = COLOR_FILTER[color];
   }
@@ -67,14 +69,41 @@
     });
   });
   var altura = document.getElementById('altura'), peso = document.getElementById('peso'), sizeLabel = document.getElementById('sizeLabel');
+  var SIZE_ORDER = ['A0', 'A1', 'A2', 'A2H', 'A3', 'A4', 'A5'];
   function calcSize() {
-    var h = parseFloat(altura.value) || 1.7, w = parseInt(peso.value) || 80, s = 'A2H';
-    if (h <= 1.60 && w <= 60) s = 'A0'; else if (h <= 1.70 && w <= 70) s = 'A1';
-    else if (h <= 1.80 && w <= 85) s = 'A2'; else if (h <= 1.88 && w <= 95) s = 'A2H';
-    else if (h <= 1.92 && w <= 110) s = 'A3'; else s = 'A4';
+    var h = parseFloat(altura.value) || 1.70;
+    var w = parseInt(peso.value) || 0;
+    // Média das tabelas de gi de BJJ (altura em m) — não há A1 universal, então usamos a média das marcas
+    var s;
+    if (h < 1.56) s = 'A0';
+    else if (h < 1.65) s = 'A1';
+    else if (h < 1.74) s = 'A2';
+    else if (h < 1.83) s = 'A2H';   // A2 alto/longo
+    else if (h < 1.91) s = 'A3';
+    else if (h < 1.99) s = 'A4';
+    else s = 'A5';
+    // Refino por peso (robustez): IMC alto sobe meio tamanho
+    if (w) {
+      var bmi = w / (h * h);
+      if (bmi > 28) s = SIZE_ORDER[Math.min(SIZE_ORDER.length - 1, SIZE_ORDER.indexOf(s) + 1)];
+    }
     sizeLabel.textContent = s;
   }
   altura.addEventListener('input', calcSize); peso.addEventListener('input', calcSize); calcSize();
+
+  /* ---------- Foto do usuário: vira a base da prévia ---------- */
+  var userPhoto = document.getElementById('userPhoto');
+  var userPhotoDz = document.getElementById('userPhotoDz');
+  var removePhoto = document.getElementById('removePhoto');
+  userPhoto.addEventListener('change', function (e) { if (e.target.files[0]) setUserPhoto(e.target.files[0]); });
+  ['dragover', 'dragenter'].forEach(function (ev) { userPhotoDz.addEventListener(ev, function (e) { e.preventDefault(); userPhotoDz.style.borderColor = 'var(--primary)'; }); });
+  userPhotoDz.addEventListener('drop', function (e) { e.preventDefault(); userPhotoDz.style.borderColor = ''; if (e.dataTransfer.files[0]) setUserPhoto(e.dataTransfer.files[0]); });
+  function setUserPhoto(file) {
+    var r = new FileReader();
+    r.onload = function (ev) { garment.src = ev.target.result; garment.style.filter = 'none'; photoMode = true; removePhoto.hidden = false; };
+    r.readAsDataURL(file);
+  }
+  removePhoto.addEventListener('click', function () { photoMode = false; removePhoto.hidden = true; userPhoto.value = ''; applyGarment(); });
 
   /* ---------- Adicionar objeto na área de estampa ---------- */
   function placeCenter(obj, targetFrac) {
@@ -200,7 +229,7 @@
       + '• Cor: ' + color + '\n'
       + '• Academia: ' + document.getElementById('academia').value + '\n'
       + '• Altura/Peso: ' + altura.value + ' m / ' + peso.value + ' kg\n'
-      + '• Tamanho: ' + sizeLabel.textContent + '\n'
+      + '• Tamanho sugerido: ' + sizeLabel.textContent + ' (a confirmar)\n'
       + '• Personalizações: ' + (els.length ? els.join(', ') : 'nenhuma') + '\n\nPodem seguir com minha cotação? OSS';
   }
   var CONTACT_EMAIL = 'cauesashihara@gmail.com';
@@ -267,7 +296,7 @@
       + '• Cor: ' + color + '\n'
       + '• Academia: ' + document.getElementById('academia').value + '\n'
       + '• Altura/Peso: ' + altura.value + ' m / ' + peso.value + ' kg\n'
-      + '• Tamanho: ' + sizeLabel.textContent + '\n'
+      + '• Tamanho sugerido: ' + sizeLabel.textContent + ' (a confirmar)\n'
       + '• Personalizações: ' + (els.length ? els.join(', ') : 'nenhuma') + '\n\n'
       + 'AJUSTES\n• Manga: ' + (sleeve ? sleeve + ' cm' : 'sem ajuste') + '\n• Calça: ' + (pants ? pants + ' cm' : 'sem ajuste') + '\n\n'
       + 'COMENTÁRIOS DO CLIENTE\n' + (notes || '(nenhum)') + '\n\n'

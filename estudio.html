@@ -98,6 +98,12 @@
     <!-- Painéis -->
     <section class="panel" id="panel-produto">
       <h2>Produto</h2>
+      <div class="field"><label>Sua foto (corpo inteiro — opcional)</label>
+        <label class="dropzone" for="userPhoto" id="userPhotoDz"><i class="fa-solid fa-camera"></i><br>Envie uma foto sua de kimono</label>
+        <input type="file" id="userPhoto" accept="image/*" hidden>
+        <button type="button" id="removePhoto" class="chip-btn" hidden style="margin-top:8px">Remover foto</button>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:6px">Ao enviar, a prévia passa a usar a sua foto — as personalizações ficam por cima. Visualização simulada.</p>
+      </div>
       <div class="field"><label>Modelo</label><div class="opt-row">
         <button class="chip-btn active" data-model="homem">Masculino</button>
         <button class="chip-btn" data-model="mulher">Feminino</button>
@@ -114,10 +120,12 @@
           <option>Alliance São Paulo</option><option>Gracie Barra São Paulo</option><option>G13 BJJ</option>
           <option>Checkmat São Paulo</option><option>Atos Jiu-Jitsu São Paulo</option><option>GFTeam São Paulo</option>
         </select></div>
-      <div class="field"><label>Altura</label><input type="number" id="altura" value="1.70" step="0.05" min="1.40" max="2.10"></div>
-      <div class="field"><label>Peso (kg)</label><input type="number" id="peso" value="80" step="1" min="40" max="140"></div>
+      <div class="field"><label>Altura (m)*</label><input type="number" id="altura" value="1.70" step="0.01" min="1.40" max="2.15"></div>
+      <div class="field"><label>Peso (kg) — opcional, refina o tamanho</label><input type="number" id="peso" placeholder="opcional" step="1" min="40" max="150"></div>
       <div class="field"><label>Tamanho sugerido</label>
-        <div style="padding:10px;text-align:center;border:1px solid var(--primary);border-radius:8px;font-weight:700;color:var(--primary)" id="sizeLabel">A2</div></div>
+        <div style="padding:10px;text-align:center;border:1px solid var(--primary);border-radius:8px;font-weight:700;color:var(--primary)" id="sizeLabel">A2</div>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:6px"><i class="fa-solid fa-circle-info"></i> Kimono <strong>sugerido</strong> pela sua altura, usando a <strong>média das tabelas das marcas de BJJ</strong> — não existe um A1 igual para todas. Confirme o tamanho antes de fechar o pedido.</p>
+      </div>
     </section>
 
     <section class="panel" id="panel-imagem" hidden>
